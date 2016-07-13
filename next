@@ -1,0 +1,12 @@
+users
+task: name, due, days_imp, weeks_imp, ever_imp, parent, sib_order, exp_dur_mins, min_dur, many attempts
+attempt: task, completed, snoozed, rescheduled, split, target_dur, actual_dur
+view: one; shows just one
+new random factor each view
+one: add link to say done, not now
+for now, not now just snoozes...
+create task form: slider for ever, dur; others there but default
+tag form
+tags list, alphebetized
+recurrence: MTWetc checkboxes, # of the month, time of day
+can make subtasks while editing a task
