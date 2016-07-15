@@ -22,5 +22,13 @@ module Prioritizer
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
-  end
+
+
+    # load custom modules
+    config.autoload_paths << File.join(Rails.root, "lib", "classes")
+    config.autoload_paths << File.join(Rails.root, "lib", "modules")
+
+    #config.assets.paths << File.join(Rails.root, "lib", “assets")
+    #config.assets.paths << File.join(Rails.root, “vendor", “assets")
+    end
 end
