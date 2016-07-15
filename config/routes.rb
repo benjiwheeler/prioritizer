@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root "home#index" # we'll change this later
 
+  match 'home/login', to: 'home#login', via: [:post, :get]
   match 'users/logout', to: 'sessions#destroy', as: 'logout', via: :get
   match 'users/login', to: 'sessions#login', as: 'login', via: :get
 

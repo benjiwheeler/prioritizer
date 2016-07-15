@@ -8,10 +8,17 @@
 </head>
 <body>
 
-       <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
 
-<%= yield %>
+  <div id="central_container">
+    <%= render "navigation" %>
+
+    <div id="main">
+     <p class="notice"><%= notice %></p>
+     <p class="alert"><%= alert %></p>
+     <%= yield %>
+   </div>
+ </div>
+
 
 </body>
 </html>

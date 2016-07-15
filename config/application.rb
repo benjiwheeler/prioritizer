@@ -32,3 +32,4 @@ module Prioritizer
     #config.assets.paths << File.join(Rails.root, “vendor", “assets")
     end
 end
+
