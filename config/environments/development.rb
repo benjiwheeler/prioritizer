@@ -41,4 +41,6 @@ Rails.application.configure do
 
   # added this so that local precomiling in production vs development mode store in different places
   config.assets.prefix = "/dev-assets"
+
+  ENV["REDISTOGO_URL"] = 'redis://localhost:6379/'
 end
