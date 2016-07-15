@@ -38,4 +38,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # added this so that local precomiling in production vs development mode store in different places
+  config.assets.prefix = "/dev-assets"
 end

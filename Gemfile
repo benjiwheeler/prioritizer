@@ -17,6 +17,7 @@ gem 'pg'
 gem 'redis'
 #######################
 # server
+gem 'foreman'
 gem 'unicorn'
 #######################
 # deployment
