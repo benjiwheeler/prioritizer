@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: prioritizer_production
-  username: prioritizer
+#  username: prioritizer
   password: <%= ENV['PRIORITIZER_DATABASE_PASSWORD'] %>
