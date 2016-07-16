@@ -48,12 +48,12 @@ class User < ActiveRecord::Base
     newuser
   end
 
-  def guest_name
+  def User.guest_name
     "Guest"
   end
 
   def User.new_guest
-    new { |u| u.name = guest_name }
+    new { |u| u.name = User.guest_name }
   end
 
   def User.create_guest
