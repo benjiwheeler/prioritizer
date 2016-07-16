@@ -49,11 +49,21 @@ class Authorization < ActiveRecord::Base
     self.oauth_secret = oauth_params.credentials.secret if oauth_params.credentials.secret
   end
 
-  def self.user_key(oauth_params)
+  def user_key
     retval = nil
-    retval = oauth_params.info.email if oauth_params.info.email # not sure what the deal is with this
-    retval ||= oauth_params.info.nickname if oauth_params.info.nickname # not sure what the deal is with this
-    # NOTE: maybe need to fall back on fname last name?
+    retval = self.email if self.email.present?
+    if retval.blank? && self.nickname.present?
+      retval = self.nickname
+    end
+    if retval.blank? && self.first_name.present?
+      retval = self.first_name
+      if self.last_name.present?
+        retval = retval + self.last_name
+      end
+    end
+    if retval.blank? && self.name.present?
+      retval = self.name
+    end
     retval
   end
 
