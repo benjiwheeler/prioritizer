@@ -15,11 +15,13 @@ class AuthorizationsController < Devise::OmniauthCallbacksController
       ensure_user # at least start with a guest!
       relevant_auth = Authorization.create_from_oauth(oauth_params, current_user)
       #binding.pry
-      if current_user.andand.registered?
+      if current_user.present? && current_user.registered?
         notice = "Successfully linked that account!"
       else # nil, or guest
         # now that we have a key from at least this auth, we can upgrade user from guest to registered
-        current_user.andand.register_with_key_and_save(relevant_auth.user_key)
+        if current_user.present?
+          current_user.register_with_key_and_save(relevant_auth.user_key)
+        end
         notice = "Welcome, #{relevant_auth.user}!"
       end
     end
@@ -27,7 +29,6 @@ class AuthorizationsController < Devise::OmniauthCallbacksController
     set_current_user_with_merge(relevant_auth.user)
     redirect_to @destination, status: :found, notice: notice
   end
-
 
   def failure
     redirect_to @destination, status: :see_other, alert: "Connection failed"
