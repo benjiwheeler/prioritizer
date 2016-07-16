@@ -13,6 +13,6 @@
     = prefix
     = current_user.auth_field(provider, displayname)
     - if show_sign_out
-      = link_to "[Sign out]", destroy_user_session_path, id: "sign_out", class: "navbar-lin", method: :delete
+      = link_to "[Sign out]", logout_path, id: "sign_out", class: "navbar-lin", method: :delete
   - else
-    = link_to "Add #{provider.to_s.capitalize}", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link"
+    = link_to "Add #{provider.to_s.capitalize}", user_omniauth_authorize_path(provider.to_sym), id: "sign_in", class: "navbar-link"
