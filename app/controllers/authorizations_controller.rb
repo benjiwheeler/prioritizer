@@ -14,7 +14,6 @@ class AuthorizationsController < Devise::OmniauthCallbacksController
       # we probably have a current_user... who may be a guest or registered.
       ensure_user # at least start with a guest!
       relevant_auth = Authorization.create_from_oauth(oauth_params, current_user)
-      #binding.pry
       if current_user.present? && current_user.registered?
         notice = "Successfully linked that account!"
       else # nil, or guest

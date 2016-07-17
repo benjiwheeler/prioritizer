@@ -55,11 +55,6 @@ protected
   end
   helper_method :all_providers, :user_must_exist!, :user_must_be_logged_in, :current_user, :current_user?, :ensure_user, :create_guest, :logged_in?, :set_current_user, :set_current_user_with_merge, :set_user_id_str, :user_id_str, :get_session_token
 
-
-#  def verified_request?
-#    super || valid_authenticity_token?(session, request.headers['X-XSRF-TOKEN'])
-#  end
-
   # handle failure of csrf authenticity token, per
   # https://technpol.wordpress.com/2014/04/17/rails4-angularjs-csrf-and-devise/
   rescue_from ActionController::InvalidAuthenticityToken do |exception|
