@@ -36,6 +36,10 @@ class Authorization < ActiveRecord::Base
 
     # now that we have all this detail in the auth, use it to find user
     newauth.user = user || User.find_from_key_or_create(newauth.user_key)
+    # copy over email if user needs it
+    if newauth.user.email.blank? && newauth.email.present?
+      newauth.user.email = newauth.email
+    end
 
     newauth.save!
     newauth

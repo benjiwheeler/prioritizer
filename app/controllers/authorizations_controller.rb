@@ -27,7 +27,7 @@ class AuthorizationsController < Devise::OmniauthCallbacksController
         notice = "Error: failed to create any user at all!"
       end
     end
-   # Log the authorizing user in, and merge with anything from current_user... be it from guest, or other auth
+    # Log the authorizing user in, and merge with anything from current_user... be it from guest, or other auth
     set_current_user_with_merge(relevant_auth.user)
     redirect_to @destination, status: :found, notice: notice
   end
