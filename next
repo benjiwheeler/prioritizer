@@ -1,6 +1,3 @@
-user: many tasks
-task:  many attempts; belongs to user
-attempt: belongs to task
 view: one; shows just one
 new random factor each view
 one: add link to say done, not now
