@@ -2,8 +2,11 @@ Rails.application.routes.draw do
 
   resources :attempts
   resources :tasks
-  resources :users
   devise_for :users, controllers: { omniauth_callbacks: 'authorizations' }
+  match 'users/logout', to: 'sessions#destroy', as: 'logout', via: :delete
+  match 'users/logout', to: 'sessions#destroy', via: :get # in case a provider directs us back to /logout, trying to be helpful!
+  match 'users/login', to: 'sessions#login', as: 'login', via: :get
+  resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -12,9 +15,6 @@ Rails.application.routes.draw do
 
   match 'home/login', to: 'home#login', via: [:post, :get]
 
-  match 'users/logout', to: 'sessions#destroy', as: 'logout', via: :delete
-  match 'users/logout', to: 'sessions#destroy', via: :get # in case a provider directs us back to /logout, trying to be helpful!
-  match 'users/login', to: 'sessions#login', as: 'login', via: :get
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

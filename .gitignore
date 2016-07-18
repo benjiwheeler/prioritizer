@@ -250,7 +250,6 @@ vendor/cache
 # node:
 node_modules
 
-=======
 ####
 # jekyll:
 _site
