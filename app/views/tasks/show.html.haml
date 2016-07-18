@@ -1,0 +1,36 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @task.name
+%p
+  %b Notes:
+  = @task.notes
+%p
+  %b Due:
+  = @task.due
+%p
+  %b Parent:
+  = @task.parent
+%p
+  %b Days imp:
+  = @task.days_imp
+%p
+  %b Weeks imp:
+  = @task.weeks_imp
+%p
+  %b Ever imp:
+  = @task.ever_imp
+%p
+  %b Sib order:
+  = @task.sib_order
+%p
+  %b Exp dur mins:
+  = @task.exp_dur_mins
+%p
+  %b Min dur mins:
+  = @task.min_dur_mins
+
+= link_to 'Edit', edit_task_path(@task)
+\|
+= link_to 'Back', tasks_path

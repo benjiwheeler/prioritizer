@@ -1,6 +1,6 @@
-users
-task: name, due, days_imp, weeks_imp, ever_imp, parent, sib_order, exp_dur_mins, min_dur, many attempts
-attempt: task, completed, snoozed, rescheduled, split, target_dur, actual_dur
+user: many tasks
+task:  many attempts; belongs to user
+attempt: belongs to task
 view: one; shows just one
 new random factor each view
 one: add link to say done, not now

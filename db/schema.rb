@@ -11,10 +11,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160715184012) do
+ActiveRecord::Schema.define(version: 20160718220604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "attempts", force: :cascade do |t|
+    t.integer  "task_id"
+    t.boolean  "completed"
+    t.decimal  "progress"
+    t.boolean  "snoozed"
+    t.boolean  "rescheduled"
+    t.boolean  "split"
+    t.boolean  "addressed"
+    t.decimal  "target_dur_mins"
+    t.decimal  "actual_dur_mins"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "attempts", ["addressed"], name: "index_attempts_on_addressed", using: :btree
+  add_index "attempts", ["completed"], name: "index_attempts_on_completed", using: :btree
+  add_index "attempts", ["split"], name: "index_attempts_on_split", using: :btree
+  add_index "attempts", ["task_id"], name: "index_attempts_on_task_id", using: :btree
 
   create_table "authorizations", force: :cascade do |t|
     t.integer  "user_id"
@@ -40,6 +59,27 @@ ActiveRecord::Schema.define(version: 20160715184012) do
 
   add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
 
+  create_table "tasks", force: :cascade do |t|
+    t.string   "name"
+    t.text     "notes"
+    t.datetime "due"
+    t.decimal  "overall_imp"
+    t.decimal  "days_imp"
+    t.decimal  "weeks_imp"
+    t.decimal  "ever_imp"
+    t.decimal  "sib_order"
+    t.decimal  "exp_dur_mins"
+    t.decimal  "min_dur_mins"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "parent_id"
+  end
+
+  add_index "tasks", ["due"], name: "index_tasks_on_due", using: :btree
+  add_index "tasks", ["exp_dur_mins"], name: "index_tasks_on_exp_dur_mins", using: :btree
+  add_index "tasks", ["min_dur_mins"], name: "index_tasks_on_min_dur_mins", using: :btree
+  add_index "tasks", ["parent_id"], name: "index_tasks_on_parent_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email"
     t.datetime "remember_created_at"
@@ -56,5 +96,7 @@ ActiveRecord::Schema.define(version: 20160715184012) do
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["key"], name: "index_users_on_key", unique: true, using: :btree
 
+  add_foreign_key "attempts", "tasks"
   add_foreign_key "authorizations", "users"
+  add_foreign_key "tasks", "tasks", column: "parent_id"
 end

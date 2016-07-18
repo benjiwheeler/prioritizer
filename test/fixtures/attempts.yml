@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task_id: 
+  completed: false
+  progress: 9.99
+  snoozed: false
+  rescheduled: false
+  split: false
+  addressed: false
+  target_dur_mins: 9.99
+  actual_dur_mins: 9.99
+
+two:
+  task_id: 
+  completed: false
+  progress: 9.99
+  snoozed: false
+  rescheduled: false
+  split: false
+  addressed: false
+  target_dur_mins: 9.99
+  actual_dur_mins: 9.99

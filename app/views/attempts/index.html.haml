@@ -1,0 +1,37 @@
+%h1 Listing attempts
+
+%table
+  %thead
+    %tr
+      %th Task
+      %th Completed
+      %th Progress
+      %th Snoozed
+      %th Rescheduled
+      %th Split
+      %th Addressed
+      %th Target dur mins
+      %th Actual dur mins
+      %th
+      %th
+      %th
+
+  %tbody
+    - @attempts.each do |attempt|
+      %tr
+        %td= attempt.task
+        %td= attempt.completed
+        %td= attempt.progress
+        %td= attempt.snoozed
+        %td= attempt.rescheduled
+        %td= attempt.split
+        %td= attempt.addressed
+        %td= attempt.target_dur_mins
+        %td= attempt.actual_dur_mins
+        %td= link_to 'Show', attempt
+        %td= link_to 'Edit', edit_attempt_path(attempt)
+        %td= link_to 'Destroy', attempt, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Attempt', new_attempt_path

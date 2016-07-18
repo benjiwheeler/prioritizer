@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  notes: MyText
+  due: 2016-07-18 17:40:29
+  parent_id: 
+  days_imp: 9.99
+  weeks_imp: 9.99
+  ever_imp: 9.99
+  sib_order: 9.99
+  exp_dur_mins: 9.99
+  min_dur_mins: 9.99
+
+two:
+  name: MyString
+  notes: MyText
+  due: 2016-07-18 17:40:29
+  parent_id: 
+  days_imp: 9.99
+  weeks_imp: 9.99
+  ever_imp: 9.99
+  sib_order: 9.99
+  exp_dur_mins: 9.99
+  min_dur_mins: 9.99

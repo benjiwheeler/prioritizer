@@ -1,0 +1,33 @@
+%p#notice= notice
+
+%p
+  %b Task:
+  = @attempt.task
+%p
+  %b Completed:
+  = @attempt.completed
+%p
+  %b Progress:
+  = @attempt.progress
+%p
+  %b Snoozed:
+  = @attempt.snoozed
+%p
+  %b Rescheduled:
+  = @attempt.rescheduled
+%p
+  %b Split:
+  = @attempt.split
+%p
+  %b Addressed:
+  = @attempt.addressed
+%p
+  %b Target dur mins:
+  = @attempt.target_dur_mins
+%p
+  %b Actual dur mins:
+  = @attempt.actual_dur_mins
+
+= link_to 'Edit', edit_attempt_path(@attempt)
+\|
+= link_to 'Back', attempts_path

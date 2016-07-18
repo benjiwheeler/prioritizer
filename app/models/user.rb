@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   devise :rememberable, :trackable, :timeoutable
   devise :omniauthable, :omniauth_providers => [:facebook, :twitter]
   has_many :authorizations, dependent: :destroy
+  has_many :tasks, dependent: :destroy
 
   def to_s
     self.name

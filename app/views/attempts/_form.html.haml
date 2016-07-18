@@ -1,0 +1,37 @@
+= form_for @attempt do |f|
+  - if @attempt.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@attempt.errors.count, "error")} prohibited this attempt from being saved:"
+      %ul
+        - @attempt.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :task
+    = f.text_field :task
+  .field
+    = f.label :completed
+    = f.check_box :completed
+  .field
+    = f.label :progress
+    = f.text_field :progress
+  .field
+    = f.label :snoozed
+    = f.check_box :snoozed
+  .field
+    = f.label :rescheduled
+    = f.check_box :rescheduled
+  .field
+    = f.label :split
+    = f.check_box :split
+  .field
+    = f.label :addressed
+    = f.check_box :addressed
+  .field
+    = f.label :target_dur_mins
+    = f.text_field :target_dur_mins
+  .field
+    = f.label :actual_dur_mins
+    = f.text_field :actual_dur_mins
+  .actions
+    = f.submit 'Save'
