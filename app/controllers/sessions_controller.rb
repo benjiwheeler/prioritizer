@@ -7,7 +7,6 @@ class SessionsController < ApplicationController
 
   def login # as in show login, not perform login
     # don't worry here about ensuring user not logged in, assume that's taken care of
-    redirect_to :user
   end
 
 end
