@@ -7,6 +7,9 @@ class SessionsController < ApplicationController
 
   def login # as in show login, not perform login
     # don't worry here about ensuring user not logged in, assume that's taken care of
+    if current_user.present?
+      redirect_to user_path(id: 5) # params[:user])
+    end
   end
 
 end

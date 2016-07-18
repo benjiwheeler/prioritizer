@@ -5,6 +5,5 @@ class HomeController < ApplicationController
   end
 
   def login
-    redirect_to user_path(id: 5) # params[:user])
   end
 end
