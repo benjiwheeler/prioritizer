@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
   def get_ordered_tasks!(tag_str = nil)
     cached_ordered_tasks = $redis.get(self.redis_key + "tag:" + tag_str.to_s)
     if cached_ordered_tasks.nil?
-      generate_ordered_tasks!(tag_str)
+      self.generate_ordered_tasks!(tag_str)
     end
     return cached_ordered_tasks
   end
