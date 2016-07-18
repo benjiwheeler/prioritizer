@@ -8,13 +8,11 @@ class Authorization < ActiveRecord::Base
   end
 
   def self.create_from_oauth(oauth_params, user = nil)
-#    binding.pry
-    # if user is nil, user is not currently logged in; this is auth might be a user returning, or it might be going to be the user's primary auth.
-    user ||= User.find_from_key_or_create(Authorization.user_key(oauth_params))
+    Rails.logger.debug("Creating Auth from params: #{oauth_params}")
+
     # create new Authorization
     newauth = Authorization.new
     # mandatory values
-    newauth.user = user
     newauth.name = oauth_params.info.name
     newauth.provider = oauth_params.provider
     newauth.oauth_token = oauth_params.credentials.token
@@ -23,7 +21,7 @@ class Authorization < ActiveRecord::Base
     newauth.oauth_expires_at = Time.at(oauth_params.credentials.expires_at) if oauth_params.credentials.expires_at
     newauth.email = oauth_params.info.email if oauth_params.info.email
     # twitter
-# deprecated; oauth puts it in nickname    newauth.screen_name = oauth_params.screen_name if oauth_params.screen_name
+    # don't use screen_name; oauth puts it in nickname
     newauth.nickname = oauth_params.info.nickname if oauth_params.info.nickname
     newauth.oauth_secret = oauth_params.credentials.secret if oauth_params.credentials.secret
     # optional fields:
@@ -35,6 +33,9 @@ class Authorization < ActiveRecord::Base
     newauth.phone = oauth_params.info.phone if oauth_params.info.phone
     newauth.urls = oauth_params.info.urls.to_json if oauth_params.info.urls
     newauth.raw_info = oauth_params.extra.raw_info.to_json if oauth_params.extra.raw_info
+
+    # now that we have all this detail in the auth, use it to find user
+    newauth.user = user || User.find_from_key_or_create(newauth.user_key)
 
     newauth.save!
     newauth
@@ -49,6 +50,8 @@ class Authorization < ActiveRecord::Base
     self.oauth_secret = oauth_params.credentials.secret if oauth_params.credentials.secret
   end
 
+  # i think there's a mistake in this logic -- it should find the user with matching key,
+  # whether that's nickname, email, or whatever
   def user_key
     retval = nil
     retval = self.email if self.email.present?
@@ -56,6 +59,7 @@ class Authorization < ActiveRecord::Base
       retval = self.nickname
     end
     if retval.blank? && self.first_name.present?
+
       retval = self.first_name
       if self.last_name.present?
         retval = retval + self.last_name
