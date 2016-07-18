@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
+    current_user.get_ordered_tasks!
   end
 
   # GET /users/new

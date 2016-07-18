@@ -8,6 +8,10 @@ class User < ActiveRecord::Base
   has_many :authorizations, dependent: :destroy
   has_many :tasks, dependent: :destroy
 
+  def redis_key
+    "user:#{self.id}"
+  end
+
   def to_s
     self.name
   end
@@ -99,6 +103,27 @@ class User < ActiveRecord::Base
     d { user_b }
     user_b.delete
     return user_a
+  end
+
+  # task handling
+  def get_ordered_tasks!(tag_str = nil)
+    cached_ordered_tasks = $redis.get(self.redis_key + "tag:" + tag_str)
+    if cached_ordered_tasks.nil?
+      generate_ordered_tasks!(tag_str)
+    end
+    return cached_ordered_tasks
+  end
+
+  def generate_ordered_tasks!(tag_str = nil)
+    sorted_tasks = self.tasks
+    if tag_str.present?
+      sorted_tasks = sorted_tasks.tagged_with(tag_str)
+    end
+    sorted_tasks.sort_by do |task|
+      task.generate_importance! + Task.random_score
+    end.reverse
+    $redis.set(self.redis_key + "tag:" + tag_str, sorted_tasks);
+    return sorted_tasks
   end
 
 end
