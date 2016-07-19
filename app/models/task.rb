@@ -13,7 +13,7 @@ class Task < ActiveRecord::Base
   end
 
   def calc_importance
-    imp = .25
+    imp = 0.25
     num_fields = 0
     if !self.days_imp.nil?
       imp += self.days_imp
@@ -28,7 +28,7 @@ class Task < ActiveRecord::Base
       num_fields = num_fields + 1.0
     end
     if num_fields > 0
-      imp = imp / (num_fields + .00001)
+      imp = imp / (num_fields + 0.00001)
     end
     return imp
   end
