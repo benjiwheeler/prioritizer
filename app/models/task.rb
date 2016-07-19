@@ -14,9 +14,9 @@ class Task < ActiveRecord::Base
 
   def calc_importance
     imp = -1
-    imp += self.days_imp
-    imp += self.weeks_imp
-    imp += self.ever_imp
+    imp += self.days_imp if !self.days_imp.nil?
+    imp += self.weeks_imp if !self.weeks_imp.nil?
+    imp += self.ever_imp if !self.ever_imp.nil?
     if imp == -1
       imp = 0.5
     end
