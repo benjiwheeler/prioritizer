@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   def show
     @ordered_tasks = current_user.get_ordered_tasks!
     @user = current_user
+    @task = Task.new # for task form
   end
 
   # GET /users/new
