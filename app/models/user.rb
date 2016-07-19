@@ -123,7 +123,9 @@ class User < ActiveRecord::Base
     sorted_tasks = sorted_tasks.sort_by do |task|
       task.generate_importance! + Task.random_score
     end.reverse
-    $redis.sadd(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids", sorted_tasks.map { |task| task.id });
+    sorted_tasks.each do |task|
+      $redis.sadd(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids", task_id);
+    end
     return sorted_tasks
   end
 
