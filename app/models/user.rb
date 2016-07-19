@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
 
   # task handling
   def get_ordered_tasks!(tag_str = nil)
-    cached_ordered_task_ids = $redis.smembers(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids")
+    cached_ordered_task_ids = $redis.lrange(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids", 0, -1)
     if cached_ordered_task_ids.blank?
       return self.generate_ordered_tasks!(tag_str)
     else
@@ -124,7 +124,7 @@ class User < ActiveRecord::Base
       task.generate_importance! + Task.random_score
     end.reverse
     sorted_tasks.each do |task|
-      $redis.sadd(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids", task_id);
+      $redis.lpush(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids", task_id);
     end
     return sorted_tasks
   end
