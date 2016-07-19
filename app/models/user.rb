@@ -125,7 +125,7 @@ class User < ActiveRecord::Base
       task.get_importance! #+ Task.random_score
     end.reverse
     sorted_tasks.each do |task|
-      $redis.lpush(redis_user_tag_tasks_key, task_id);
+      $redis.lpush(redis_user_tag_tasks_key, task.id);
     end
     $redis.expire redis_user_tag_tasks_key, 10
     return sorted_tasks
