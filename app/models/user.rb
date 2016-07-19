@@ -108,7 +108,7 @@ class User < ActiveRecord::Base
   # task handling
   def get_ordered_tasks!(tag_str = nil)
     cached_ordered_task_ids = $redis.smembers(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids")
-    if cached_ordered_task_ids.nil?
+    if cached_ordered_task_ids.blank?
       return self.generate_ordered_tasks!(tag_str)
     else
       return cached_ordered_task_ids.map { |id| Task.find_by(id: id) }
