@@ -109,9 +109,10 @@ class User < ActiveRecord::Base
   def get_ordered_tasks!(tag_str = nil)
     cached_ordered_task_ids = $redis.get(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids")
     if cached_ordered_task_ids.nil?
-      self.generate_ordered_tasks!(tag_str)
+      return self.generate_ordered_tasks!(tag_str)
+    else
+      return cached_ordered_task_ids.map { |id| Task.find_by(id: id) }
     end
-    return cached_ordered_task_ids.map { |id| Task.find_by(id: id) }
   end
 
   def generate_ordered_tasks!(tag_str = nil)
@@ -119,7 +120,7 @@ class User < ActiveRecord::Base
     if tag_str.present?
       sorted_tasks = sorted_tasks.tagged_with(tag_str)
     end
-    sorted_tasks.sort_by do |task|
+    sorted_tasks = sorted_tasks.sort_by do |task|
       task.generate_importance! + Task.random_score
     end.reverse
     $redis.set(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids", sorted_tasks.map { |task| task.id });
