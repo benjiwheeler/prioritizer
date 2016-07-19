@@ -1,6 +1,6 @@
 %p#notice= notice
 
-- ordered_tasks.each do |task|
+- @ordered_tasks.each do |task|
   = render partial: 'task', locals: {task: task}
 
 New task:
