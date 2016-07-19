@@ -13,14 +13,24 @@ class Task < ActiveRecord::Base
   end
 
   def calc_importance
-    imp = -1
-    imp += self.days_imp if !self.days_imp.nil?
-    imp += self.weeks_imp if !self.weeks_imp.nil?
-    imp += self.ever_imp if !self.ever_imp.nil?
-    if imp == -1
-      imp = 0.5
+    imp = .25
+    num_fields = 0
+    if !self.days_imp.nil?
+      imp += self.days_imp
+      num_fields = num_fields + 1.0
     end
-    imp / 3.0
+    if !self.days_imp.nil?
+      imp += self.weeks_imp if !self.weeks_imp.nil?
+      num_fields = num_fields + 1.0
+    end
+    if !self.days_imp.nil?
+      imp += self.ever_imp if !self.ever_imp.nil?
+      num_fields = num_fields + 1.0
+    end
+    if num_fields > 0
+      imp = imp / (num_fields + .00001)
+    end
+    return imp
   end
 
   def generate_importance!
