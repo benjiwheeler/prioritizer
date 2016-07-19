@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160718224128) do
+ActiveRecord::Schema.define(version: 20160718235125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,12 +93,14 @@ ActiveRecord::Schema.define(version: 20160718224128) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.integer  "parent_id"
+    t.integer  "user_id"
   end
 
   add_index "tasks", ["due"], name: "index_tasks_on_due", using: :btree
   add_index "tasks", ["exp_dur_mins"], name: "index_tasks_on_exp_dur_mins", using: :btree
   add_index "tasks", ["min_dur_mins"], name: "index_tasks_on_min_dur_mins", using: :btree
   add_index "tasks", ["parent_id"], name: "index_tasks_on_parent_id", using: :btree
+  add_index "tasks", ["user_id"], name: "index_tasks_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
@@ -119,4 +121,5 @@ ActiveRecord::Schema.define(version: 20160718224128) do
   add_foreign_key "attempts", "tasks"
   add_foreign_key "authorizations", "users"
   add_foreign_key "tasks", "tasks", column: "parent_id"
+  add_foreign_key "tasks", "users"
 end

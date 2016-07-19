@@ -1,5 +1,10 @@
 %p#notice= notice
 
+- ordered_tasks.each do |task|
+  = render partial: 'task', locals: {task: task}
+
+New task:
+= render 'tasks/form'
 
 = link_to 'Edit', edit_user_path(@user)
 \|
