@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
+  before_filter :user_must_be_logged_in!
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @tasks = current_user.get_ordered_tasks!(index_params[:tag])
   end
 
   # GET /tasks/1
@@ -25,6 +26,7 @@ class TasksController < ApplicationController
   # POST /tasks.json
   def create
     @task = Task.new(task_params)
+    @task.user = current_user
 
     respond_to do |format|
       if @task.save
@@ -69,6 +71,10 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:name, :notes, :due, :parent_id, :days_imp, :weeks_imp, :ever_imp, :sib_order, :exp_dur_mins, :min_dur_mins)
+      params.require(:task).permit(:name, :notes, :due, :parent_id, :days_imp, :weeks_imp, :ever_imp, :sib_order, :exp_dur_mins, :min_dur_mins, :tag_list)
+    end
+
+    def index_params
+      params.permit(:tag)
     end
 end

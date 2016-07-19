@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     @ordered_tasks = current_user.get_ordered_tasks!
     @user = current_user
     @task = Task.new # for task form
+    Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{ordered_tasks}")
   end
 
   # GET /users/new
