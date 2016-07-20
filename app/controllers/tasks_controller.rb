@@ -1,10 +1,12 @@
 class TasksController < ApplicationController
+  before_filter :user_must_be_logged_in!
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
+    @ordered_tasks = current_user.get_ordered_tasks!
+    @user = current_user
   end
 
   # GET /tasks/1

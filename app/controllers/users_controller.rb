@@ -10,8 +10,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @ordered_tasks = current_user.get_ordered_tasks!
-    @user = current_user
   end
 
   # GET /users/new
@@ -66,6 +64,6 @@ class UsersController < ApplicationController
   private
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.fetch(:user, {})
+      params.fetch(:user, {:id})
     end
 end
