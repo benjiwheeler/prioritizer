@@ -144,6 +144,7 @@ class User < ActiveRecord::Base
     sorted_tasks.sort_by do |task|
       task.get_importance! #+ Task.random_score
     end.reverse!
+    Rails.logger.warn("after sorting, order is: #{sorted_tasks")
     sorted_tasks.each do |task|
       Rails.logger.warn("redis adding task #{task.id} to #{self.redis_user_tag_tasks_key(tag_str)}")
       $redis.rpush(self.redis_user_tag_tasks_key(tag_str), task.id);
