@@ -17,7 +17,9 @@ class ApplicationController < ActionController::Base
 protected
   def current_user
     # allow user to be hardcoded in development
-    if @current_user.blank? && Rails.configuration.hardcoded_current_user_key.present?
+    if @current_user.blank? \
+      && defined?(Rails.configuration.hardcoded_current_user_key) \
+      && Rails.configuration.hardcoded_current_user_key.present?
      hardcoded_user = User.find_by(key: Rails.configuration.hardcoded_current_user_key)
      set_current_user(hardcoded_user)
     end
