@@ -113,7 +113,7 @@ class User < ActiveRecord::Base
   def get_ordered_tasks!(tag_str = nil)
     cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key(tag_str), 0, -1)
     if cached_ordered_task_ids.blank?
-      Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key}")
+      Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key(tag_str)}")
       return self.generate_ordered_tasks!(tag_str)
     else
       return cached_ordered_task_ids.map { |id| Task.find_by(id: id) }
