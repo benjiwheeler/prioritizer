@@ -3,9 +3,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def next
-    @ordered_tasks = current_user.get_n_ordered_tasks!(index_params[:tag], 1)
-    @task = Task.new # for task form
-    Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
+    @task = current_user.get_n_ordered_tasks!(index_params[:tag], 1)
   end
 
 
