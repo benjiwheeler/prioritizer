@@ -42,7 +42,7 @@ Rails.application.configure do
   # added this so that local precomiling in production vs development mode store in different places
   config.assets.prefix = "/dev-assets"
 
-  config.hardcoded_current_user = User.find_by(key: "dev")
+  config.hardcoded_current_user_key = "dev"
 
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379/'
 end
