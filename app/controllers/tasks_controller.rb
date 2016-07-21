@@ -7,7 +7,7 @@ class TasksController < ApplicationController
   def index
     @ordered_tasks = current_user.get_ordered_tasks!(index_params[:tag])
     @task = Task.new # for task form
-    Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{ordered_tasks}")
+    Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
   end
 
   # GET /tasks/1
