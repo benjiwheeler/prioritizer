@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
   resources :attempts
-  resources :tasks
   match 'tasks/next', to: 'tasks#next', as: 'next_task', via: :get
+  resources :tasks
   devise_for :users, controllers: { omniauth_callbacks: 'authorizations' }
   match 'users/logout', to: 'sessions#destroy', as: 'logout', via: :delete
   match 'users/logout', to: 'sessions#destroy', via: :get # in case a provider directs us back to /logout, trying to be helpful!
