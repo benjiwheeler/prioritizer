@@ -141,11 +141,13 @@ class User < ActiveRecord::Base
     if tag_str.present?
       sorted_tasks = sorted_tasks.tagged_with(tag_str)
     end
-    sorted_tasks.sort_by! do |task|
-      score = task.get_importance! #+ Task.random_score
-      Rails.logger.warn("during sorting: score of id #{task.id} is #{score}")
+    sorted_tasks.each do |task|
+      task.get_importance! #+ Task.random_score
     end
-    sorted_tasks.reverse!
+    sorted_tasks = sorted_tasks.sort do |taskA, taskB|
+      #Rails.logger.warn("during sorting: score of id #{task.id} is #{score}")
+      taskB.overall_imp <=> taskA.overall_imp
+    end
     Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
     sorted_tasks.each do |task|
       Rails.logger.warn("after sorting: score of id #{task.id} is #{task.overall_imp}")
