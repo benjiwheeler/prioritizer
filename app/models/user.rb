@@ -141,12 +141,12 @@ class User < ActiveRecord::Base
     if tag_str.present?
       sorted_tasks = sorted_tasks.tagged_with(tag_str)
     end
-    sorted_tasks = sorted_tasks.sort_by do |task|
+    sorted_tasks.sort_by do |task|
       task.get_importance! #+ Task.random_score
-    end.reverse
+    end.reverse!
     sorted_tasks.each do |task|
       Rails.logger.warn("redis adding task #{task.id} to #{self.redis_user_tag_tasks_key(tag_str)}")
-      $redis.lpush(self.redis_user_tag_tasks_key(tag_str), task.id);
+      $redis.rpush(self.redis_user_tag_tasks_key(tag_str), task.id);
     end
     $redis.expire self.redis_user_tag_tasks_key(tag_str), 10
     return sorted_tasks
