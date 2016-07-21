@@ -114,14 +114,16 @@ class User < ActiveRecord::Base
     cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key(tag_str), 0, -1)
     if cached_ordered_task_ids.blank?
       Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key(tag_str)}")
-      self.generate_ordered_tasks!(tag_str)
+      cached_ordered_task_ids = self.generate_ordered_tasks!(tag_str)
+    else
+      Rails.logger.warn("redis tag #{self.redis_user_tag_tasks_key(tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
     end
     n_ordered_task_ids = cached_ordered_task_ids
     if n.is_a? Numeric
       n_ordered_task_ids = cached_ordered_task_ids.first(n)
     end
     n_ordered_tasks = n_ordered_task_ids.map { |id| Task.find_by(id: id) }
-    Rails.logger.warn("returning array of #{n_ordered_tasks.count}")
+    Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
     return n_ordered_tasks
   end
 
