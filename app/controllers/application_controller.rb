@@ -16,6 +16,10 @@ class ApplicationController < ActionController::Base
 
 protected
   def current_user
+    # allow user to be hardcoded in development
+    if @current_user.blank? && Rails.configuration.hardcoded_current_user.present?
+      set_current_user(Rails.configuration.hardcoded_current_user)
+    end
     @current_user ||= User.find_by_id(session[:user_id])
   end
   def current_user?
