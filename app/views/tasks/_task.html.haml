@@ -1,2 +1,16 @@
-Task:
-= task.name
+
+%table
+  %tr
+    %td= task.name
+    %td= task.notes
+    %td= task.due
+    %td= task.parent
+    %td= task.days_imp
+    %td= task.weeks_imp
+    %td= task.ever_imp
+    %td= task.sib_order
+    %td= task.exp_dur_mins
+    %td= task.min_dur_mins
+    %td= link_to 'Show', task
+    %td= link_to 'Edit', edit_task_path(task)
+    %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
