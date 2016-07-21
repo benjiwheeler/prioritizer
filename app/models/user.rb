@@ -120,7 +120,9 @@ class User < ActiveRecord::Base
     if n.is_a? Numeric
       n_ordered_task_ids = cached_ordered_task_ids.first(n)
     end
-    return n_ordered_task_ids.map { |id| Task.find_by(id: id) }
+    n_ordered_tasks = n_ordered_task_ids.map { |id| Task.find_by(id: id) }
+    Rails.logger.warn("returning array of #{n_ordered_tasks.count}")
+    return n_ordered_tasks
   end
 
   def generate_ordered_tasks!(tag_str = nil)

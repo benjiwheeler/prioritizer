@@ -1,4 +1,3 @@
-user can see just one
 user can enter new task
 new task can include tags as string
 user can see just one for a given tag
@@ -33,3 +32,6 @@ new item defaults to "general" tag
 someday:
 recurrence: MTWetc checkboxes, # of the month, time of day
 can make subtasks while editing a task
+
+done:
+user can see just one
