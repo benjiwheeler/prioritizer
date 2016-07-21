@@ -145,7 +145,7 @@ class User < ActiveRecord::Base
       score = task.get_importance! #+ Task.random_score
       Rails.logger.warn("during sorting: score of id #{task.id} is #{score}")
     end.reverse!
-    Rails.logger.warn("after sorting, order is:")
+    Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
     sorted_tasks.each do |task|
       Rails.logger.warn("after sorting: score of id #{task.id} is #{task.overall_imp}")
     end.reverse!
