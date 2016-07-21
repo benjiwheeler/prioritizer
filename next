@@ -1,9 +1,35 @@
-view: one; shows just one
-new random factor each view
-one: add link to say done, not now
-for now, not now just snoozes...
-create task form: slider for ever, dur; others there but default
-tag form
-tags list, alphebetized
+user can see just one
+user can enter new task
+new task can include tags as string
+user can see just one for a given tag
+user can click to indicate task finished
+user can snooze task; Decreases its days importance, increases its week's importance
+create task form uses slider for ever importance, duration
+tag form  is cool
+tags list, alphebetized,  in drop-down menu
+user can click split task:  goes to view with indented sub task form
+finishing one subtask form  creates another
+user can reorder subtasks
+overall task order obeys depth first task ordering
+user can type keyboard shortcut "d" for done;
+user can type "w" for worked on it;
+user can type "h"  for help:
+help shows screen of choices:  snooze, split, explain.
+user can type "/" to split a task, "p" to postpone it, "e" for explain
+user can type "n"  to create new task at any time
+creating new task maintains the state you were in
+after typing to initiate creation of a new task, can create it  by typing the name,
+ hitting enter 4x
+sliders animate by starting in middle, moving left, bouncing
+can manually enter tags or other fields
+new item defaults to "general" tag
+
+
+
+
+
+
+
+someday:
 recurrence: MTWetc checkboxes, # of the month, time of day
 can make subtasks while editing a task
