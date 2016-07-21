@@ -21,7 +21,7 @@ class Task < ActiveRecord::Base
       num_fields = num_fields + 1.0
     end
     if !self.weeks_imp.nil?
-      imp += self.weeks_imp in your
+      imp += self.weeks_imp
       num_fields = num_fields + 1.0
     end
     if !self.ever_imp.nil?
