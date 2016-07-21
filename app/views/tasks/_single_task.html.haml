@@ -8,6 +8,11 @@
     %td= task.days_imp
     %td= task.weeks_imp
     %td= task.ever_imp
+    %td
+      tags:
+      = task.tag_list.to_s
     %td= link_to 'Show', task
     %td= link_to 'Edit', edit_task_path(task)
     %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
+    %td= link_to 'Done', task_done_path(task), method: :post
+    %td= link_to 'Postpone', task_postpone_path(task), method: :post

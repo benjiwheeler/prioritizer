@@ -1,11 +1,32 @@
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:done, :postpone, :show, :edit, :update, :destroy]
 
   def next
     @task = current_user.get_first_ordered_task!(index_params[:tag])
   end
 
+  def done
+    @task.attempts << Attempt.new(completed: true)
+    redirect_to :next_task, notice: 'Task was marked done.'
+  end
+
+  def postpone
+    @task.attempts << Attempt.new(snoozed: true)
+    @task.days_imp -= 0.1
+    @task.days_imp = 0 if @task.days_imp < 0
+    @task.weeks_imp += 0.1
+    @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
+    respond_to do |format|
+      if @task.save
+        format.html { redirect_to :next_task, notice: 'Task was postponed.' }
+        format.json { render :show, status: :created, location: @task }
+      else
+        format.html { render :new }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   # GET /tasks
   # GET /tasks.json
@@ -37,7 +58,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to :next, notice: 'Task was successfully created.' }
+        format.html { redirect_to :next_task, notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -51,7 +72,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+        format.html { redirect_to :next_task, notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }

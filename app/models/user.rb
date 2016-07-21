@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
     self.name
   end
 
+  def redis_user_tag_tasks_key(tag_str)
+    self.redis_key + "::tag:" + tag_str.to_s + "::task_ids"
+  end
+
   def name
     self.authorizations.each do |auth|
       return auth.name unless auth.name.blank?
@@ -105,10 +109,6 @@ class User < ActiveRecord::Base
     return user_a
   end
 
-  def redis_user_tag_tasks_key(tag_str)
-    self.redis_key + "::tag:" + tag_str.to_s + "::task_ids"
-  end
-
   # task handling
   def get_n_ordered_tasks!(tag_str = nil, n = :all)
     cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key(tag_str), 0, -1)
@@ -142,7 +142,7 @@ class User < ActiveRecord::Base
       sorted_tasks = sorted_tasks.tagged_with(tag_str)
     end
     sorted_tasks.each do |task|
-      task.get_importance! #+ Task.random_score
+      task.generate_importance! #+ Task.random_score
     end
     sorted_tasks = sorted_tasks.sort do |taskA, taskB|
       #Rails.logger.warn("during sorting: score of id #{task.id} is #{score}")
