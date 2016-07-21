@@ -105,10 +105,15 @@ class User < ActiveRecord::Base
     return user_a
   end
 
+  def redis_user_tag_tasks_key(tag_str)
+    self.redis_key + "::tag:" + tag_str.to_s + "::task_ids"
+  end
+
   # task handling
   def get_ordered_tasks!(tag_str = nil)
-    cached_ordered_task_ids = $redis.lrange(self.redis_key + "::tag:" + tag_str.to_s + "::task_ids", 0, -1)
+    cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key, 0, -1)
     if cached_ordered_task_ids.blank?
+      Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key}")
       return self.generate_ordered_tasks!(tag_str)
     else
       return cached_ordered_task_ids.map { |id| Task.find_by(id: id) }
@@ -116,7 +121,6 @@ class User < ActiveRecord::Base
   end
 
   def generate_ordered_tasks!(tag_str = nil)
-    redis_user_tag_tasks_key = self.redis_key + "::tag:" + tag_str.to_s + "::task_ids"
     sorted_tasks = self.tasks
     if tag_str.present?
       sorted_tasks = sorted_tasks.tagged_with(tag_str)
@@ -125,9 +129,10 @@ class User < ActiveRecord::Base
       task.get_importance! #+ Task.random_score
     end.reverse
     sorted_tasks.each do |task|
-      $redis.lpush(redis_user_tag_tasks_key, task.id);
+      Rails.logger.warn("redis adding task #{task.id} to #{self.redis_user_tag_tasks_key}")
+      $redis.lpush(self.redis_user_tag_tasks_key, task.id);
     end
-    $redis.expire redis_user_tag_tasks_key, 10
+    $redis.expire self.redis_user_tag_tasks_key, 10
     return sorted_tasks
   end
 

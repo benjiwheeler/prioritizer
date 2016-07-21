@@ -2,6 +2,13 @@ class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
+  def next
+    @ordered_tasks = current_user.get_ordered_tasks!(index_params[:tag])
+    @task = Task.new # for task form
+    Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
+  end
+
+
   # GET /tasks
   # GET /tasks.json
   def index
