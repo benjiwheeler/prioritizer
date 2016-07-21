@@ -110,14 +110,17 @@ class User < ActiveRecord::Base
   end
 
   # task handling
-  def get_ordered_tasks!(tag_str = nil)
+  def get_n_ordered_tasks!(tag_str = nil, n = :all)
     cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key(tag_str), 0, -1)
     if cached_ordered_task_ids.blank?
       Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key(tag_str)}")
-      return self.generate_ordered_tasks!(tag_str)
-    else
-      return cached_ordered_task_ids.map { |id| Task.find_by(id: id) }
+      self.generate_ordered_tasks!(tag_str)
     end
+    n_ordered_task_ids = cached_ordered_task_ids
+    if n.is_a? Numeric
+      n_ordered_task_ids = cached_ordered_task_ids.first(n)
+    end
+    return n_ordered_task_ids.map { |id| Task.find_by(id: id) }
   end
 
   def generate_ordered_tasks!(tag_str = nil)
