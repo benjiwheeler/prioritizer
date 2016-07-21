@@ -19,12 +19,12 @@ class Task < ActiveRecord::Base
       imp += self.days_imp
       num_fields = num_fields + 1.0
     end
-    if !self.days_imp.nil?
-      imp += self.weeks_imp if !self.weeks_imp.nil?
+    if !self.weeks_imp.nil?
+      imp += self.weeks_imp
       num_fields = num_fields + 1.0
     end
-    if !self.days_imp.nil?
-      imp += self.ever_imp if !self.ever_imp.nil?
+    if !self.ever_imp.nil?
+      imp += self.ever_imp
       num_fields = num_fields + 1.0
     end
     if num_fields > 0
