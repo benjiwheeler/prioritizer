@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def next
-    @task = current_user.get_n_ordered_tasks!(index_params[:tag], 1)
+    @task = current_user.get_first_ordered_task!(index_params[:tag])
   end
 
 

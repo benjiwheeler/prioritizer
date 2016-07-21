@@ -125,6 +125,15 @@ class User < ActiveRecord::Base
     return n_ordered_tasks
   end
 
+  def get_first_ordered_task!(tag_str = nil)
+    one_ordered_task_array = self.get_n_ordered_tasks!(tag_str, 1)
+    if one_ordered_task_array.blank?
+      return nil
+    else
+      return one_ordered_task_array.first
+    end
+  end
+
   def generate_ordered_tasks!(tag_str = nil)
     sorted_tasks = self.tasks
     if tag_str.present?
