@@ -2,7 +2,9 @@
 %table
   %tr
     %td= task.name
-    %td= imp: task.get_importance!
+    %td
+      imp:
+      = task.get_importance!
     %td= task.days_imp
     %td= task.weeks_imp
     %td= task.ever_imp
