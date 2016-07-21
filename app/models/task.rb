@@ -4,6 +4,7 @@ class Task < ActiveRecord::Base
   belongs_to :parent, class_name: "Task", foreign_key: "parent_id", inverse_of: :children
   has_many :children, class_name: "Task", foreign_key: "parent_id", inverse_of: :parent
   acts_as_taggable
+  before_save :generate_importance
 
   def get_importance!
     if self.overall_imp.nil?
@@ -20,7 +21,7 @@ class Task < ActiveRecord::Base
       num_fields = num_fields + 1.0
     end
     if !self.weeks_imp.nil?
-      imp += self.weeks_imp
+      imp += self.weeks_imp in your
       num_fields = num_fields + 1.0
     end
     if !self.ever_imp.nil?
@@ -33,8 +34,12 @@ class Task < ActiveRecord::Base
     return imp
   end
 
-  def generate_importance!
+  def generate_importance
     self.overall_imp = self.calc_importance
+  end
+
+  def generate_importance!
+    self.generate_importance
     self.save
   end
 
