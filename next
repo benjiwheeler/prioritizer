@@ -1,4 +1,3 @@
-user can snooze task; Decreases its days importance, increases its week's importance
 create task form uses slider for ever importance, duration
 tag form  is cool
 tags list, alphebetized,  in drop-down menu
@@ -35,3 +34,4 @@ user can enter new task
 new task can include tags as string
 user can see just one for a given tag
 user can click to indicate task finished
+user can snooze task; Decreases its days importance, increases its week's importance

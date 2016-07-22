@@ -6,6 +6,11 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Invokes rake bower:resolve before precompilation. Defaults to false
+BowerRails.configure do |bower_rails|
+  bower_rails.resolve_before_precompile = true
+end
+
 module Prioritizer
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

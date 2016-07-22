@@ -1,0 +1,19 @@
+{
+  "name": "prioritizer",
+  "dependencies": {
+    "bower": "latest"
+  },
+  "engines": {
+    "node": "0.10.x"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "bower install"
+  },
+  "scripts_disabled": {
+    "postinstall": "rake bower:install"
+  },
+  "comments": {
+    "this file": "is node configuration; it will install bower, so no need for bower-specific buildpack"
+  }
+}

@@ -153,8 +153,11 @@ gem 'omniauth-facebook'
 # ASSETS: bower
 #######################
 # client-side versions of js packages
-#gem "bower-rails", "~> 0.9.2"
-
+gem "bower-rails", "~> 0.9.2"
+#######################
+# Angular:
+#######################
+gem "angular-rails-templates"
 
 #######################################
 # this app

@@ -6,7 +6,10 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-if User.find_by(key: "dev").blank?
+dev_user = User.find_by(key: "dev")
+if dev_user.blank?
   dev_user = User.create(email: "dev@dev.dev", key: "dev")
-  dev_user.authorizations << Authorization.create(provider: "facebook", name: "dev")
+end
+if dev_user.authorizations.count < 1
+  dev_user.authorizations << Authorization.create(provider: "facebook", name: "dev", uid: 0)
 end

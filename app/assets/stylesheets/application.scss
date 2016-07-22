@@ -10,8 +10,15 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ * from Bower:
+ * this is weird and needs special treatment:
+ *= require_tree ../../../vendor/assets/bower_components/jquery-ui/themes/base
+ * these are resolved thanks to bower-rails:
+ *= require bootstrap-sass-official
+ *
+ * standard rails:
+ *= require_tree .
  *= require_tree ../../../lib/assets/stylesheets
  *= require_tree ../../../vendor/assets/stylesheets
- *= require_tree .
  *= require_self
  */
