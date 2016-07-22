@@ -23,7 +23,7 @@
     = f.text_field :overall_imp
   .field
     = f.label :days_imp
-  %input#days_imp.slider{"data-slider-min"=>"1", "data-slider-max"=>"10", "data-slider-step"=>"1", "data-slider-value"=>"3"}
+  %input#days_imp.slider{"data-slider-min"=>"1", "data-slider-max"=>"10", "data-slider-step"=>"1", "data-slider-value"=>"3", "name"=>"task[days_imp]"}
   %span#daysImpSliderLabel
     Current Slider Value:
     %span#daysImpSliderVal 3
@@ -43,7 +43,10 @@
     = f.label :min_dur_mins
     = f.text_field :min_dur_mins
   .field
-    = f.label :tag_list, "Tags (separated by commas)"
-    = f.text_field :tag_list
+    = f.label :tag_list
+    %select#tag_select{"multiple"=>"multiple", "name"=>"task[tag_list]"}
+      - current_user.tags.each do |tag|
+        %option{"value"=>"#{tag.to_s}"}
+          = tag.to_s
   .actions
     = f.submit 'Save'

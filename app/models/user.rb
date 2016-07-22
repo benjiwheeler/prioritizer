@@ -160,4 +160,8 @@ class User < ActiveRecord::Base
     return sorted_tasks
   end
 
+  def tags
+    ActsAsTaggableOn::Tag.all
+  end
+
 end

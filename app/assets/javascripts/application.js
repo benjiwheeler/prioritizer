@@ -26,6 +26,7 @@
 //
 // third party
 //= require seiyria-bootstrap-slider
+//= require select2
 //
 // angular
 //= require angular/angular
@@ -42,8 +43,13 @@
 
 // Instantiate a slider
 $(function() {
+  // sliders
   var mySlider = $("input.slider").bootstrapSlider();
   $("#days_imp").on("slide", function(slideEvt) {
     $("#daysImpSliderVal").text(slideEvt.value);
   });
+
+  // selects
+  var tagSelect = $("select#tag_select").select2();
+
 });
