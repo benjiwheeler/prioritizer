@@ -11,19 +11,23 @@ class ApplicationController < ActionController::Base
     redirect_to login_path unless current_user?
   end
   def user_must_be_logged_in!
-    redirect_to login_path unless logged_in?
+    if !logged_in?
+      binding.pry
+      redirect_to login_path
+    end
   end
 
 protected
   def current_user
-    # allow user to be hardcoded in development
-    if @current_user.blank? \
-      && defined?(Rails.configuration.hardcoded_current_user_key) \
-      && Rails.configuration.hardcoded_current_user_key.present?
-     hardcoded_user = User.find_by(key: Rails.configuration.hardcoded_current_user_key)
-     set_current_user(hardcoded_user)
-    end
     @current_user ||= User.find_by_id(session[:user_id])
+    # allow user to be hardcoded in development
+    if @current_user.nil? \
+        && defined?(Rails.configuration.hardcoded_current_user_key) \
+        && Rails.configuration.hardcoded_current_user_key.present?
+      hardcoded_user = User.find_by(key: Rails.configuration.hardcoded_current_user_key)
+      set_current_user(hardcoded_user)
+    end
+    @current_user
   end
   def current_user?
     current_user != nil

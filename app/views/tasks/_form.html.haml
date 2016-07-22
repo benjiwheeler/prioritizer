@@ -23,7 +23,10 @@
     = f.text_field :overall_imp
   .field
     = f.label :days_imp
-    = f.text_field :days_imp
+  %input#days_imp.slider{"data-slider-min"=>"1", "data-slider-max"=>"10", "data-slider-step"=>"1", "data-slider-value"=>"3"}
+  %span#daysImpSliderLabel
+    Current Slider Value:
+    %span#daysImpSliderVal 3
   .field
     = f.label :weeks_imp
     = f.text_field :weeks_imp

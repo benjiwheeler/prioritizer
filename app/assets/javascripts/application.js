@@ -24,6 +24,9 @@
 // bootstrap
 //= require bootstrap-sass-official
 //
+// third party
+//= require seiyria-bootstrap-slider
+//
 // angular
 //= require angular/angular
 //= require angular-resource/angular-resource
@@ -36,3 +39,11 @@
 //= require_tree ../../../lib/assets/javascripts
 //= require_tree ../../../vendor/assets/javascripts
 //= require_tree .
+
+// Instantiate a slider
+$(function() {
+  var mySlider = $("input.slider").bootstrapSlider();
+  $("#days_imp").on("slide", function(slideEvt) {
+    $("#daysImpSliderVal").text(slideEvt.value);
+  });
+});
