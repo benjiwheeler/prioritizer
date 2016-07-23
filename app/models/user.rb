@@ -161,7 +161,8 @@ class User < ActiveRecord::Base
   end
 
   def tags
-    ActsAsTaggableOn::Tag.all
+    # alphabetize these?
+    ActsAsTaggableOn::Tag.all.order(taggings_count: :desc)
   end
 
   def tag_list
