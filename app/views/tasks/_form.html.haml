@@ -47,7 +47,13 @@
     = f.text_field :min_dur_mins
   .field
     = f.label :tag_list
+    / only problem is that new tags can't be added.
     = f.select :tag_list, options_for_select(current_user.tags), {}, {class: "tag_select", multiple: "multiple", style: "width: 25em;"}
+    / doesn't seem to work; only one tag comes through.
+    / %select.tag_select{multiple: "multiple", name: "task[tag_list]", style: "width: 25em"}
+    /   - current_user.tags.each do |tag|
+    /     %option{"value"=>"#{tag.to_s}"}
+    /       = tag.to_s
 
   .actions
     = f.submit 'Save'
