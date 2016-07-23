@@ -66,6 +66,14 @@ $(function() {
     tokenSeparators: [',', ' ']
   });
 
-  // mugi to you
-  var abc = "ab";
+  // attempt to fix tag reordering issue; seehttps://github.com/angular-ui/angular-ui-OLDREPO/issues/406
+  $("select.tag_select").on("select2:select", function (evt) {
+    var element = evt.params.data.element;
+    var $element = $(element);
+
+    $element.detach();
+    $(this).append($element);
+    $(this).trigger("change");
+  });
+
 });
