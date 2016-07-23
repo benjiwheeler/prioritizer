@@ -30,6 +30,9 @@
 %p
   %b Min dur mins:
   = @task.min_dur_mins
+%p
+  %b Tags:
+  = @task.tag_list.to_s
 
 = link_to 'Edit', edit_task_path(@task)
 \|

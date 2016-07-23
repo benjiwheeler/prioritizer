@@ -25,7 +25,6 @@
 //= require bootstrap-sass-official
 //
 // third party
-//= require seiyria-bootstrap-slider
 //= require select2
 //
 // angular
@@ -43,13 +42,30 @@
 
 // Instantiate a slider
 $(function() {
+
   // sliders
-  var mySlider = $("input.slider").bootstrapSlider();
-  $("#days_imp").on("slide", function(slideEvt) {
-    $("#daysImpSliderVal").text(slideEvt.value);
+  // var mySlider = $("input.slider").bootstrapSlider();
+  // $("#days_imp").on("slide", function(slideEvt) {
+  //   $("#daysImpSliderVal").text(slideEvt.value);
+  // });
+  $( "#days_imp_slider" ).slider({
+    value:3,
+    min: 1,
+    max: 10,
+    step: 1,
+    slide: function( event, ui ) {
+      $( "#days_imp_amount" ).val( ui.value );
+    }
   });
+  $( "#days_imp_amount" ).val($( "#days_imp_slider" ).slider( "value" ) );
+
 
   // selects
-  var tagSelect = $("select#tag_select").select2();
+  var tagSelect = $("select.tag_select").select2({
+    tags: true,
+    tokenSeparators: [',', ' ']
+  });
 
+  // mugi to you
+  var abc = "ab";
 });

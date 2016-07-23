@@ -164,4 +164,14 @@ class User < ActiveRecord::Base
     ActsAsTaggableOn::Tag.all
   end
 
+  def tag_list
+    list_str = ""
+    ActsAsTaggableOn::Tag.all.each do |tag|
+      if list_str.length > 0
+        list_str = list_str + ", "
+      end
+      list_str = list_str + tag.to_s
+    end
+    list_str
+  end
 end
