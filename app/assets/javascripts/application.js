@@ -10,8 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require turbolinks
-//= require cocoon
 //
 // Bower:
 // these are resolved thanks to bower-rails:
@@ -27,6 +25,8 @@
 //
 // third party
 //= require select2
+//= require turbolinks
+//= require cocoon
 //
 // angular
 //= require angular/angular
@@ -78,9 +78,10 @@ var ready = function() {
 
   $("form").on('click', '.add_child', function(event) {
     // for sorting
-    //var time = new Date().getTime()
-    //regexp = new RegExp($(this).data('id'), 'g')
-    //$(this).before($(this).data('fields').replace(regexp, time))
+    var time = new Date().getTime()
+    regexp = new RegExp($(this).data('id'), 'g')
+    // ??
+    $(this).before($(this).data('fields').replace(regexp, time))
     event.preventDefault();
   });
 
@@ -92,7 +93,11 @@ var ready = function() {
   });
   $( "#children" ).disableSelection();
 
-
+  $("input.subtask_name").on("keypress", function (e) {
+    if (e.keyCode == 13) {
+        return false;
+    }
+  });
 };
 
 // have it rerun when turbolinks fires

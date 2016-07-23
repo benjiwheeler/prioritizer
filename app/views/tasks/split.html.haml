@@ -20,15 +20,15 @@
           .field
             = child_builder.label :name
           .field
-            = child_builder.text_field :name
+            = child_builder.text_field :name, class: "subtask_name"
   .links
-    = link_to_add_association 'add child', task_builder, :children
+    /= link_to_add_association 'add child', task_builder, :children
 
-  / - new_child = Task.new
-  / - new_child.parent = @task
-  / - fields_html = task_builder.fields_for(:children, new_child, child_index: new_child.object_id) do |child_builder|
-  /   - render("child_fields", f: child_builder)
-  / = link_to("Add child", '#', class: "add_child", data: {id: new_child.object_id, fields: fields_html.gsub("\n", "")})
+    - new_child = Task.new
+    - new_child.parent = @task
+    - fields_html = task_builder.fields_for(:children, new_child, child_index: new_child.object_id) do |child_builder|
+      - render("child_fields", f: child_builder)
+    = link_to("Add child", '#', class: "add_child", data: {id: new_child.object_id, fields: fields_html.gsub("\n", "")})
 
   .actions
     = task_builder.submit 'Save'
