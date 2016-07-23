@@ -1,0 +1,32 @@
+
+= form_for @task do |task_builder|
+  - if @task.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
+      %ul
+        - @task.errors.full_messages.each do |msg|
+          %li= msg
+  .field
+    = task_builder.label :name
+    = task_builder.text_field :name
+  .field
+    = task_builder.label :parent
+    = task_builder.text_field :parent
+
+  %ul#children
+  = task_builder.fields_for :children do |child_builder|
+    = content_tag_for :li, child_builder.object do
+      .nested-fields
+        .field
+          = child_builder.text_field :name
+  .links
+    = link_to_add_association 'add child', task_builder, :children
+
+  / - new_child = Task.new
+  / - new_child.parent = @task
+  / - fields_html = task_builder.fields_for(:children, new_child, child_index: new_child.object_id) do |child_builder|
+  /   - render("child_fields", f: child_builder)
+  / = link_to("Add child", '#', class: "add_child", data: {id: new_child.object_id, fields: fields_html.gsub("\n", "")})
+
+  .actions
+    = task_builder.submit 'Save'

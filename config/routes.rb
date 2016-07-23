@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   match 'tasks/next', to: 'tasks#next', as: 'next_task', via: :get
   match 'tasks/:id/done', to: 'tasks#done', as: 'task_done', via: :post
   match 'tasks/:id/postpone', to: 'tasks#postpone', as: 'task_postpone', via: :post
+  match 'tasks/:id/split', to: 'tasks#split', as: 'task_split', via: :get
   resources :tasks
   devise_for :users, controllers: { omniauth_callbacks: 'authorizations' }
   match 'users/logout', to: 'sessions#destroy', as: 'logout', via: :delete

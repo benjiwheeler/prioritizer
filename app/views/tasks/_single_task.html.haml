@@ -16,3 +16,4 @@
     %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
     %td= link_to 'Done', task_done_path(task), method: :post
     %td= link_to 'Postpone', task_postpone_path(task), method: :post
+    %td= link_to 'Split', task_split_path(task), method: :get

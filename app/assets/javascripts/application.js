@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require turbolinks
+//= require cocoon
 //
 // Bower:
 // these are resolved thanks to bower-rails:
@@ -41,13 +42,9 @@
 //= require_tree .
 
 // Instantiate a slider
-$(function() {
+var ready = function() {
 
-  // sliders
-  // var mySlider = $("input.slider").bootstrapSlider();
-  // $("#days_imp").on("slide", function(slideEvt) {
-  //   $("#daysImpSliderVal").text(slideEvt.value);
-  // });
+  // make sliders fancy using jqueryui's slider() method:
   $( "#days_imp_slider" ).slider({
     value:3,
     min: 1,
@@ -57,23 +54,46 @@ $(function() {
       $( "#days_imp_amount" ).val( ui.value );
     }
   });
+  // set initial value
   $( "#days_imp_amount" ).val($( "#days_imp_slider" ).slider( "value" ) );
 
 
-  // selects
+  // apply select2 to any tag_select form elements
   var tagSelect = $("select.tag_select").select2({
-    tags: true,
-    tokenSeparators: [',', ' ']
+    tags: true, // able to create new tags by typing them
+    tokenSeparators: [',', ' '] // respond to these keystrokes
   });
 
   // attempt to fix tag reordering issue; seehttps://github.com/angular-ui/angular-ui-OLDREPO/issues/406
-  $("select.tag_select").on("select2:select", function (evt) {
-    var element = evt.params.data.element;
+  // note that this does NOT work with tokenSeparator keystrokes... only return/mouseclicks
+  // maybe this doesn't do anything at all?
+  $("select.tag_select").on("select2:select", function (event) {
+    var element = event.params.data.element;
     var $element = $(element);
-
     $element.detach();
     $(this).append($element);
     $(this).trigger("change");
   });
 
-});
+
+  $("form").on('click', '.add_child', function(event) {
+    // for sorting
+    //var time = new Date().getTime()
+    //regexp = new RegExp($(this).data('id'), 'g')
+    //$(this).before($(this).data('fields').replace(regexp, time))
+    event.preventDefault();
+  });
+
+  $("#children").sortable({
+    axis: 'y',
+    update: function() {
+      alert('updated!');
+    }
+  });
+
+
+};
+
+// have it rerun when turbolinks fires
+$(document).ready(ready)
+$(document).on('page:load', ready)

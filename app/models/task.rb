@@ -2,8 +2,10 @@ class Task < ActiveRecord::Base
   belongs_to :user
   has_many :attempts, dependent: :destroy
   belongs_to :parent, class_name: "Task", foreign_key: "parent_id", inverse_of: :children
-  has_many :children, class_name: "Task", foreign_key: "parent_id", inverse_of: :parent
+  has_many :children, -> { order(position: :asc) }, class_name: "Task", foreign_key: "parent_id", inverse_of: :parent
+  accepts_nested_attributes_for :children
   acts_as_taggable
+  acts_as_list
   before_save :before_save_steps
 
   def Task.postpone_size_s
