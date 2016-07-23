@@ -245,6 +245,8 @@ xcuserdata
 vendor/cache
 # bower:
 *bower_components
+# dev stuff:
+*dev_assets
 
 ####
 # node:
