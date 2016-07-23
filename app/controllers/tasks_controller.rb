@@ -2,6 +2,13 @@ class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
   before_action :set_task, only: [:done, :postpone, :split, :show, :edit, :update, :destroy]
 
+  def sort
+    params[:task].each_with_index do |id, index|
+      Task.where(id: id).update_all(position: index+1)
+    end
+    render nothing: true
+  end
+
   def next
     @task = current_user.get_first_ordered_task!(index_params[:tag])
   end

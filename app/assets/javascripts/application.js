@@ -87,9 +87,10 @@ var ready = function() {
   $("#children").sortable({
     axis: 'y',
     update: function() {
-      alert('updated!');
+      $.post($(this).data('update-url'), $(this).sortable('serialize'))
     }
   });
+  $( "#children" ).disableSelection();
 
 
 };
