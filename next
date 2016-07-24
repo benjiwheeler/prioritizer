@@ -1,4 +1,3 @@
-finishing one subtask form  creates another
 user can reorder subtasks
 overall task order obeys depth first task ordering
 user can type keyboard shortcut "d" for done;
@@ -35,3 +34,4 @@ create task form uses slider for ever importance, duration
 tag form  is cool
 tags list, order by use,  in drop-down menu
 user can click split task:  goes to view with indented sub task form
+finishing one subtask form  creates another

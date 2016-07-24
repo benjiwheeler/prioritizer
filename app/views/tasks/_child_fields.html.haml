@@ -1,3 +1,6 @@
-.field
-  = f.label :name
-  = f.text_field :name
+= content_tag_for(:li, f.object, class: "ui-state-default") do
+  .nested-fields
+    .field
+      = f.label :name
+    .field
+      = f.text_field :name, class: "subtask_name"

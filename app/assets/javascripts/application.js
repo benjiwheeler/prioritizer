@@ -75,13 +75,18 @@ var ready = function() {
     $(this).trigger("change");
   });
 
+  var generateNewChildFieldsHtml = function() {
+    var holder = $("#fields_html_holder");
+    var templateObjIdStr = holder.data('new-child-object-id');
+    var newChildFieldsHtmlTemplate = holder.data('new-child-fields-html');
+    // for sorting
+    var time = new Date().getTime();
+    var regexp = new RegExp(templateObjIdStr, 'g');
+    return newChildFieldsHtmlTemplate.replace(regexp, time)
+  };
 
   $("form").on('click', '.add_child', function(event) {
-    // for sorting
-    var time = new Date().getTime()
-    regexp = new RegExp($(this).data('id'), 'g')
-    // ??
-    $(this).before($(this).data('fields').replace(regexp, time))
+    $("ul#children").append(generateNewChildFieldsHtml());
     event.preventDefault();
   });
 
@@ -93,9 +98,12 @@ var ready = function() {
   });
   $( "#children" ).disableSelection();
 
-  $("input.subtask_name").on("keypress", function (e) {
-    if (e.keyCode == 13) {
-        return false;
+  $("form").on('keypress', 'input.subtask_name', function(event) {
+    if (event.keyCode == 13) {
+      var myLiElement = $(this).closest("li");
+      myLiElement.after(generateNewChildFieldsHtml());
+      myLiElement.next().("input.subtask_name").focus();
+      return false;
     }
   });
 };
