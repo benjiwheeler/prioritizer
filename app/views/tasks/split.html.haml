@@ -1,5 +1,5 @@
 
-= form_for @task do |task_builder|
+= form_for(@task, class: "form-inline", role: "form") do |task_builder|
   - if @task.errors.any?
     #error_explanation
       %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
@@ -16,16 +16,17 @@
   / make fields_html and store in hidden input
   - new_child = Task.new
   - new_child.parent = @task
+  - new_child.tags = @task.tags # unclear if this will deep copy?
   - new_child_fields_html = task_builder.fields_for(:children, new_child, child_index: new_child.object_id) do |child_builder|
-    - render("child_fields", f: child_builder)
+    - render("child_fields", f: child_builder, parent: @task)
   - new_child_fields_html = new_child_fields_html.gsub("\n", "")
   / data-new-child-fields-html is the html you'll need for each new child
   / data-new-child-object-id is just an arbitrary starting string to be the element id of the new elements, temporarily
   %span{style: "visibility: hidden", id: "fields_html_holder", "data-new-child-fields-html" => new_child_fields_html, "data-new-child-object-id" => new_child.object_id}
 
-  %ul#children{"data-update-url" => "#{sort_tasks_url}"}
+  %ul.list-unstyled#children{"data-update-url" => "#{sort_tasks_url}"}
     = task_builder.fields_for :children do |child_builder|
-      - render("child_fields", f: child_builder)
+      - render("child_fields", f: child_builder, parent: @task)
   .links
     /= link_to_add_association 'add child', task_builder, :children
     = link_to("Add child", '#', class: "add_child")

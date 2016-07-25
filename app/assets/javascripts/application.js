@@ -26,7 +26,7 @@
 // third party
 //= require select2
 //= require turbolinks
-//= require cocoon
+//= require mousetrap
 //
 // angular
 //= require angular/angular
@@ -61,6 +61,7 @@ var ready = function() {
   // apply select2 to any tag_select form elements
   var tagSelect = $("select.tag_select").select2({
     tags: true, // able to create new tags by typing them
+    placeholder: "Tags",
     tokenSeparators: [',', ' '] // respond to these keystrokes
   });
 
@@ -92,6 +93,8 @@ var ready = function() {
 
   $("#children").sortable({
     axis: 'y',
+    // have just a part be the handle
+//    handle: '.handle',
     update: function() {
       $.post($(this).data('update-url'), $(this).sortable('serialize'))
     }
@@ -102,12 +105,24 @@ var ready = function() {
     if (event.keyCode == 13) {
       var myLiElement = $(this).closest("li");
       myLiElement.after(generateNewChildFieldsHtml());
-      myLiElement.next().("input.subtask_name").focus();
+      var nextLiElement = myLiElement.next();
+      nextLiElement.find("input.subtask_name").focus();
       return false;
     }
   });
+
+  // mousetrap shortcuts
+  var goToSplit = function() {
+    var split_url = $("a#split_link").attr('href');
+    window.location.href = split_url;
+  };
+  Mousetrap.bind('-', goToSplit);
+
+
+
+
 };
 
 // have it rerun when turbolinks fires
-$(document).ready(ready)
-$(document).on('page:load', ready)
+$(document).ready(ready);
+$(document).on('page:load', ready);

@@ -1,10 +1,12 @@
-user can reorder subtasks
+each task has task focus page; has subtasks, or split, etc.
 overall task order obeys depth first task ordering
+user can delete subtasks
+changing subtask tags saves/persists
 user can type keyboard shortcut "d" for done;
 user can type "w" for worked on it;
 user can type "h"  for help:
 help shows screen of choices:  snooze, split, explain.
-user can type "/" to split a task, "p" to postpone it, "e" for explain
+"p" to postpone it, "e" for explain
 user can type "n"  to create new task at any time
 creating new task maintains the state you were in
 after typing to initiate creation of a new task, can create it  by typing the name,
@@ -35,3 +37,5 @@ tag form  is cool
 tags list, order by use,  in drop-down menu
 user can click split task:  goes to view with indented sub task form
 finishing one subtask form  creates another
+user can reorder subtasks
+user can type "/" to split a task,
