@@ -27,7 +27,17 @@
  */
 
 .handle {
-cursor: move;
+  cursor: move;
+}
+
+.icon-grid {
+  display: block;
+/*  text-indent: -9999px; */
+  width: 12px;
+  height: 20px;
+  background: image-url("grid.svg");
+  background-size: 12px 20px;
+  margin: 6px 10px 5px 2px
 }
 
 input.blend:focus {
@@ -37,6 +47,17 @@ input.blend:focus {
 }
 input.blend {
     border: none;
-    background-color: #f0f0fa;
+    background-color: #f5f5fd;
     box-shadow: none;
 }
+
+/* select2 overrides */
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    background-color: white;
+    border: 1px solid #aaa;
+}
+.select2-container--default .select2-selection--multiple {
+    background-color: #f5f5fd;
+    border: none;
+}
+

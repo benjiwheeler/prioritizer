@@ -1,7 +1,7 @@
-each task has task focus page; has subtasks, or split, etc.
+edit page copies split page but with a few more fields
+split is just edit page with a bunch of fields omitted
 overall task order obeys depth first task ordering
 user can delete subtasks
-changing subtask tags saves/persists
 user can type keyboard shortcut "d" for done;
 user can type "w" for worked on it;
 user can type "h"  for help:
@@ -14,6 +14,7 @@ after typing to initiate creation of a new task, can create it  by typing the na
 sliders animate by starting in middle, moving left, bouncing
 can manually enter tags or other fields
 new item defaults to "general" tag
+changing subtask tags saves/persists
 
 
 
