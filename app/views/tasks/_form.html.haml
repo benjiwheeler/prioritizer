@@ -45,7 +45,7 @@
       = task_builder.text_field :min_dur_mins
 
 
-  - if defined?(show_chidren) && !show_children.nil?
+  - if defined?(show_children) && !show_children.nil?
     / ****************************************
     / DATA: NEW CHILD TASK FORM HTML
     / make fields_html and store in hidden input
@@ -63,9 +63,9 @@
 
     #task_children_list_toggle
       %i#task_children_list_toggle_off.fa.fa-caret-right{style: "display: #{show_children == true ? 'none' : 'inline-block'}"}
-      %i#task_children_list_toggle_on.fa.fa-caret-down{style: "visibility: #{show_children == true ? 'inline-block' : 'none'}"}
+      %i#task_children_list_toggle_on.fa.fa-caret-down{style: "display: #{show_children == true ? 'inline-block' : 'none'}"}
       children
-    %ul#task_children_list.list-unstyled{"data-update-url" => "#{sort_tasks_url}"}
+    %ul#task_children_list.list-unstyled{style: "display: #{show_children == true ? 'inline-block' : 'none'}", "data-update-url" => "#{sort_tasks_url}"}
       = task_builder.fields_for :children do |child_builder|
         - render("child_fields", f: child_builder, parent: @task)
     .links
