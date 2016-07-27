@@ -1,7 +1,1 @@
-%h1 Editing task
-
-= render 'form'
-
-= link_to 'Show', @task
-\|
-= link_to 'Back', tasks_path
+= render partial: 'form', locals: {view_detail_level: 10, show_children: false}

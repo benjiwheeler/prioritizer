@@ -77,7 +77,7 @@ var ready = function() {
   });
 
   var generateNewChildFieldsHtml = function() {
-    var holder = $("#fields_html_holder");
+    var holder = $("#rails_data_holder");
     var templateObjIdStr = holder.data('new-child-object-id');
     var newChildFieldsHtmlTemplate = holder.data('new-child-fields-html');
     // for sorting
@@ -87,11 +87,11 @@ var ready = function() {
   };
 
   $("form").on('click', '.add_child', function(event) {
-    $("ul#children").append(generateNewChildFieldsHtml());
+    $("ul#task_children_list").append(generateNewChildFieldsHtml());
     event.preventDefault();
   });
 
-  $("#children").sortable({
+  $("ul#task_children_list").sortable({
     axis: 'y',
     // have just a part be the handle
 //    handle: '.handle',
@@ -99,7 +99,7 @@ var ready = function() {
       $.post($(this).data('update-url'), $(this).sortable('serialize'))
     }
   });
-  $( "#children" ).disableSelection();
+  $( "#task_children_list" ).disableSelection();
 
   $("form").on('keypress', 'input.subtask_name', function(event) {
     if (event.keyCode == 13) {
@@ -118,6 +118,12 @@ var ready = function() {
   };
   Mousetrap.bind('-', goToSplit);
 
+  // toggle subtask list visibility
+  $('#task_children_list_toggle').click(function() {
+    $('ul#task_children_list').slideToggle();
+    $('#task_children_list_toggle_on').toggle();
+    $('#task_children_list_toggle_off').toggle();
+  });
 
 
 
