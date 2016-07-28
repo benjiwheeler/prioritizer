@@ -10,7 +10,7 @@ class TasksController < ApplicationController
   end
 
   def next
-    @task = current_user.get_first_ordered_task!(index_params[:tag])
+    @task = current_user.get_next_task!(index_params[:tag])
   end
 
   def done

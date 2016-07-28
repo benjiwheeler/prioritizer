@@ -7,6 +7,7 @@ class Task < ActiveRecord::Base
   acts_as_taggable
   acts_as_list
   before_save :before_save_steps
+  after_save :after_save_steps
 
   def Task.postpone_size_s
     7200
@@ -19,6 +20,10 @@ class Task < ActiveRecord::Base
   def before_save_steps
     self.set_default_imps
     self.generate_importance
+  end
+
+  def after_save_steps
+    self.user.generate_ordered_tasks!
   end
 
   def set_default_imps
@@ -89,11 +94,34 @@ class Task < ActiveRecord::Base
   end
 
   def generate_importance!
-    self.generate_importance
-    self.save
+    old_imp = self.overall_imp
+    new_imp = self.generate_importance
+    if old_imp != new_imp
+      self.save
+    end
   end
 
   def Task.random_score
     rand(1000) * 0.00001
+  end
+
+  def oldest_ancestor
+    if self.parent.present?
+      self.parent.oldest_ancestor
+    else
+      self
+    end
+  end
+
+  def first_youngest_descendent
+    if self.children.count > 0
+      self.children.first.first_youngest_descendent
+    else
+      self
+    end
+  end
+
+  def first_task_in_family_tree
+    self.oldest_ancestor.first_youngest_descendent
   end
 end

@@ -110,7 +110,7 @@ class User < ActiveRecord::Base
   end
 
   # task handling
-  def get_n_ordered_tasks!(tag_str = nil, n = :all)
+  def n_ordered_tasks!(tag_str = nil, n = :all)
     cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key(tag_str), 0, -1)
     if cached_ordered_task_ids.blank?
       Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key(tag_str)}")
@@ -127,8 +127,8 @@ class User < ActiveRecord::Base
     return n_ordered_tasks
   end
 
-  def get_first_ordered_task!(tag_str = nil)
-    one_ordered_task_array = self.get_n_ordered_tasks!(tag_str, 1)
+  def first_ordered_task!(tag_str = nil)
+    one_ordered_task_array = self.n_ordered_tasks!(tag_str, 1)
     if one_ordered_task_array.blank?
       return nil
     else
@@ -158,6 +158,11 @@ class User < ActiveRecord::Base
     end
     $redis.expire self.redis_user_tag_tasks_key(tag_str), 10
     return sorted_tasks
+  end
+
+  def get_next_task!(tag_str = nil)
+    first_ordered_task = self.first_ordered_task!(tag_str)
+    return first_ordered_task.first_task_in_family_tree()
   end
 
   def tags

@@ -1,12 +1,17 @@
-edit page copies split page but with a few more fields
-split is just edit page with a bunch of fields omitted
-overall task order obeys depth first task ordering
+tasks overall page: has tag list
+tasks overall page: tag list clickable
+tasks overall page: can navigate to next, edit, split, new
+new task page: only fields that matter: days/weeks/ever
+new task page: walks you through, so tab, return or space all advance you
+imp animates
+user can navigate to next from edit, split, tasks overall
 user can delete subtasks
-user can type keyboard shortcut "d" for done;
+user can type keyboard shortcut "f" for finished task;
+user can type keyboard shortcut "t" to start timer; (at end, it prompts you to choose among the shortcuts)
 user can type "w" for worked on it;
-user can type "h"  for help:
-help shows screen of choices:  snooze, split, explain.
-"p" to postpone it, "e" for explain
+user can type "k"  for skip:
+skip shows screen of choices:  posptone, break, explain.
+"p" to postpone it, "b" to break, "e" for explain
 user can type "n"  to create new task at any time
 creating new task maintains the state you were in
 after typing to initiate creation of a new task, can create it  by typing the name,
@@ -40,3 +45,6 @@ user can click split task:  goes to view with indented sub task form
 finishing one subtask form  creates another
 user can reorder subtasks
 user can type "/" to split a task,
+edit page copies split page but with a few more fields
+split is just edit page with a bunch of fields omitted
+overall task order obeys depth first task ordering
