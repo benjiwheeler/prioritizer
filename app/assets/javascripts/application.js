@@ -41,7 +41,6 @@
 //= require_tree ../../../vendor/assets/javascripts
 //= require_tree .
 
-// Instantiate a slider
 var ready = function() {
 
   // make sliders fancy using jqueryui's slider() method:
@@ -130,5 +129,4 @@ var ready = function() {
 };
 
 // have it rerun when turbolinks fires
-$(document).ready(ready);
-$(document).on('page:load', ready);
+$(document).on('turbolinks:load', ready);

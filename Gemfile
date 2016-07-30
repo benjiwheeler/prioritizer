@@ -53,7 +53,6 @@ gem 'httparty'
 gem 'turbolinks'
 # compresses javascript etc
 gem 'uglifier', '>= 1.3.0'
-
 #######################################
 # DEBUGGING
 #######################

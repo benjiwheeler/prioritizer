@@ -1,5 +1,4 @@
-if you save a bunch of tasks at once, they don't each require recalculating "next"task order
-new task page: only fields that matter: days/weeks/ever
+initial load of new page focuses on name field
 new task page: walks you through, so tab, return or space all advance you
 imp animates
 user can navigate to next from edit, split, tasks overall
@@ -50,3 +49,5 @@ overall task order obeys depth first task ordering
 tasks overall page: has tag list
 tasks overall page: tag list clickable
 tasks overall page: can navigate to next, edit, split, new
+jquery loads on each page transition, so js aforms are consistent
+new task page: only fields that matter: days/weeks/ever
