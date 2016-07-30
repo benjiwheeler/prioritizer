@@ -9,6 +9,10 @@ class Task < ActiveRecord::Base
   before_save :before_save_steps
   after_save :after_save_steps
 
+  def Task.attributes_influencing_imp
+    ["done", "due", "overall_imp", "days_imp", "weeks_imp", "ever_imp", "exp_dur_mins", "min_dur_mins", "position", ]
+  end
+
   def Task.postpone_size_s
     7200
   end
@@ -20,10 +24,14 @@ class Task < ActiveRecord::Base
   def before_save_steps
     self.set_default_imps
     self.generate_importance
+    # if we have changed attributes that influence importance, clear importance cache
+    if (Task.attributes_influencing_imp & self.changed).present?
+      # invalidate user's cached task importance listing
+      self.user.expire_redis_tasks_keys!
+    end
   end
 
   def after_save_steps
-    self.user.generate_ordered_tasks!
   end
 
   def set_default_imps
@@ -38,7 +46,8 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def is_done?
+  # unused
+  def attempts_report_done?
     self.attempts.order(created_at: :desc).each do |att|
       if att.completed == true
         return true
@@ -84,7 +93,7 @@ class Task < ActiveRecord::Base
     if num_fields > 0
       imp = imp / (num_fields + 0.00001)
     end
-    imp -= 1.0 if self.is_done?
+    imp -= 1.0 if self.done
     imp += self.postponed_recently_amount
     return imp
   end

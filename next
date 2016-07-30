@@ -1,6 +1,3 @@
-tasks overall page: has tag list
-tasks overall page: tag list clickable
-tasks overall page: can navigate to next, edit, split, new
 new task page: only fields that matter: days/weeks/ever
 new task page: walks you through, so tab, return or space all advance you
 imp animates
@@ -48,3 +45,6 @@ user can type "/" to split a task,
 edit page copies split page but with a few more fields
 split is just edit page with a bunch of fields omitted
 overall task order obeys depth first task ordering
+tasks overall page: has tag list
+tasks overall page: tag list clickable
+tasks overall page: can navigate to next, edit, split, new

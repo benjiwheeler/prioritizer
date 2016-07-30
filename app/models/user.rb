@@ -12,12 +12,21 @@ class User < ActiveRecord::Base
     "user:#{self.id}"
   end
 
+  def redis_tasks_key_prefix
+    self.redis_key + "::tasks"
+  end
+
   def to_s
     self.name
   end
 
   def redis_user_tag_tasks_key(tag_str)
-    self.redis_key + "::tag:" + tag_str.to_s + "::task_ids"
+    self.redis_tasks_key_prefix + "::tag:" + tag_str.to_s + "::task_ids"
+  end
+
+  def expire_redis_tasks_keys!
+    keys = $redis.keys "#{redis_tasks_key_prefix}*"
+    $redis.del(*keys) unless keys.empty?
   end
 
   def name

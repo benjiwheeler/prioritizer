@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
+  before_action :set_tag, only: [:index, :split, :show, :next]
   before_action :set_task, only: [:done, :postpone, :split, :show, :edit, :update, :destroy]
 
   def sort
@@ -14,8 +15,16 @@ class TasksController < ApplicationController
   end
 
   def done
+    @task.done = true
     @task.attempts << Attempt.new(completed: true)
-    redirect_to :next_task, notice: 'Task was marked done.'
+    respond_to do |format|
+      if @task.save
+        format.html { redirect_to :next_task, notice: 'Task was marked done.' }
+      else
+        format.html { render :edit }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   def postpone
@@ -41,7 +50,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @ordered_tasks = current_user.get_n_ordered_tasks!(index_params[:tag])
+    @ordered_tasks = current_user.n_ordered_tasks!(index_params[:tag])
     @task = Task.new # for task form
     Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
   end
@@ -103,6 +112,13 @@ class TasksController < ApplicationController
 
 private
   # Use callbacks to share common setup or constraints between actions.
+  def set_tag
+    @tag = nil
+    if params[:tag].present?
+      @tag = ActsAsTaggableOn::Tag.find_by(name: params[:tag])
+    end
+  end
+
   def set_task
     @task = Task.find(params[:id])
   end
