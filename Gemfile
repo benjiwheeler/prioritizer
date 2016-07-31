@@ -50,7 +50,7 @@ gem 'httparty'
 #######################
 # optimization
 # makes following links in app faster
-gem 'turbolinks'
+# gem 'turbolinks'
 # compresses javascript etc
 gem 'uglifier', '>= 1.3.0'
 #######################################

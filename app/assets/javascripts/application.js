@@ -130,5 +130,7 @@ var ready = function() {
 
 };
 
+$(document).ready(ready);
+
 // have it rerun when turbolinks fires
-$(document).on('turbolinks:load', ready);
+//$(document).on('turbolinks:load', ready);
