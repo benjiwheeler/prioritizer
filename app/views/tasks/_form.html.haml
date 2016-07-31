@@ -7,36 +7,39 @@
         - @task.errors.full_messages.each do |msg|
           %li= msg
   .field
-    = task_builder.label :name, class: "initial-focus"
-    = task_builder.text_field :name
+    = task_builder.label :name
+    = task_builder.text_field :name, class: "initial-focus"
   - if view_detail_level > 5
     - if @task.parent.present?
       %div
         = link_to 'parent', task_path(@task.parent), method: :get
-    .field
-      = task_builder.label :notes
-      = task_builder.text_area :notes
-    .field
-      = task_builder.label :due
-      = task_builder.datetime_select :due
-    .field
-      = task_builder.label :overall_imp
-      = task_builder.text_field :overall_imp
-    .field
-      = task_builder.label :days_imp
-      %label{"for"=>"days_imp_amount"} Slider val:
-      %input{:type=>"text", :id=>"days_imp_amount", :name=>"task[days_imp]", :readonly => "readonly", :style => "border:0; color: #f6931f; font-weight:bold;"}
-      #days_imp_slider
-      -#  %input#days_imp.slider{"data-slider-min"=>"1", "data-slider-max"=>"10", "data-slider-step"=>"1", "data-slider-value"=>"3", "name"=>"task[days_imp]"}
-      -#  %span#daysImpSliderLabel
-      -#    Current Slider Value:
-      -#    %span#daysImpSliderVal 3
-    .field
-      = task_builder.label :weeks_imp
-      = task_builder.text_field :weeks_imp
-    .field
-      = task_builder.label :ever_imp
-      = task_builder.text_field :ever_imp
+  - toggleable_form_section(:notes, view_detail_level, 3, 7, task_builder.label(:notes), task_builder.text_area(:notes))
+  - toggleable_form_section(:due, view_detail_level, 3, 7, task_builder.label(:due), task_builder.datetime_select(:due))
+  - if view_detail_level > 5
+    .row
+      .field.col-sm-4
+        = task_builder.label :days_imp
+        %label{"for"=>"days_imp_slider_amount"} Slider val:
+        %input{:type=>"hidden", :id=>"days_imp_slider_amount_hidden", :name=>"task[days_imp]"}
+        %div{:id=>"days_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
+        #days_imp_slider
+
+    .row
+      .field.col-sm-4
+        = task_builder.label :weeks_imp
+        %label{"for"=>"weeks_imp_slider_amount"} Slider val:
+        %input{:type=>"hidden", :id=>"weeks_imp_slider_amount_hidden", :name=>"task[weeks_imp]"}
+        %div{:id=>"weeks_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
+        #weeks_imp_slider
+
+    .row
+      .field.col-sm-4
+        = task_builder.label :ever_imp
+        %label{"for"=>"ever_imp_slider_amount"} Slider val:
+        %input{:type=>"hidden", :id=>"ever_imp_slider_amount_hidden", :name=>"task[ever_imp]"}
+        %div{:id=>"ever_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
+        #ever_imp_slider
+
   - if view_detail_level > 8
     .field
       = task_builder.label :exp_dur_mins

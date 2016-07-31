@@ -26,6 +26,27 @@
  *= require_self
  */
 
+#outer-central-container {
+  position: relative;
+}
+
+#inner-central-container {
+  position: relative;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  #inner-central-container {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #inner-central-container {
+    width: 768px;
+  }
+}
+
 .handle {
   cursor: move;
 }

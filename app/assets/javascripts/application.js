@@ -44,19 +44,95 @@
 
 var ready = function() {
 
-  // make sliders fancy using jqueryui's slider() method:
-  $( "#days_imp_slider" ).slider({
-    value:3,
-    min: 1,
-    max: 10,
-    step: 1,
-    slide: function( event, ui ) {
-      $( "#days_imp_amount" ).val( ui.value );
-    }
-  });
-  // set initial value
-  $( "#days_imp_amount" ).val($( "#days_imp_slider" ).slider( "value" ) );
+  // ***********************
+  //        SLIDER
+  // ***********************
 
+  var minSlideDelay = 7;
+  var maxSlideDelay = 50;
+  var slideDelayDecay = .01;
+  // make sliders fancy using jqueryui's slider() method:
+  var setSliderVal = function(element, newVal) {
+    var roundedVal = Math.round(newVal * 19.0 / 18.0);
+    var sliderId = $(element).attr('id');
+    $(element).slider("value", newVal);
+    $( "#" + sliderId + "_amount_hidden" ).val(roundedVal);
+    $( "#" + sliderId + "_amount_shown" ).html(roundedVal);
+  };
+  var slide = function(element, delay) {
+    if ($(element).data("sliding") == true) {
+      var curVal = $(element).slider("value");
+      var stepSize = .1;//$(element).slider("option", "step");
+      var maxVal = $(element).slider("option", "max");
+      var minVal = $(element).slider("option", "min");
+      var curDir = $(element).data("curDir");
+      if (typeof curDir == 'undefined') {
+        curDir = 1
+      }
+      curVal += curDir * stepSize
+      if (curVal > maxVal) {
+        curVal -= stepSize * 2;
+        curDir = -1;
+        $(element).data("curDir", -1);
+      }
+      if (curVal < minVal) {
+        curVal += stepSize * 2;
+        curDir = 1;
+        $(element).data("curDir", 1);
+      }
+      setSliderVal(element, curVal);
+      delay = delay * (1 + slideDelayDecay);
+      if (delay > maxSlideDelay) { delay = maxSlideDelay; }
+      setTimeout(function() {
+        slide(element, delay);
+      }, delay);
+    }
+  };
+  var startSliding = function(element) {
+    $(element).data("sliding", true);
+    slide(element, minSlideDelay);
+  };
+  var stopSliding = function(element) {
+    $(element).data("sliding", false);
+  };
+
+  // individual sliders
+  $( "#days_imp_slider" ).slider({
+    value:3, min: 1, max: 10, step: .1,
+    create: function( event, ui ) { // set initial value
+      setSliderVal(this, 3);
+    },
+    slide: function( event, ui ) { // called on mouse move
+      setSliderVal(this, ui.value);
+    }
+  }).focusin(function() { startSliding(this); })
+  .focusout(function() { stopSliding(this); });
+
+  $( "#weeks_imp_slider" ).slider({
+    value:3, min: 1, max: 10, step: .1,
+    create: function( event, ui ) { // set initial value
+      setSliderVal(this, 3);
+    },
+    slide: function( event, ui ) { // called on mouse move
+      setSliderVal(this, ui.value);
+    }
+  }).focusin(function() { startSliding(this); })
+  .focusout(function() { stopSliding(this); });
+
+  $( "#ever_imp_slider" ).slider({
+    value:3, min: 1, max: 10, step: .1,
+    create: function( event, ui ) { // set initial value
+      setSliderVal(this, 3);
+    },
+    slide: function( event, ui ) { // called on mouse move
+      setSliderVal(this, ui.value);
+    }
+  }).focusin(function() { startSliding(this); })
+  .focusout(function() { stopSliding(this); });
+
+  // ***********************
+  //        TAGS
+  // ***********************
 
   // apply select2 to any tag_select form elements
   var tagSelect = $("select.tag_select").select2({
@@ -75,6 +151,11 @@ var ready = function() {
     $(this).append($element);
     $(this).trigger("change");
   });
+
+
+  // ***********************
+  //     CHILD TASKS
+  // ***********************
 
   var generateNewChildFieldsHtml = function() {
     var holder = $("#rails_data_holder");
@@ -111,12 +192,21 @@ var ready = function() {
     }
   });
 
+  // ***********************
+  //        SHORTCUTS
+  // ***********************
+
   // mousetrap shortcuts
   var goToSplit = function() {
     var split_url = $("a#split_link").attr('href');
     window.location.href = split_url;
   };
   Mousetrap.bind('-', goToSplit);
+
+
+  // ***********************
+  //      VISIBLE TOGGLES
+  // ***********************
 
   // toggle subtask list visibility
   $('#task_children_list_toggle').click(function() {
@@ -125,6 +215,19 @@ var ready = function() {
     $('#task_children_list_toggle_off').toggle();
   });
 
+  var createFormSectionToggle = function(attribute) {
+    $('#form_' + attribute + '_toggle_section').click(function() {
+      $('#form_' + attribute).slideToggle();
+      $('#form_' + attribute + '_toggle_on').toggle();
+      $('#form_' + attribute + '_toggle_off').toggle();
+    });
+  }
+  createFormSectionToggle('notes');
+  createFormSectionToggle('due');
+
+  // ***********************
+  //       FOCUS
+  // ***********************
 
   // focus on first place for input
   $('.initial-focus').first().focus();

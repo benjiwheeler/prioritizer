@@ -1,4 +1,3 @@
-initial load of new page focuses on name field
 new task page: walks you through, so tab, return or space all advance you
 imp animates
 user can navigate to next from edit, split, tasks overall
@@ -81,3 +80,4 @@ tasks overall page: tag list clickable
 tasks overall page: can navigate to next, edit, split, new
 jquery loads on each page transition, so js aforms are consistent
 new task page: only fields that matter: days/weeks/ever
+initial load of new page focuses on name field
