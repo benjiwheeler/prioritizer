@@ -7,7 +7,7 @@
         - @task.errors.full_messages.each do |msg|
           %li= msg
   .field
-    = task_builder.label :name, class: "#initial-focus"
+    = task_builder.label :name, class: "initial-focus"
     = task_builder.text_field :name
   - if view_detail_level > 5
     - if @task.parent.present?
@@ -76,8 +76,3 @@
   .actions
     = task_builder.submit 'Save'
 
-:javascript
-  $(document).on('turbolinks:load', function() {
-    alert();
-    $('#initial-focus').focus();
-  } );

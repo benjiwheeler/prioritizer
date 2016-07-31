@@ -18,7 +18,37 @@ sliders animate by starting in middle, moving left, bouncing
 can manually enter tags or other fields
 new item defaults to "general" tag
 changing subtask tags saves/persists
-
+message/q types:
+  * you haven't done daily task X for a while. keep it here? reduce its importance? what is it about this that's difficult?
+  * (on next, haven't clicked start in a while, or maybe if you start but don't click finished within 60 secs of end of time): are you still here? are you having trouble motivating to do this? or is something more important? do you need help thinking it through?
+  * which of these is more important?
+  * rank these in order of importance that they get done in the next day or two:
+  * if you had to delete one of these because it doesn't really fit your limited life, which would it be? do you want to delete? (or like, archive... better)
+  * want to start working on "home" tasks? yes? how much time will you aim to spend on it? (amount of time or finish point)
+  * would you like to try a 5 minute guided audio meditation?
+  * want to hear what i did when i felt stuck?
+ui notes:
+  * "worked on it!" is the biggest, most attractive button -- that's the goal
+  * after you click "worked on it", cheers and confetti appear?
+  * when you click "postpone", it asks, what are we waiting for?
+    * me to stop avoiding it
+    * me to be less busy
+    * time to do it: hou wmuch time do you have now? would it really take 15 minutes?
+    * courage/paralysis: can we talk through this?
+    * i don 't know, just POSTPONE! - ok? or not ok?
+    * not the right time to do it: retag?
+    * something that wil chage it to the right time: tag that thing? or is it really true? what is the thing that needs to change? (insert row so there will be future messages that ask, has X happened? i know there's this dependency...)
+js front end efficiency:
+  * request 2 questions and 2 tasks -- first and 2nd n ordered tasks w/tag for this user; show first task, show a question, etc -- every page transitoin that has ended a task's presence in the top 2+2, creates sidekick job in bg to generate and serve next 2!2; how to push that to client? polling? that way, there are always ot least one extra question and one extra task to show as we request in the bg.
+  *
+manifesto:
+  * we have plenty of time -- if spend our days, hours and minutes wisely/on the things that matter to us.
+  *
+  *
+  *
+  *
+  *
+  *
 
 
 

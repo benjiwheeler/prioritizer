@@ -125,6 +125,8 @@ var ready = function() {
   });
 
 
+  // focus on first place for input
+  $('.initial-focus').first().focus();
 
 };
 
