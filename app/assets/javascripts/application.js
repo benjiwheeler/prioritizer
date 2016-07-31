@@ -25,7 +25,8 @@
 //
 // third party
 //= require select2
-//= require turbolinks
+// disabled
+// DON'T require turbolinks
 //= require mousetrap
 //
 // angular
