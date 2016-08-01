@@ -49,18 +49,34 @@ var ready = function() {
   // ***********************
 
   var minSlideDelay = 7;
-  var maxSlideDelay = 50;
-  var slideDelayDecay = .01;
+  var maxSlideDelay = 40;
+  var slideDelayDecay = .005;
   // make sliders fancy using jqueryui's slider() method:
   var setSliderVal = function(element, newVal) {
-    var roundedVal = Math.round(newVal * 19.0 / 18.0);
+    // this is fascinating math! you expect the middle to
+    // be 5. but from 1.0-10.0, middle is really 5.5!
+    // so must take FLOOR of numbers up through 5, but
+    // that makes 5/9 of space taken up, only 4/9 left for
+    // 6 through 10 -- 5 numbers. So must make each value
+    // above 5 bigger.
+    var roundedVal = newVal;
+    if (newVal >= 6.0) {
+      roundedVal -= 6.0;
+      roundedVal *= 6.0/5.0; // better than 5/4 because
+                             // this way 10 is smaller
+      roundedVal += 6.0;
+    }
+    roundedVal = Math.floor(roundedVal);
+//     var roundedVal = Math.round(newVal * 19.0 / 18.0 - .1);
+    if (roundedVal < 1) { roundedVal = 1 }
     var sliderId = $(element).attr('id');
     $(element).slider("value", newVal);
     $( "#" + sliderId + "_amount_hidden" ).val(roundedVal);
     $( "#" + sliderId + "_amount_shown" ).html(roundedVal);
   };
   var slide = function(element, delay) {
-    if ($(element).data("sliding") == true) {
+    if ($(element).data("mouseDragging") !== true
+      && $(element).data("slideAnimating") === true) {
       var curVal = $(element).slider("value");
       var stepSize = .1;//$(element).slider("option", "step");
       var maxVal = $(element).slider("option", "max");
@@ -88,12 +104,23 @@ var ready = function() {
       }, delay);
     }
   };
+  var startSlidingIfAppropriate = function(element) {
+    if ($(element).data("mouseDragging") !== true
+      && $(element).data("slideAnimating") !== true) {
+      setTimeout(function() {
+        startSliding(element);
+      }, 1000);
+    }
+  };
   var startSliding = function(element) {
-    $(element).data("sliding", true);
-    slide(element, minSlideDelay);
+    if ($(element).data("mouseDragging") !== true
+      && $(element).data("slideAnimating") !== true) {
+      $(element).data("slideAnimating", true);
+      slide(element, minSlideDelay);
+    }
   };
   var stopSliding = function(element) {
-    $(element).data("sliding", false);
+    $(element).data("slideAnimating", false);
   };
 
   // individual sliders
@@ -103,9 +130,13 @@ var ready = function() {
       setSliderVal(this, 3);
     },
     slide: function( event, ui ) { // called on mouse move
+      $(this).data("mouseDragging", true)
       setSliderVal(this, ui.value);
+    },
+    stop: function( event, ui ) { // called on stopping mouse move
+      // $(this).data("mouseDragging", false)
     }
-  }).focusin(function() { startSliding(this); })
+  }).focusin(function() { startSlidingIfAppropriate(this); })
   .focusout(function() { stopSliding(this); });
 
   $( "#weeks_imp_slider" ).slider({
@@ -116,7 +147,7 @@ var ready = function() {
     slide: function( event, ui ) { // called on mouse move
       setSliderVal(this, ui.value);
     }
-  }).focusin(function() { startSliding(this); })
+  }).focusin(function() { startSlidingIfAppropriate(this); })
   .focusout(function() { stopSliding(this); });
 
   $( "#ever_imp_slider" ).slider({
@@ -127,7 +158,7 @@ var ready = function() {
     slide: function( event, ui ) { // called on mouse move
       setSliderVal(this, ui.value);
     }
-  }).focusin(function() { startSliding(this); })
+  }).focusin(function() { startSlidingIfAppropriate(this); })
   .focusout(function() { stopSliding(this); });
 
   // ***********************
