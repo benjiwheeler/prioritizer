@@ -1,7 +1,5 @@
 new task page: walks you through, so tab, return or space all advance you
-imp animates
 user can navigate to next from edit, split, tasks overall
-user can delete subtasks
 user can type keyboard shortcut "f" for finished task;
 user can type keyboard shortcut "t" to start timer; (at end, it prompts you to choose among the shortcuts)
 user can type "w" for worked on it;
@@ -9,13 +7,16 @@ user can type "k"  for skip:
 skip shows screen of choices:  posptone, break, explain.
 "p" to postpone it, "b" to break, "e" for explain
 user can type "n"  to create new task at any time
+space, tab, and enter all advance/interrupt
 finishing one task can let the next be from same family, or not?
 creating new task maintains the state you were in
 after typing to initiate creation of a new task, can create it  by typing the name,
  hitting enter 4x
 sliders animate by starting in middle, moving left, bouncing
 can manually enter tags or other fields
-new item defaults to "general" tag
+new item defaults to "general" tag; or "whenever"?
+maybe no "all" tag option?
+user can delete subtasks
 changing subtask tags saves/persists
 message/q types:
   * you haven't done daily task X for a while. keep it here? reduce its importance? what is it about this that's difficult?
@@ -81,3 +82,4 @@ tasks overall page: can navigate to next, edit, split, new
 jquery loads on each page transition, so js aforms are consistent
 new task page: only fields that matter: days/weeks/ever
 initial load of new page focuses on name field
+imp animates
