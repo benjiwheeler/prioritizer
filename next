@@ -1,11 +1,21 @@
+for bootstrap:
+lifecycle works:
+from main page, login leads to page where i can do next or new
+create new works
+tag next link works
+can edit, finish, work, postpone
+works ok on my phone
+
+
+
 new task page: walks you through, so tab, return or space all advance you
 user can navigate to next from edit, split, tasks overall
 user can type keyboard shortcut "f" for finished task;
 user can type keyboard shortcut "t" to start timer; (at end, it prompts you to choose among the shortcuts)
 user can type "w" for worked on it;
-user can type "k"  for skip:
-skip shows screen of choices:  posptone, break, explain.
-"p" to postpone it, "b" to break, "e" for explain
+user can type "e" for "edit":
+skip shows screen of choices:  posptone, split, explain.
+"p" to postpone it, "s" to split, "e" for explain
 user can type "n"  to create new task at any time
 space, tab, and enter all advance/interrupt
 finishing one task can let the next be from same family, or not?
