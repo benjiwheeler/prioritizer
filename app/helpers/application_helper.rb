@@ -1,17 +1,23 @@
 module ApplicationHelper
 
-  def tag_with_links(tag_name, is_active)
+  def tag_with_links(tag_name, is_active, include_tag_in_url)
+    style = ""
+    if is_active == true
+      style = "font-weight: bold"
+    end
+
+    path_hash = {}
+    if include_tag_in_url == true
+      path_hash = {tag: tag_name}
+    end
+
     haml_tag :div do
-      if is_active == true
-        haml_concat(link_to(tag_name, tasks_path(tag: tag_name), style: "font-weight: bold"))
-      else
-        haml_concat(link_to(tag_name, tasks_path(tag: tag_name)))
-      end
+      haml_concat(link_to(tag_name, tasks_path(path_hash), style: style))
       haml_concat "["
-      haml_concat(link_to("see all", tasks_path(tag: tag_name)))
+      haml_concat(link_to("see all", tasks_path(path_hash)))
       haml_concat "]"
       haml_concat "["
-      haml_concat(link_to("start", next_task_path(tag: tag_name)))
+      haml_concat(link_to("start", next_task_path(path_hash)))
       haml_concat "]"
     end
   end
@@ -32,14 +38,18 @@ module ApplicationHelper
       toggle_on_style = "display: inline-block"
     end
 
-    haml_tag :div do
-      haml_tag :div, id: toggle_section_id do
-        haml_tag :i, id: toggle_off_id, class: "fa fa-caret-right", style: toggle_off_style
-        haml_tag :i, id: toggle_on_id, class: "fa fa-caret-down", style: toggle_on_style
-        haml_concat label_html
+    haml_tag :div, class: "row", style: "margin-top: 5px" do
+      haml_tag :div, class: "col-xs-3" do
+        haml_tag :div, id: toggle_section_id do
+          haml_tag :i, id: toggle_off_id, class: "fa fa-caret-right", style: toggle_off_style
+          haml_tag :i, id: toggle_on_id, class: "fa fa-caret-down", style: toggle_on_style
+          haml_concat label_html
+        end
       end
-      haml_tag :div, id: target_section_id, style: toggle_on_style do
-        haml_concat input_html
+      haml_tag :div, class: "col-xs-9" do
+        haml_tag :div, id: target_section_id, style: toggle_on_style do
+          haml_concat input_html
+        end
       end
     end
   end

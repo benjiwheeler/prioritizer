@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :attempts
   match 'tasks/next', to: 'tasks#next', as: 'next_task', via: :get
   match 'tasks/:id/done', to: 'tasks#done', as: 'task_done', via: :post
+  match 'tasks/:id/worked', to: 'tasks#worked', as: 'task_worked', via: :post
   match 'tasks/:id/postpone', to: 'tasks#postpone', as: 'task_postpone', via: :post
   match 'tasks/:id/split', to: 'tasks#split', as: 'task_split', via: :get
   resources :tasks do

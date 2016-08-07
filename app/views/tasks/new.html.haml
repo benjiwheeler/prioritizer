@@ -1,5 +1,7 @@
-%h1 New task
+= link_to 'Back', tasks_path
+
+.row
+  .col-xs-12
+    %h3 New task
 
 = render partial: 'form', locals: {view_detail_level: 6, show_children: false}
-
-= link_to 'Back', tasks_path

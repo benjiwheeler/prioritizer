@@ -1,19 +1,17 @@
 
-%table.table
-  %tr
-    %td= task.name
-    %td
-      imp:
-      = task.get_importance!
-    %td= task.days_imp
-    %td= task.weeks_imp
-    %td= task.ever_imp
-    %td
-      tags:
-      = task.tag_list.to_s
-    %td= link_to 'Show', task
-    %td= link_to 'Edit', edit_task_path(task)
-    %td= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
-    %td= link_to 'Done', task_done_path(task), method: :post
-    %td= link_to 'Postpone', task_postpone_path(task), method: :post
-    %td= link_to 'Split', task_split_path(task), id: "split_link", method: :get
+.row
+  .col-xs-12
+    .h3= task.name
+-if task.notes.present?
+  .row
+    .col-xs-3 Notes:
+    .col-xs-9= task.notes
+.row
+  .col-xs-3 Actions:
+  .col-xs-9
+    = link_to 'Edit', edit_task_path(task), class: "shortcut-link"
+    = link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "shortcut-link"
+    = link_to 'Finished', task_done_path(task), method: :post, class: "shortcut-link"
+    = link_to 'Worked on it', task_worked_path(task), method: :post, class: "shortcut-link"
+    = link_to 'Postpone', task_postpone_path(task), method: :post, class: "shortcut-link"
+    %td= link_to 'Split', task_split_path(task), id: "split_link", method: :get, class: "shortcut-link"

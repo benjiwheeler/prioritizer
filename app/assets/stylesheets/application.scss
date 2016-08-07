@@ -27,6 +27,16 @@
  *= require_self
  */
 
+
+/* *********************************
+bootstrap overrides
+********************************* */
+
+h1, .h1, h2, .h2, h3, .h3 {
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
 /* *********************************
 overall page style
 ********************************* */
@@ -38,7 +48,6 @@ body {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 125%;
-  text-align: center;
   margin: 0; // hack for browser consistency
   padding: 0; // hack for browser consistency
 }
@@ -50,7 +59,6 @@ body {
   position: relative;
   display: block;
   background-color: #9f9;
-  text-align: center;
 }
 
 #inner-central-container {
@@ -148,7 +156,27 @@ draggable item
   height: 20px;
   background: image-url("grid.svg");
   background-size: 12px 20px;
-  margin: 6px 10px 5px 2px
+  margin: 6px 2px 0px 0px
+}
+
+/* *********************************
+shortcuts
+********************************* */
+
+.shortcut-link {
+  display: inline-block;
+  padding-left: 4px;
+  padding-right: 6px;
+  line-height: 175%
+}
+
+div a.shortcut-link::first-letter {
+  border-bottom: 2px solid #6d6;
+  font-weight: 800px;
+}
+
+div a.shortcut-link:hover::first-letter {
+  border-bottom: none;
 }
 
 /* *********************************

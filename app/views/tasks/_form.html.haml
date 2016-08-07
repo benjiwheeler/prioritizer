@@ -6,7 +6,6 @@
         - @task.errors.full_messages.each do |msg|
           %li= msg
   .field
-    = task_builder.label :name
     = task_builder.text_field :name, class: "initial-focus form-control", placeholder: "Task title"
   .field
     = task_builder.select :tag_list, options_for_select(current_user.tags, current_user.most_likely_new_tags), {}, {class: "tag_select", multiple: "multiple", style: "width: 100%"}
@@ -19,18 +18,18 @@
       .col-xs-12
         %p{style: "text-align: left"}
           How bad
-          %i
-            [
-            %span{style: "color: #6c6"}
-              1 = shrug;
-            %span{style: "color: #e44"}
-              10 = catastrophe
-            ]
+          %i<
+            %span>< [
+            %span{style: "color: #6c6"}><
+              1=shrug;
+            %span{style: "color: #e44"}><
+              &nbsp;10=catastrophe
+            %span>< ]
           %b really,
           if not done within:
-    .row
-      .col-xs-3{style: "text-align: left;"}
-        %div{style: "padding-left: 5px; margin-top: 0px"}
+    .row{style: "margin-top: 5px"}
+      .col-xs-3
+        %div{style: "padding-left: 5px"}
           %i.icon-down-right-arrow{style: "float: left; position: relative"}
           = task_builder.label :days
           %span{:id=>"days_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
@@ -38,25 +37,25 @@
       .field.col-xs-9
         #days_imp_slider.imp_slider{style: "margin-top: 3px"}
 
-    .row
-      .col-xs-3{style: "text-align: left;"}
-        %div{style: "padding-left: 5px; margin-top: 5px"}
+    .row{style: "margin-top: 5px"}
+      .col-xs-3
+        %div{style: "padding-left: 5px"}
           %i.icon-down-right-arrow{style: "float: left; position: relative"}
           = task_builder.label :weeks
           %span{:id=>"weeks_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
           %input{:type=>"hidden", :id=>"weeks_imp_slider_amount_hidden", :name=>"task[weeks_imp]"}
       .field.col-xs-9
-        #weeks_imp_slider.imp_slider{style: "margin-top: 8px"}
+        #weeks_imp_slider.imp_slider{style: "margin-top: 3px"}
 
-    .row
-      .col-xs-3{style: "text-align: left;"}
-        %div{style: "padding-left: 5px; margin-top: 5px"}
+    .row{style: "margin-top: 5px"}
+      .col-xs-3
+        %div{style: "padding-left: 5px"}
           %i.icon-down-right-arrow{style: "float: left; position: relative"}
           = task_builder.label :ever
           %span{:id=>"ever_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
           %input{:type=>"hidden", :id=>"ever_imp_slider_amount_hidden", :name=>"task[ever_imp]"}
       .field.col-xs-9
-        #ever_imp_slider.imp_slider{style: "margin-top: 8px"}
+        #ever_imp_slider.imp_slider{style: "margin-top: 3px"}
 
   - if view_detail_level > 8
     .field
@@ -66,36 +65,10 @@
       = task_builder.label :min_dur_mins
       = task_builder.text_field :min_dur_mins
 
-  - toggleable_form_section(:notes, view_detail_level, 3, 7, task_builder.label(:notes), task_builder.text_area(:notes))
+  - toggleable_form_section(:notes, view_detail_level, 3, 7, task_builder.label(:notes), task_builder.text_area(:notes, style: "width: 100%"))
   - toggleable_form_section(:due, view_detail_level, 3, 7, task_builder.label(:due), task_builder.text_field(:due, id: "due_date_input", class: "form-control"))
-
-
   - if defined?(show_children) && !show_children.nil?
-    / ****************************************
-    / DATA: NEW CHILD TASK FORM HTML
-    / make fields_html and store in hidden input
-    / ****************************************
-    - new_child = Task.new
-    - new_child.parent = @task
-    - new_child.tags = @task.tags # unclear if this will deep copy?
-    - new_child_fields_html = task_builder.fields_for(:children, new_child, child_index: new_child.object_id) do |child_builder|
-      - render("child_fields", f: child_builder, parent: @task)
-    - new_child_fields_html = new_child_fields_html.gsub("\n", "")
-    / data-new-child-fields-html is the html you'll need for each new child
-    / data-new-child-object-id is just an arbitrary starting string to be the element id of the new elements, temporarily
-    %span{style: "visibility: hidden", id: "rails_data_holder", "data-new-child-fields-html" => new_child_fields_html, "data-new-child-object-id" => new_child.object_id, "view-detail-level" => view_detail_level}
-    / ****************************************
-
-    #task_children_list_toggle
-      %i#task_children_list_toggle_off.fa.fa-caret-right{style: "display: #{show_children == true ? 'none' : 'inline-block'}"}
-      %i#task_children_list_toggle_on.fa.fa-caret-down{style: "display: #{show_children == true ? 'inline-block' : 'none'}"}
-      children
-    %ul#task_children_list.list-unstyled{style: "display: #{show_children == true ? 'inline-block' : 'none'}", "data-update-url" => "#{sort_tasks_url}"}
-      = task_builder.fields_for :children do |child_builder|
-        - render("child_fields", f: child_builder, parent: @task)
-    .links
-      /= link_to_add_association 'add child', task_builder, :children
-      = link_to("Add child", '#', class: "add_child")
+    - toggleable_form_section(:children, view_detail_level, 3, 7, task_builder.label(:children), render("children_section", task: @task, task_builder: task_builder) )
 
   .actions
     = task_builder.submit 'Save'

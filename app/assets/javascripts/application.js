@@ -180,7 +180,7 @@ var ready = function() {
   // ***********************
 
   // apply select2 to any tag_select form elements
-  var tagSelect = $("select.tag_select").select2({
+  $("select.tag_select").select2({
     tags: true, // able to create new tags by typing them
     placeholder: "Tags",
     tokenSeparators: [',', ' '] // respond to these keystrokes
@@ -273,13 +273,23 @@ var ready = function() {
 
   var createFormSectionToggle = function(attribute) {
     $('#form_' + attribute + '_toggle_section').click(function() {
-      $('#form_' + attribute).slideToggle();
+      $('#form_' + attribute).slideToggle(400, function() {
+        // focus if we opened it
+        if ($(this).is(':visible')) {
+          var childInput = $(this).find("input");
+          if (childInput) childInput.focus();
+          else {
+            $(this).focus();
+          }
+        }
+      });
       $('#form_' + attribute + '_toggle_on').toggle();
       $('#form_' + attribute + '_toggle_off').toggle();
     });
   }
   createFormSectionToggle('notes');
   createFormSectionToggle('due');
+  createFormSectionToggle('children');
 
   // ***********************
   //       FOCUS

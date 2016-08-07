@@ -1,9 +1,9 @@
-= content_tag_for(:li, f.object, class: "handle", style: "border: 1px solid #ccc; background-color: #f0f0fa; margin: .5em; padding: .25em") do
+= content_tag_for(:li, f.object, class: "handle", style: "border: 1px solid #ccc; background-color: #f0f0fa; margin-top: 4px; padding: 6px") do
   .form-group
     .row
-      .col-sm-4.col-md-2
+      .col-xs-4
         .float-left{style: "float: left"}
           %i.icon-grid{style: "float: left; position: relative"}
-          = f.text_field :name, class: "subtask_name form-control blend", style: "width: 80%; float: left; position: relative", placeholder: "Task name"
-      .col-sm-4.col-md-2
+          = f.text_field :name, class: "subtask_name form-control blend", style: "width: 80%; float: left; position: relative", placeholder: "Title"
+      .col-xs-4
         = f.select :tag_list, options_for_select(current_user.tags, parent.tags), {}, {class: "tag_select", multiple: "multiple", style: "width: 100%"}
