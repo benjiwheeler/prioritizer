@@ -22,6 +22,7 @@
 //
 // bootstrap
 //= require bootstrap-sass-official
+//= require bootstrap-datepicker
 //
 // third party
 //= require select2
@@ -48,9 +49,13 @@ var ready = function() {
   //        SLIDER
   // ***********************
 
-  var minSlideDelay = 7;
-  var maxSlideDelay = 40;
-  var slideDelayDecay = .005;
+  var minSlideDelay = 10;
+  var endSlideDelay = 35;
+  var startSlideDelay = 40;
+  var timeAtMinDelay = 2000;
+  var slideDelaySpeedUpDecay = .03;
+  var slideDelaySlowDownDecay = .005;
+  var delayBeforeSliding = 0;
   // make sliders fancy using jqueryui's slider() method:
   var setSliderVal = function(element, newVal) {
     // this is fascinating math! you expect the middle to
@@ -74,14 +79,25 @@ var ready = function() {
     $( "#" + sliderId + "_amount_hidden" ).val(roundedVal);
     $( "#" + sliderId + "_amount_shown" ).html(roundedVal);
   };
+  // $(selector).attr('data-name','value')
   var slide = function(element, delay) {
-    if ($(element).data("mouseDragging") !== true
-      && $(element).data("slideAnimating") === true) {
+    console.log("in slide...");
+    console.log("is dragging not true?");
+    console.log($(element).attr("data-mousedragging") !== "true");
+    console.log("is animating?");
+    console.log($(element).attr("data-slideanimating") === "true");
+    console.log("is slideable?");
+    console.log($(element).attr("data-mousedragging") !== "true"
+      && $(element).attr("data-slideanimating") === "true");
+
+    if ($(element).attr("data-mousedragging") !== "true"
+      && $(element).attr("data-slideanimating") === "true") {
+      console.log("sliding!");
       var curVal = $(element).slider("value");
       var stepSize = .1;//$(element).slider("option", "step");
       var maxVal = $(element).slider("option", "max");
       var minVal = $(element).slider("option", "min");
-      var curDir = $(element).data("curDir");
+      var curDir = $(element).attr("data-curdir");
       if (typeof curDir == 'undefined') {
         curDir = 1
       }
@@ -89,74 +105,72 @@ var ready = function() {
       if (curVal > maxVal) {
         curVal -= stepSize * 2;
         curDir = -1;
-        $(element).data("curDir", -1);
+        $(element).attr("data-curdir", -1);
       }
       if (curVal < minVal) {
         curVal += stepSize * 2;
         curDir = 1;
-        $(element).data("curDir", 1);
+        $(element).attr("data-curdir", 1);
       }
       setSliderVal(element, curVal);
-      delay = delay * (1 + slideDelayDecay);
-      if (delay > maxSlideDelay) { delay = maxSlideDelay; }
+      if ($(element).attr("data-speedphase") === "speedingUp") {
+        delay = delay * (1 - slideDelaySpeedUpDecay);
+        if (delay < minSlideDelay) {
+          delay = minSlideDelay;
+          setTimeout(function() {
+            $(element).attr("data-speedphase", "slowingDown");
+          }, timeAtMinDelay);
+        }
+      } else if ($(element).attr("data-speedphase") === "slowingDown") {
+        delay = delay * (1 + slideDelaySlowDownDecay);
+        if (delay > endSlideDelay) {
+          delay = endSlideDelay;
+          $(element).attr("data-speedphase", "endingSpeed");
+        }
+      } else { // speed not changing
+      }
       setTimeout(function() {
         slide(element, delay);
       }, delay);
     }
   };
   var startSlidingIfAppropriate = function(element) {
-    if ($(element).data("mouseDragging") !== true
-      && $(element).data("slideAnimating") !== true) {
+    console.log("is appropriate?");
+    if ($(element).attr("data-mousedragging") !== "true"
+      && $(element).attr("data-slideanimating") !== "true") {
+      console.log("yes appropriate.");
       setTimeout(function() {
         startSliding(element);
-      }, 1000);
+      }, delayBeforeSliding);
+    } else {
+      console.log("not appropriate.");
     }
   };
   var startSliding = function(element) {
-    if ($(element).data("mouseDragging") !== true
-      && $(element).data("slideAnimating") !== true) {
-      $(element).data("slideAnimating", true);
-      slide(element, minSlideDelay);
+    if ($(element).attr("data-mousedragging") !== "true"
+      && $(element).attr("data-slideanimating") !== "true") {
+      $(element).attr("data-speedphase", "speedingUp");
+      $(element).attr("data-slideanimating", "true");
+      console.log("calling slide...");
+      slide(element, startSlideDelay);
     }
   };
   var stopSliding = function(element) {
-    $(element).data("slideAnimating", false);
+    $(element).attr("data-slideAnimating", "false");
   };
 
   // individual sliders
-  $( "#days_imp_slider" ).slider({
+  $( ".imp_slider" ).slider({
     value:3, min: 1, max: 10, step: .1,
     create: function( event, ui ) { // set initial value
       setSliderVal(this, 3);
     },
     slide: function( event, ui ) { // called on mouse move
-      $(this).data("mouseDragging", true)
+      $(this).attr("data-mousedragging", "true")
       setSliderVal(this, ui.value);
     },
     stop: function( event, ui ) { // called on stopping mouse move
-      // $(this).data("mouseDragging", false)
-    }
-  }).focusin(function() { startSlidingIfAppropriate(this); })
-  .focusout(function() { stopSliding(this); });
-
-  $( "#weeks_imp_slider" ).slider({
-    value:3, min: 1, max: 10, step: .1,
-    create: function( event, ui ) { // set initial value
-      setSliderVal(this, 3);
-    },
-    slide: function( event, ui ) { // called on mouse move
-      setSliderVal(this, ui.value);
-    }
-  }).focusin(function() { startSlidingIfAppropriate(this); })
-  .focusout(function() { stopSliding(this); });
-
-  $( "#ever_imp_slider" ).slider({
-    value:3, min: 1, max: 10, step: .1,
-    create: function( event, ui ) { // set initial value
-      setSliderVal(this, 3);
-    },
-    slide: function( event, ui ) { // called on mouse move
-      setSliderVal(this, ui.value);
+      $(this).attr("data-mousedragging", "false")
     }
   }).focusin(function() { startSlidingIfAppropriate(this); })
   .focusout(function() { stopSliding(this); });
@@ -183,6 +197,17 @@ var ready = function() {
     $(this).trigger("change");
   });
 
+  // ***********************
+  //     DATE PICKER
+  // ***********************
+
+  $('input#due_date_input').datepicker({
+    todayHighlight: true,
+    startView: 0,
+    maxViewMode: 2,
+    daysOfWeekHighlighted: "0,6",
+    autoclose: true
+  });
 
   // ***********************
   //     CHILD TASKS

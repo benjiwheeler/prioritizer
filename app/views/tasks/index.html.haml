@@ -1,23 +1,10 @@
 Tags:
 %ul
   %li
-    - if !defined?(@tag) || @tag.nil?
-      = link_to "all", tasks_path, style: "font-weight: bold"
-    - else
-      = link_to "all", tasks_path
-    [
-    = link_to "start", next_task_path
-    ]
+    - tag_with_links("all", (!defined?(@tag) || @tag.nil?))
   - ActsAsTaggableOn::Tag.all.order(taggings_count: :desc).each do |tag|
     %li
-      - if tag == @tag
-        = link_to tag.name, tasks_path(tag: tag.name), style: "font-weight: bold"
-      - else
-        = link_to tag.name, tasks_path(tag: tag.name)
-      [
-      = link_to "start", next_task_path(tag: tag.name)
-      ]
-
+      - tag_with_links(tag, (tag == @tag))
 
 - if defined?(@tag) && @tag.present?
   %p= link_to "start", next_task_path(tag: @tag.name), style: "font-size: 2em"

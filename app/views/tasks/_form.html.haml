@@ -1,5 +1,4 @@
-
-= form_for(@task, class: "form-inline", role: "form") do |task_builder|
+= form_for(@task, class: "", role: "form") do |task_builder|
   - if @task.errors.any?
     #error_explanation
       %h2= "#{pluralize(@task.errors.count, "error")} prohibited this task from being saved:"
@@ -8,37 +7,56 @@
           %li= msg
   .field
     = task_builder.label :name
-    = task_builder.text_field :name, class: "initial-focus"
+    = task_builder.text_field :name, class: "initial-focus form-control", placeholder: "Task title"
+  .field
+    = task_builder.select :tag_list, options_for_select(current_user.tags, current_user.most_likely_new_tags), {}, {class: "tag_select", multiple: "multiple", style: "width: 100%"}
   - if view_detail_level > 5
     - if @task.parent.present?
       %div
         = link_to 'parent', task_path(@task.parent), method: :get
-  - toggleable_form_section(:notes, view_detail_level, 3, 7, task_builder.label(:notes), task_builder.text_area(:notes))
-  - toggleable_form_section(:due, view_detail_level, 3, 7, task_builder.label(:due), task_builder.datetime_select(:due))
   - if view_detail_level > 5
     .row
-      .field.col-sm-4
-        = task_builder.label :days_imp
-        %label{"for"=>"days_imp_slider_amount"} Slider val:
-        %input{:type=>"hidden", :id=>"days_imp_slider_amount_hidden", :name=>"task[days_imp]"}
-        %div{:id=>"days_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
-        #days_imp_slider
+      .col-xs-12
+        %p{style: "text-align: left"}
+          How bad
+          %i
+            [
+            %span{style: "color: #6c6"}
+              1 = shrug;
+            %span{style: "color: #e44"}
+              10 = catastrophe
+            ]
+          %b really,
+          if not done within:
+    .row
+      .col-xs-3{style: "text-align: left;"}
+        %div{style: "padding-left: 5px; margin-top: 0px"}
+          %i.icon-down-right-arrow{style: "float: left; position: relative"}
+          = task_builder.label :days
+          %span{:id=>"days_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
+          %input{:type=>"hidden", :id=>"days_imp_slider_amount_hidden", :name=>"task[days_imp]"}
+      .field.col-xs-9
+        #days_imp_slider.imp_slider{style: "margin-top: 3px"}
 
     .row
-      .field.col-sm-4
-        = task_builder.label :weeks_imp
-        %label{"for"=>"weeks_imp_slider_amount"} Slider val:
-        %input{:type=>"hidden", :id=>"weeks_imp_slider_amount_hidden", :name=>"task[weeks_imp]"}
-        %div{:id=>"weeks_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
-        #weeks_imp_slider
+      .col-xs-3{style: "text-align: left;"}
+        %div{style: "padding-left: 5px; margin-top: 5px"}
+          %i.icon-down-right-arrow{style: "float: left; position: relative"}
+          = task_builder.label :weeks
+          %span{:id=>"weeks_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
+          %input{:type=>"hidden", :id=>"weeks_imp_slider_amount_hidden", :name=>"task[weeks_imp]"}
+      .field.col-xs-9
+        #weeks_imp_slider.imp_slider{style: "margin-top: 8px"}
 
     .row
-      .field.col-sm-4
-        = task_builder.label :ever_imp
-        %label{"for"=>"ever_imp_slider_amount"} Slider val:
-        %input{:type=>"hidden", :id=>"ever_imp_slider_amount_hidden", :name=>"task[ever_imp]"}
-        %div{:id=>"ever_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
-        #ever_imp_slider
+      .col-xs-3{style: "text-align: left;"}
+        %div{style: "padding-left: 5px; margin-top: 5px"}
+          %i.icon-down-right-arrow{style: "float: left; position: relative"}
+          = task_builder.label :ever
+          %span{:id=>"ever_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
+          %input{:type=>"hidden", :id=>"ever_imp_slider_amount_hidden", :name=>"task[ever_imp]"}
+      .field.col-xs-9
+        #ever_imp_slider.imp_slider{style: "margin-top: 8px"}
 
   - if view_detail_level > 8
     .field
@@ -47,6 +65,9 @@
     .field
       = task_builder.label :min_dur_mins
       = task_builder.text_field :min_dur_mins
+
+  - toggleable_form_section(:notes, view_detail_level, 3, 7, task_builder.label(:notes), task_builder.text_area(:notes))
+  - toggleable_form_section(:due, view_detail_level, 3, 7, task_builder.label(:due), task_builder.text_field(:due, id: "due_date_input", class: "form-control"))
 
 
   - if defined?(show_children) && !show_children.nil?

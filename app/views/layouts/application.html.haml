@@ -11,6 +11,8 @@
       #inner-central-container
         = render partial: "nav/navigation"
         #main
-          %p.notice= notice
-          %p.alert= alert
+          - if notice.present?
+            %p.notice= notice
+          - if alert.present?
+            %p.alert= alert
           = yield

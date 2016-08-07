@@ -175,8 +175,12 @@ class User < ActiveRecord::Base
   end
 
   def tags
-    # alphabetize these?
+    # alphabetize these? currently ordered by frequency
     ActsAsTaggableOn::Tag.all.order(taggings_count: :desc)
+  end
+
+  def most_likely_new_tags
+    ActsAsTaggableOn::Tag.all.order(taggings_count: :desc).limit(1)
   end
 
   def tag_list

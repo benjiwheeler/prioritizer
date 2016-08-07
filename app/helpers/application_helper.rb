@@ -1,5 +1,21 @@
 module ApplicationHelper
 
+  def tag_with_links(tag_name, is_active)
+    haml_tag :div do
+      if is_active == true
+        haml_concat(link_to(tag_name, tasks_path(tag: tag_name), style: "font-weight: bold"))
+      else
+        haml_concat(link_to(tag_name, tasks_path(tag: tag_name)))
+      end
+      haml_concat "["
+      haml_concat(link_to("see all", tasks_path(tag: tag_name)))
+      haml_concat "]"
+      haml_concat "["
+      haml_concat(link_to("start", next_task_path(tag: tag_name)))
+      haml_concat "]"
+    end
+  end
+
   def toggleable_form_section(attribute, actual_detail_level,
     exclude_if_below_level, collapse_if_below_level,
     label_html, input_html)

@@ -7,12 +7,11 @@
   - displayname = :nickname
   - provider_icon = "twitter-square"
   - prefix = "@"
-%p.navbar-text
-  = fa_icon provider_icon
-  - if current_user.has_auth?(provider)
-    = prefix
-    = current_user.auth_field(provider, displayname)
-    - if show_sign_out
-      = link_to "[Sign out]", logout_path, id: "sign_out", class: "navbar-lin", method: :delete
-  - else
-    = link_to "Add #{provider.to_s.capitalize}", user_omniauth_authorize_path(provider.to_sym), id: "sign_in", class: "navbar-link"
+- if current_user.has_auth?(provider)
+  %p.navbar-text
+    = fa_icon provider_icon
+    = prefix + current_user.auth_field(provider, displayname)
+- else
+  %a.navbar-link{href: user_omniauth_authorize_path(provider.to_sym)}
+    = fa_icon provider_icon
+    Add #{provider.to_s.capitalize}
