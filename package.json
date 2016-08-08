@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "postinstall": "bower install"
+    "postinstall": "rake bower:install"
   },
   "scripts_disabled": {
     "postinstall": "rake bower:install"
