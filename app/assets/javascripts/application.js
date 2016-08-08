@@ -23,6 +23,7 @@
 // bootstrap
 //= require bootstrap-sass-official
 //= require bootstrap-datepicker
+//= require clockpicker
 //
 // third party
 //= require select2
@@ -173,7 +174,8 @@ var ready = function() {
       $(this).attr("data-mousedragging", "false")
     }
   }).focusin(function() { startSlidingIfAppropriate(this); })
-  .focusout(function() { stopSliding(this); });
+  .focusout(function() { stopSliding(this); })
+  .mousedown(function() { stopSliding(this); });
 
   // ***********************
   //        TAGS
@@ -253,11 +255,8 @@ var ready = function() {
   // ***********************
 
   // mousetrap shortcuts
-  var goToSplit = function() {
-    var split_url = $("a#split_link").attr('href');
-    window.location.href = split_url;
-  };
-  Mousetrap.bind('-', goToSplit);
+  Mousetrap.bind('s', $("a#split_link").trigger('click'););
+  Mousetrap.bind('e', $("a#edit_link").trigger('click'););
 
 
   // ***********************
