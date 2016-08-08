@@ -8,10 +8,12 @@
   },
   "scripts": {
     "start": "node index.js",
-    "postinstall": "rake bower:install"
+    "postinstall": "bower install"
   },
   "scripts_disabled": {
-    "postinstall": "rake bower:install"
+    "postinstall": "rake bower:install",
+    "postinstall2": "bower install",
+    "postinstall3": "rake bower:install; rake bower:resolve"
   },
   "comments": {
     "this file": "is node configuration; it will install bower, so no need for bower-specific buildpack"
