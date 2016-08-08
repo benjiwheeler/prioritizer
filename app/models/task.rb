@@ -93,7 +93,7 @@ class Task < ActiveRecord::Base
     if num_fields > 0
       imp = imp / (num_fields + 0.00001)
     end
-    imp -= 1.0 if self.attempts_report_done
+    imp -= 1.0 if self.attempts_report_done?
     imp += self.postponed_recently_amount
     return imp
   end
