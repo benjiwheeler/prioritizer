@@ -5,6 +5,17 @@ can edit, finish, work, postpone
 works ok on my phone
 
 
+countdown:
+play/pause
+up/down arrows advances time in steps
+(not working... could make myself?)
+
+recurrence:
+new task section: schedule -> daily checkbox, with time of day (using clockpicker)
+doesn't make new task every day; just re-finish it!
+in functions that say are you done/valid, just say,
+still active if daily and no completions from today!
+
 
 new task page: walks you through, so tab, return or space all advance you
 user can navigate to next from edit, split, tasks overall

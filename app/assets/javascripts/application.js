@@ -212,6 +212,57 @@ var ready = function() {
   });
 
   // ***********************
+  //     COUNTDOWN
+  // ***********************
+
+$('#countdown').countdown({
+  until: '+70',
+  compact: true,
+  format: "MS",
+  onTick: highlightLast5
+}).on('click', function() {
+
+});
+function highlightLast5(periods) {
+  if ($.countdown.periodsToSeconds(periods) === 59) {
+    $(this).addClass('highlight');
+  }
+}
+var minuteDeltas = [
+  // above 0 minutes, add 5 minutes
+  [0, 5],
+  [5, 5],
+  [10, 5],
+  [15, 10],
+  [30, 15],
+  [45, 30],
+  [90, 60]
+]
+$('#moreTimeButton').click(function() {
+  var secsLeft = $.countdown.periodsToSeconds(periods);
+  var now = new Date();
+  var timeUntil = new Date();
+  var deltaPair = [];
+  var minutesToAdd = 0;
+  for (var i = 0; i < minuteDeltas.length; i++) {
+    deltaPair = minuteDeltas[i];
+    if (secsLeft/60.0 > deltaPair[0]) {
+      minutesToAdd = minuteDeltas[1];
+    }
+  }
+  var secondsToAdd = minutesToAdd * 60;
+  timeUntil.setSeconds(now.getSeconds() + secsLeft + secondsToAdd);
+  $('#countdown').countdown('option', {until: timeUntil});
+});
+$('#playButton').click(function() {
+  $('#countdown').countdown('resume');
+});
+
+$('#pauseButton').click(function() {
+  $('#countdown').countdown('pause');
+});
+
+  // ***********************
   //     CHILD TASKS
   // ***********************
 
@@ -255,8 +306,24 @@ var ready = function() {
   // ***********************
 
   // mousetrap shortcuts
-  Mousetrap.bind('s', $("a#split_link").trigger('click'););
-  Mousetrap.bind('e', $("a#edit_link").trigger('click'););
+  Mousetrap.bind('s', function() {
+    $("a#split_link")[0].click();
+  });
+  Mousetrap.bind('e', function() {
+    $("a#edit_link")[0].click();
+  });
+  Mousetrap.bind('p', function() {
+    $("a#postpone_link")[0].click();
+  });
+  Mousetrap.bind('f', function() {
+    $("a#finished_link")[0].click();
+  });
+  Mousetrap.bind('w', function() {
+    $("a#worked_link")[0].click();
+  });
+  Mousetrap.bind('d', function() {
+    $("a#destroy_link")[0].click();
+  });
 
 
   // ***********************

@@ -1,7 +1,12 @@
 
 .row
-  .col-xs-12
+  .col-xs-8
     .h3= task.name
+  .col-xs-4
+    #countdown
+    %a#moreTimeButton More time
+    %a#playButton Play
+    %a#pauseButton Pause
 -if task.notes.present?
   .row
     .col-xs-3 Notes:
@@ -10,8 +15,8 @@
   .col-xs-3 Actions:
   .col-xs-9
     = link_to 'Edit', edit_task_path(task), id: "edit_link", class: "shortcut-link"
-    = link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "shortcut-link"
-    = link_to 'Finished', task_done_path(task), method: :post, class: "shortcut-link"
-    = link_to 'Worked on it', task_worked_path(task), method: :post, class: "shortcut-link"
-    = link_to 'Postpone', task_postpone_path(task), method: :post, class: "shortcut-link"
-    %td= link_to 'Split', task_split_path(task), id: "split_link", method: :get, class: "shortcut-link"
+    = link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }, id: "destroy_link", class: "shortcut-link"
+    = link_to 'Finished', task_done_path(task), method: :post, id: "finished_link", class: "shortcut-link"
+    = link_to 'Worked on it', task_worked_path(task), method: :post, id: "worked_link", class: "shortcut-link"
+    = link_to 'Postpone', task_postpone_path(task), method: :post, id: "postpone_link", class: "shortcut-link"
+    = link_to 'Split', task_split_path(task), id: "split_link", method: :get, class: "shortcut-link"
