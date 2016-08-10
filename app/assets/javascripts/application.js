@@ -18,7 +18,7 @@
 //= require jquery/dist/jquery
 //= require jquery-ui/jquery-ui
 //= require jquery-ujs/src/rails
-//= require jquery-mobile
+//= require jqueryui-touch-punch
 //= require lodash/lodash
 //
 // bootstrap

@@ -9,7 +9,7 @@
       "jquery-ui": "~1.11",
       "jquery": "~2.1",
       "jquery-ujs": "*",
-      "jquery-mobile": "*",
+      "jqueryui-touch-punch": "*",
       "lodash": "~3.7",
       "angular-ui": "*",
       "angular-ui-utils": "~0.2.2",

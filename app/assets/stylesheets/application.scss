@@ -15,7 +15,6 @@
  * disabled...
  * = require_tree ../../../vendor/assets/bower_components/jquery-ui/themes/base
  * these are resolved thanks to bower-rails:
- *= require jquery-mobile
  *= require bootstrap-sass-official
  *= require bootstrap-datepicker
  *= require clockpicker
@@ -89,37 +88,34 @@ height: 100px;
 screen sizes
 ********************************* */
 
-$break-small: 480px;
-$break-large: 800px;
-
-@mixin respond-to($media) {
-  @if $media == small-screens {
-    @media only screen and (max-width: $break-small) { @content; }
-}
-  @else if $media == medium-screens {
-    @media only screen and (min-width: $break-small + 1) and (max-width: $break-large - 1) { @content; }
-  }
-  @else if $media == wide-screens {
-    @media only screen and (min-width: $break-large) { @content; }
-  }
-}
+$break-small0: 320px;
+$break-small1: 360px;
+$break-small2: 480px;
+$break-large: 720px;
 
 
-@include respond-to(small-screens) {
+@media only screen and (max-width: $break-small1) {
   body {
     zoom: 0.66;
     -moz-transform: scale(0.66);
     -moz-transform-origin: 150% 0;
   }
 }
-@include respond-to(medium-screens) {
+@media only screen and (min-width: $break-small1) and (max-width: $break-small2 - 1) {
+  body {
+    zoom: 0.75;
+    -moz-transform: scale(0.75);
+    -moz-transform-origin: 133% 0;
+  }
+}
+@media only screen and (min-width: $break-small2) and (max-width: $break-large - 1) {
   body {
     zoom: 1.0;
     -moz-transform: scale(1.0);
     -moz-transform-origin: 100% 0;
   }
 }
-@include respond-to(wide-screens) {
+@media only screen and (min-width: $break-large) {
   body {
     zoom: 1.5;
     -moz-transform: scale(1.5);
