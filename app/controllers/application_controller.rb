@@ -48,13 +48,13 @@ protected
   def logged_in?
     # was:
     # current_user != nil && current_user.registered?
-    current_user.registered?
+    current_user? && current_user.registered?
   end
   def create_guest
     set_current_user(User.create_guest)
   end
   def ensure_user
-    current_user || create_guest
+    current_user? || create_guest
   end
   def set_current_user(user)
     session[:user_id] = user.id
