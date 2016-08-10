@@ -216,52 +216,52 @@ var ready = function() {
   //     COUNTDOWN
   // ***********************
 
-$('#countdown').countdown({
-  until: '+70',
-  compact: true,
-  format: "MS",
-  onTick: highlightLast5
-}).on('click', function() {
+// $('#countdown').countdown({
+//   until: '+70',
+//   compact: true,
+//   format: "MS",
+//   onTick: highlightLast5
+// }).on('click', function() {
 
-});
-function highlightLast5(periods) {
-  if ($.countdown.periodsToSeconds(periods) === 59) {
-    $(this).addClass('highlight');
-  }
-}
-var minuteDeltas = [
-  // above 0 minutes, add 5 minutes
-  [0, 5],
-  [5, 5],
-  [10, 5],
-  [15, 10],
-  [30, 15],
-  [45, 30],
-  [90, 60]
-]
-$('#moreTimeButton').click(function() {
-  var secsLeft = $.countdown.periodsToSeconds(periods);
-  var now = new Date();
-  var timeUntil = new Date();
-  var deltaPair = [];
-  var minutesToAdd = 0;
-  for (var i = 0; i < minuteDeltas.length; i++) {
-    deltaPair = minuteDeltas[i];
-    if (secsLeft/60.0 > deltaPair[0]) {
-      minutesToAdd = minuteDeltas[1];
-    }
-  }
-  var secondsToAdd = minutesToAdd * 60;
-  timeUntil.setSeconds(now.getSeconds() + secsLeft + secondsToAdd);
-  $('#countdown').countdown('option', {until: timeUntil});
-});
-$('#playButton').click(function() {
-  $('#countdown').countdown('resume');
-});
+// });
+// function highlightLast5(periods) {
+//   if ($.countdown.periodsToSeconds(periods) === 59) {
+//     $(this).addClass('highlight');
+//   }
+// }
+// var minuteDeltas = [
+//   // above 0 minutes, add 5 minutes
+//   [0, 5],
+//   [5, 5],
+//   [10, 5],
+//   [15, 10],
+//   [30, 15],
+//   [45, 30],
+//   [90, 60]
+// ]
+// $('#moreTimeButton').click(function() {
+//   var secsLeft = $.countdown.periodsToSeconds(periods);
+//   var now = new Date();
+//   var timeUntil = new Date();
+//   var deltaPair = [];
+//   var minutesToAdd = 0;
+//   for (var i = 0; i < minuteDeltas.length; i++) {
+//     deltaPair = minuteDeltas[i];
+//     if (secsLeft/60.0 > deltaPair[0]) {
+//       minutesToAdd = minuteDeltas[1];
+//     }
+//   }
+//   var secondsToAdd = minutesToAdd * 60;
+//   timeUntil.setSeconds(now.getSeconds() + secsLeft + secondsToAdd);
+//   $('#countdown').countdown('option', {until: timeUntil});
+// });
+// $('#playButton').click(function() {
+//   $('#countdown').countdown('resume');
+// });
 
-$('#pauseButton').click(function() {
-  $('#countdown').countdown('pause');
-});
+// $('#pauseButton').click(function() {
+//   $('#countdown').countdown('pause');
+// });
 
   // ***********************
   //     CHILD TASKS
