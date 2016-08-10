@@ -63,7 +63,7 @@ body {
 }
 
 #inner-central-container {
-  width: 480px;
+  width: 320px;
 
   position: relative;
 //  display: block;
@@ -74,7 +74,7 @@ body {
 
 #navigation {
 /*  float: right;
-  width: 480px;
+  width: 320px;
 height: 100px;
   position: relative;
   display: block;
@@ -89,37 +89,37 @@ screen sizes
 ********************************* */
 
 $break-small0: 320px;
-$break-small1: 360px;
+$break-small1: 400px;
 $break-small2: 480px;
 $break-large: 720px;
 
 
 @media only screen and (max-width: $break-small1) {
   body {
-    zoom: 0.66;
-    -moz-transform: scale(0.66);
-    -moz-transform-origin: 150% 0;
-  }
-}
-@media only screen and (min-width: $break-small1) and (max-width: $break-small2 - 1) {
-  body {
-    zoom: 0.75;
-    -moz-transform: scale(0.75);
-    -moz-transform-origin: 133% 0;
-  }
-}
-@media only screen and (min-width: $break-small2) and (max-width: $break-large - 1) {
-  body {
     zoom: 1.0;
     -moz-transform: scale(1.0);
     -moz-transform-origin: 100% 0;
   }
 }
-@media only screen and (min-width: $break-large) {
+@media only screen and (min-width: $break-small1) and (max-width: $break-small2 - 1) {
+  body {
+    zoom: 1.25;
+    -moz-transform: scale(1.25);
+    -moz-transform-origin: 80% 0;
+  }
+}
+@media only screen and (min-width: $break-small2) and (max-width: $break-large - 1) {
   body {
     zoom: 1.5;
     -moz-transform: scale(1.5);
     -moz-transform-origin: 67% 0;
+  }
+}
+@media only screen and (min-width: $break-large) {
+  body {
+    zoom: 2.25;
+    -moz-transform: scale(2.25);
+    -moz-transform-origin: 44% 0;
   }
 }
 
