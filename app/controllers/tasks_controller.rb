@@ -12,6 +12,12 @@ class TasksController < ApplicationController
 
   def next
     @task = current_user.get_next_task!(index_params[:tag])
+    if @task.blank?
+      respond_to do |format|
+        format.html { redirect_to :new_task, notice: 'No more tasks; create one?' }
+      end
+    end
+    # else display next task view
   end
 
   def done
