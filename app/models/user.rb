@@ -139,6 +139,7 @@ class User < ActiveRecord::Base
   def first_ordered_task!(tag_str = nil)
     one_ordered_task_array = self.n_ordered_tasks!(tag_str, 1)
     if one_ordered_task_array.blank?
+      Rails.logger.warn("user:first_ordered_task!: no tasks for user #{self}")
       return nil
     else
       return one_ordered_task_array.first
@@ -171,7 +172,12 @@ class User < ActiveRecord::Base
 
   def get_next_task!(tag_str = nil)
     first_ordered_task = self.first_ordered_task!(tag_str)
-    return first_ordered_task.first_task_in_family_tree()
+    if first_ordered_task.present?
+      return first_ordered_task.first_task_in_family_tree()
+    else
+      Rails.logger.error("user:get_next_task!: error: first_ordered_task is nil")
+      return nil
+    end
   end
 
   def tags
