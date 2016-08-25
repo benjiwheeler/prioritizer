@@ -1,6 +1,6 @@
 module ApplicationHelper
 
-  def tag_with_links(tag, is_active, include_tag_in_url)
+  def tag_with_links(tag_str, is_active, include_tag_in_url)
     style = ""
     if is_active == true
       style = "font-weight: bold"
@@ -8,11 +8,11 @@ module ApplicationHelper
 
     path_hash = {}
     if include_tag_in_url == true
-      path_hash = {tag: tag.name}
+      path_hash = {tag: tag_str}
     end
 
     haml_tag :div do
-      haml_concat(link_to(tag.name, tasks_path(path_hash), style: style))
+      haml_concat(link_to(tag_str, tasks_path(path_hash), style: style))
       haml_concat "["
       haml_concat(link_to("see all", tasks_path(path_hash)))
       haml_concat "]"
