@@ -12,7 +12,7 @@ module ApplicationHelper
     end
 
     haml_tag :div do
-      haml_concat(link_to(tag_name, tasks_path(path_hash), style: style))
+      haml_concat(link_to(tag.name, tasks_path(path_hash), style: style))
       haml_concat "["
       haml_concat(link_to("see all", tasks_path(path_hash)))
       haml_concat "]"
