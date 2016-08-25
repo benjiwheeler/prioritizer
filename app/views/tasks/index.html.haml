@@ -4,7 +4,7 @@ Tags:
     - tag_with_links("all", (!defined?(@tag) || @tag.nil?), false)
   - ActsAsTaggableOn::Tag.all.order(taggings_count: :desc).each do |tag|
     %li
-      - tag_with_links(tag, (tag == @tag), true)
+      - tag_with_links(tag.name, (tag == @tag), true)
 
 - if defined?(@tag) && @tag.present?
   %p= link_to "start", next_task_path(tag: @tag.name), style: "font-size: 2em"
