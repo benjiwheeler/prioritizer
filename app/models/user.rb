@@ -131,7 +131,16 @@ class User < ActiveRecord::Base
     if n.is_a? Numeric
       n_ordered_task_ids = cached_ordered_task_ids.first(n)
     end
-    n_ordered_tasks = n_ordered_task_ids.map { |id| Task.find_by(id: id) }
+#    n_ordered_tasks = n_ordered_task_ids.map { |id| Task.find_by(id: id) }
+    n_ordered_tasks = n_ordered_task_ids.reduce([]) { |memo, i|
+      thisTask = Task.find_by(id: id)
+      if thisTask.present? && thisTask.done == false
+        memo.push thisTask
+      else
+        memo
+      end
+    }
+
     Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
     return n_ordered_tasks
   end
