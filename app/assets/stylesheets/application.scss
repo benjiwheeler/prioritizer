@@ -78,42 +78,80 @@ height: 100px;
 screen sizes
 ********************************* */
 
-$break-small0: 320px;
-$break-small1: 400px;
-$break-small2: 480px;
-$break-large: 720px;
+/*
+Approach:
+There are two layouts:
+ * "xs", natively 320px and
+ * "sm", natively 640px
+xs is for mobile, sm is for tablet and desktop, but really
+it's device agnostic. So that the apparent size is never too small,
+each size scales up to the smallest screen size for that range.
+*/
 
+$break-xs0: 320px; // within bootstrap grid "xs"
+$break-xs1: 400px; // within bootstrap grid "xs"
+$break-xs2: 480px; // within bootstrap grid "xs"
+$break-sm: 768px; // aka bootstrap grid "sm"
+$break-md: 992px; // aka bootstrap grid "md", not used
 
-@media only screen and (max-width: $break-small1) {
+// xs0
+@media only screen and (max-width: $break-xs1) {
   body {
     font-size: 13px;
     zoom: 1.0;
     -moz-transform: scale(1.0);
     -moz-transform-origin: 100% 0;
   }
+  #inner-central-container {
+    width: 320px;
+  }
 }
-@media only screen and (min-width: $break-small1) and (max-width: $break-small2 - 1) {
+// xs1
+@media only screen and (min-width: $break-xs1) and (max-width: $break-xs2 - 1) {
   body {
-    font-size: 12px;
+    font-size: 13px;
     zoom: 1.25;
     -moz-transform: scale(1.25);
     -moz-transform-origin: 80% 0;
   }
+  #inner-central-container {
+    width: 320px;
+  }
 }
-@media only screen and (min-width: $break-small2) and (max-width: $break-large - 1) {
+// xs2
+@media only screen and (min-width: $break-xs2) and (max-width: $break-sm - 1) {
   body {
-    font-size: 11px;
+    font-size: 12px;
     zoom: 1.5;
     -moz-transform: scale(1.5);
     -moz-transform-origin: 67% 0;
   }
+  #inner-central-container {
+    width: 320px;
+  }
 }
-@media only screen and (min-width: $break-large) {
+// sm
+@media only screen and (min-width: $break-sm) and (max-width: $break-md - 1) {
   body {
-    font-size: 10px;
-    zoom: 2.25;
-    -moz-transform: scale(2.25);
-    -moz-transform-origin: 44% 0;
+    font-size: 13px;
+    zoom: 1.2;
+    -moz-transform: scale(1.2);
+    -moz-transform-origin: 83% 0;
+  }
+  #inner-central-container {
+    width: 640px;
+  }
+}
+// md
+@media only screen and (min-width: $break-md) {
+  body {
+    font-size: 11px;
+    zoom: 1.55;
+    -moz-transform: scale(1.55);
+    -moz-transform-origin: 64.5% 0;
+  }
+  #inner-central-container {
+    width: 640px;
   }
 }
 
@@ -124,6 +162,7 @@ bootstrap overrides
 
 p, ol, ul, td {
   font-size: 1.0rem;
+  line-height: 2.25rem;
 }
 
 h1, .h1, h2, .h2, h3, .h3 {
@@ -145,8 +184,8 @@ h1, .h1, h2, .h2, h3, .h3 {
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
   padding: 0;
-  font-size: 1.5rem;
-  height: 2rem;
+  font-size: 2.0rem;
+  height: 2.5rem;
 }
 
 .navbar-nav > li > a {
