@@ -133,7 +133,7 @@ class User < ActiveRecord::Base
     end
 #    n_ordered_tasks = n_ordered_task_ids.map { |id| Task.find_by(id: id) }
     n_ordered_tasks = n_ordered_task_ids.reduce([]) { |memo, i|
-      thisTask = Task.find_by(id: id)
+      thisTask = Task.find_by(id: i)
       if thisTask.present? && thisTask.done == false
         memo.push thisTask
       else
