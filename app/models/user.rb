@@ -128,18 +128,18 @@ class User < ActiveRecord::Base
       Rails.logger.warn("redis tag #{self.redis_user_tag_tasks_key(tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
     end
     n_ordered_task_ids = cached_ordered_task_ids
-    if n.is_a? Numeric
-      n_ordered_task_ids = cached_ordered_task_ids.first(n)
-    end
 #    n_ordered_tasks = n_ordered_task_ids.map { |id| Task.find_by(id: id) }
-    n_ordered_tasks = n_ordered_task_ids.reduce([]) { |memo, i|
-      thisTask = Task.find_by(id: i)
+    n_ordered_tasks = n_ordered_task_ids.reduce([]) { |memo, id|
+      thisTask = Task.find_by(id: id)
       if thisTask.present? && thisTask.done == false
         memo.push thisTask
       else
         memo
       end
     }
+    if n.is_a? Numeric
+      n_ordered_tasks = n_ordered_tasks.first(n)
+    end
 
     Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
     return n_ordered_tasks
