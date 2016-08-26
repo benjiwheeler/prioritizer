@@ -47,7 +47,6 @@ body {
   background-color: #fff;
   color: #333;
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 13px;
   line-height: 125%;
   margin: 0; // hack for browser consistency
   padding: 0; // hack for browser consistency
@@ -96,6 +95,7 @@ $break-large: 720px;
 
 @media only screen and (max-width: $break-small1) {
   body {
+    font-size: 13px;
     zoom: 1.0;
     -moz-transform: scale(1.0);
     -moz-transform-origin: 100% 0;
@@ -103,6 +103,7 @@ $break-large: 720px;
 }
 @media only screen and (min-width: $break-small1) and (max-width: $break-small2 - 1) {
   body {
+    font-size: 12px;
     zoom: 1.25;
     -moz-transform: scale(1.25);
     -moz-transform-origin: 80% 0;
@@ -110,6 +111,7 @@ $break-large: 720px;
 }
 @media only screen and (min-width: $break-small2) and (max-width: $break-large - 1) {
   body {
+    font-size: 11px;
     zoom: 1.5;
     -moz-transform: scale(1.5);
     -moz-transform-origin: 67% 0;
@@ -117,6 +119,7 @@ $break-large: 720px;
 }
 @media only screen and (min-width: $break-large) {
   body {
+    font-size: 10px;
     zoom: 2.25;
     -moz-transform: scale(2.25);
     -moz-transform-origin: 44% 0;
