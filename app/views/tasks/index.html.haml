@@ -13,7 +13,7 @@ Tags:
   %p= link_to "start", next_task_path, style: "font-size: 2em"
   %p all tasks:
 - @ordered_tasks.each do |task|
-  = render partial: 'single_task', locals: {task: task}
+  = render partial: 'listable_task', locals: {task: task}
 
 New task:
 = link_to 'New Task', new_task_path
