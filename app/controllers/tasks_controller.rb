@@ -51,14 +51,14 @@ class TasksController < ApplicationController
   end
 
   def worked
-    @task.attempts << Attempt.new(snoozed: true)
+    @task.attempts << Attempt.new(addressed: true)
     @task.days_imp -= 0.1
     @task.days_imp = 0 if @task.days_imp < 0
     @task.weeks_imp += 0.1
     @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
     respond_to do |format|
       if @task.save
-        format.html { redirect_to :next_task, notice: 'Task was postponed.' }
+        format.html { redirect_to :next_task, notice: 'Task was worked on.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }

@@ -46,7 +46,7 @@ class Task < ActiveRecord::Base
     end
   end
 
-  # unused
+
   def attempts_report_done?
     self.attempts.order(created_at: :desc).each do |att|
       if att.completed == true
@@ -59,6 +59,18 @@ class Task < ActiveRecord::Base
   def postponed_recently_amount
     self.attempts.order(created_at: :desc).each do |att|
       if att.snoozed == true
+        age_in_s = Time.now - att.updated_at
+        if age_in_s < Task.postpone_size_s
+          return -0.5
+        end
+      end
+    end
+    return 0
+  end
+
+  def addressed_recently_amount
+    self.attempts.order(created_at: :desc).each do |att|
+      if att.addressed == true
         age_in_s = Time.now - att.updated_at
         if age_in_s < Task.postpone_size_s
           return -0.5
@@ -95,6 +107,7 @@ class Task < ActiveRecord::Base
     end
     imp -= 1.0 if self.attempts_report_done?
     imp += self.postponed_recently_amount
+    imp += self.addressed_recently_amount
     return imp
   end
 

@@ -16,6 +16,10 @@ class User < ActiveRecord::Base
     self.redis_key + "::tasks"
   end
 
+  def User.USER_TASKS_REDIS_VALID_SECS
+    10
+  end
+
   def to_s
     self.name
   end
@@ -175,7 +179,7 @@ class User < ActiveRecord::Base
       Rails.logger.warn("redis adding task #{task.id} to #{self.redis_user_tag_tasks_key(tag_str)}")
       $redis.rpush(self.redis_user_tag_tasks_key(tag_str), task.id);
     end
-    $redis.expire self.redis_user_tag_tasks_key(tag_str), 10
+    $redis.expire self.redis_user_tag_tasks_key(tag_str), User.USER_TASKS_REDIS_VALID_SECS
     return sorted_tasks
   end
 
