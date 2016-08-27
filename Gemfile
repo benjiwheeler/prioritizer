@@ -164,5 +164,4 @@ gem "angular-rails-templates"
 gem 'acts-as-taggable-on'
 #gem 'cocoon'
 gem 'acts_as_list'
-gem 'andand'
 #######################
