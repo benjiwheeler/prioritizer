@@ -1,7 +1,7 @@
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
   before_action :set_tag, only: [:index, :split, :show, :next]
-  before_action :set_task, only: [:done, :postpone, :split, :show, :edit, :update, :destroy]
+  before_action :set_task, only: [:done, :postpone, :worked, :split, :show, :edit, :update, :destroy]
 
   def sort
     params[:task].each_with_index do |id, index|
@@ -34,6 +34,23 @@ class TasksController < ApplicationController
   end
 
   def postpone
+    @task.attempts << Attempt.new(snoozed: true)
+    @task.days_imp -= 0.1
+    @task.days_imp = 0 if @task.days_imp < 0
+    @task.weeks_imp += 0.1
+    @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
+    respond_to do |format|
+      if @task.save
+        format.html { redirect_to :next_task, notice: 'Task was postponed.' }
+        format.json { render :show, status: :created, location: @task }
+      else
+        format.html { render :new }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def worked
     @task.attempts << Attempt.new(snoozed: true)
     @task.days_imp -= 0.1
     @task.days_imp = 0 if @task.days_imp < 0
