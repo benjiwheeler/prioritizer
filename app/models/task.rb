@@ -47,6 +47,21 @@ class Task < ActiveRecord::Base
   end
 
 
+  def random_amount
+    rand_float = rand
+    # (rand_float * rand_float * 0.25):
+    # 25th percentile: 2%
+    # 50th percentile: 6%
+    # 75th percentile: 14%
+    # max: 25%
+    # then subtract median of 6%, making:
+    # 25th percentile: -5%
+    # 50th percentile: 0%
+    # 75th percentile: 8%
+    # max: 19%
+    return rand_float * rand_float * 0.25 - .0625
+  end
+
   def attempts_report_done?
     self.attempts.order(created_at: :desc).each do |att|
       if att.completed == true
