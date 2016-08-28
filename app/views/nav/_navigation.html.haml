@@ -2,6 +2,11 @@
   .container-fluid
     .navbar-header
       %a.navbar-brand{href: root_path} Prioritizer
+      %button.navbar-toggle.collapsed{"aria-expanded" => "false", "data-target" => "#navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+
+    .collapse.navbar-collapse#navbar-collapse
+      %ul.nav.navbar-nav
+
     - if @show_meme_search
       = form_for :meme, url: memes_search_path, html: {method: 'GET', class: "meme_search_form"} do |f|
         = f.text_field :tag, placeholder: "Enter any twitter hashtag"
