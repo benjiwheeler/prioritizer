@@ -59,7 +59,7 @@ class Task < ActiveRecord::Base
     # 50th percentile: 0%
     # 75th percentile: 8%
     # max: 19%
-    return rand_float * rand_float * 0.25 - .0625
+    return rand_float * rand_float * 0.25 - 0.0625
   end
 
   def attempts_report_done?
