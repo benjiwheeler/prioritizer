@@ -3,28 +3,12 @@
     .navbar-header
       %a.navbar-brand{href: root_path} Prioritizer
       %button.navbar-toggle.collapsed{"aria-expanded" => "false", "data-target" => "#navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar.top-bar
+        %span.icon-bar.middle-bar
+        %span.icon-bar.bottom-bar
 
     .collapse.navbar-collapse#navbar-collapse
-      %ul.nav.navbar-nav
-
-    - if @show_meme_search
-      = form_for :meme, url: memes_search_path, html: {method: 'GET', class: "meme_search_form"} do |f|
-        = f.text_field :tag, placeholder: "Enter any twitter hashtag"
-        = f.submit "Go"
-    - if @suppress_nav_auth != true
-      %ul#auth_section.nav.navbar-nav.navbar-right
-        - if current_user
-          - at_least_one_auth_signed_in = false
-          - all_providers.each do |provider_sym|
-            - if current_user.has_auth?(provider_sym)
-              %li= render partial: 'nav/authstatus', locals: {provider: provider_sym}
-              - at_least_one_auth_signed_in = true
-          - all_providers.each do |provider_sym|
-            - if !current_user.has_auth?(provider_sym)
-              %li= render partial: 'nav/authstatus', locals: {provider: provider_sym}
-          - if at_least_one_auth_signed_in == true
-            %li= link_to "Sign out", logout_path, id: "sign_out", class: "navbar-lin navbar-right", method: :delete
-
-        - else
-          %p.navbar-text.navbar-right= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link"
-          %p.navbar-text.navbar-right= link_to "Sign in with Twitter", user_omniauth_authorize_path(:twitter), id: "sign_in", class: "navbar-link"
+      - if @suppress_nav_auth != true
+        %ul.nav.navbar-nav.navbar-right
+          = render partial: 'nav/auth_section', locals: {}
