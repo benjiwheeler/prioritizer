@@ -8,7 +8,9 @@
     - if !current_user.has_auth?(provider_sym)
       %li= render partial: 'nav/authstatus', locals: {provider: provider_sym}
   - if at_least_one_auth_signed_in == true
-    %li= link_to "Sign out", logout_path, id: "sign_out", class: "navbar-lin navbar-right", method: :delete
+    %li
+      %p.navbar-text
+        = link_to "Sign out", logout_path, id: "sign_out", class: "navbar-lin navbar-right", method: :delete
 
 - else
   %p.navbar-text.navbar-right= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook), id: "sign_in", class: "navbar-link"
