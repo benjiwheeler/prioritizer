@@ -1,7 +1,16 @@
+maintain tags across shortcut presses???
+link to other tags or tag list from next
+
 get js etc loading on heroku... needed package bower install???
 Facebook longer login?
 Map out architecture and types of question?
 Types of session, usage lifecycle
+
+figure out daily recurring things...
+* additive or no-consequence?
+* daily or full icebox?
+* time of day?
+* preempts priority? fully? partially? maybe gets a bonus?
 
 for bootstrap:
 create new works
@@ -107,3 +116,5 @@ jquery loads on each page transition, so js aforms are consistent
 new task page: only fields that matter: days/weeks/ever
 initial load of new page focuses on name field
 imp animates
+new task shortcut
+

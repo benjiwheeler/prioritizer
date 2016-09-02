@@ -56,7 +56,7 @@ body {
 
   position: relative;
   display: block;
-  background-color: #9f9;
+//  background-color: #9f9;
 }
 
 #inner-central-container {
@@ -65,7 +65,7 @@ body {
   position: relative;
 //  display: block;
   margin: 0 auto;
-  background-color: #def;
+//  background-color: #def;
 //  text-align: center;
 }
 
@@ -215,10 +215,10 @@ h1, .h1, h2, .h2, h3, .h3 {
 
 .navbar-brand {
 //  font-family: 'Sketch Block', helvetica, arial, verdana, sans-serif;
-  font-family: 'Gizems Sketch', helvetica, arial, verdana, sans-serif;
-  font-weight: 400;
-//  font-family: 'Roboto', helvetica, arial, verdana, sans-serif;
-//  font-weight: 100;
+//  font-family: 'Gizems Sketch', helvetica, arial, verdana, sans-serif;
+//  font-weight: 400;
+  font-family: 'Roboto', helvetica, arial, verdana, sans-serif;
+  font-weight: 100;
 
   padding-left: 0;
   padding-right: 1rem;
@@ -289,6 +289,11 @@ padding-bottom: 0.5rem;
 padding-left: 0.5rem;
 padding-right: 0.5rem;
 
+}
+
+.navbar-default {
+  background-color: #fff;
+  border: none;
 }
 
 /* *********************************

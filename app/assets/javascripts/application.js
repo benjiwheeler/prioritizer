@@ -325,6 +325,9 @@ var ready = function() {
   Mousetrap.bind('d', function() {
     $("a#destroy_link")[0].click();
   });
+  Mousetrap.bind('n', function() {
+    $("a#new_link")[0].click();
+  });
 
 
   // ***********************
@@ -364,6 +367,38 @@ var ready = function() {
 
   // focus on first place for input
   $('.initial-focus').first().focus();
+
+  // ***********************
+  //    BRAND ANIMATION
+  // ***********************
+
+  var numBrandChars = "Prioritizer".length;
+  var maxBrandSize = 3.0;
+  var minBrandSize = 1.0;
+  var reziseSpeed = 10000;
+  var resizeBrandChar = function() {
+    var charNum = Math.floor(Math.random() * numBrandChars) + 1;
+    var targetSize = Math.random();
+    targetSize = targetSize * 1.2 * (maxBrandSize - minBrandSize) + minBrandSize - 0.1;
+    // at this point, 25th percentile val is .36, 50th percentile is .8, 75th percentile val is 3.2
+    if (targetSize > maxBrandSize) { targetSize = maxBrandSize; }
+    if (targetSize < minBrandSize) { targetSize = minBrandSize; }
+    var selector = "#brand_" + charNum;
+    $(selector).animate({
+      fontSize: targetSize + 'rem'
+    }, reziseSpeed, function() {
+      setTimeout(function() {
+        resizeBrandChar();
+      }, 0);
+    });
+  };
+  resizeBrandChar();
+  setTimeout(function() {
+    resizeBrandChar();
+  }, reziseSpeed * 0.33);
+  setTimeout(function() {
+    resizeBrandChar();
+  }, reziseSpeed * 0.67);
 
 };
 
