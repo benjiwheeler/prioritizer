@@ -375,8 +375,10 @@ var ready = function() {
   var numBrandChars = "Prioritizer".length;
   var maxBrandSize = 3.0;
   var minBrandSize = 1.0;
-  var reziseSpeed = 10000;
-  var numResizers = 8;
+  var reziseSpeed = 500;
+  var waitBetweenResizings = 0;
+  var waitBetweenResizingsDelta = 500;
+  var numResizers = 1;
   var resizeBrandChar = function() {
     var charNum = Math.floor(Math.random() * numBrandChars) + 1;
     var targetSize = Math.random();
@@ -390,7 +392,8 @@ var ready = function() {
     }, reziseSpeed, function() {
       setTimeout(function() {
         resizeBrandChar();
-      }, 0);
+      }, waitBetweenResizings);
+      waitBetweenResizings += waitBetweenResizingsDelta;
     });
   };
   for (var i = 0; i < numResizers; i++) {
