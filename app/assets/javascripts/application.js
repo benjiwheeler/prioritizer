@@ -373,28 +373,57 @@ var ready = function() {
   // ***********************
 
   var numBrandChars = "Prioritizer".length;
-  var maxBrandSize = 3.0;
-  var minBrandSize = 1.0;
-  var reziseSpeed = 500;
-  var waitBetweenResizings = 0;
-  var waitBetweenResizingsDelta = 500;
+  var maxBrandSize = 1.5;
+  var minBrandSize = 0.5;
+  var minDiff = 0.4;
+  var maxDiff = 0.8;
+  var reziseSpeed = 100;
+  var resizeSpeedDelta = 50;
+  var maxResizeSpeed = 10000;
+  var waitBetweenResizings = 10;
+  var waitBetweenResizingsDelta = 20;
   var numResizers = 1;
+  var firstCharBonus = 0.25;
+  var numResizings = 0;
+  var maxNumResizings = 30;
+  var sizes = Array(numBrandChars);
+  for (var i = 0; i < numBrandChars; i++) {
+    sizes[i] = 1.0;
+  }
   var resizeBrandChar = function() {
-    var charNum = Math.floor(Math.random() * numBrandChars) + 1;
-    var targetSize = Math.random();
-    targetSize = targetSize * 1.2 * (maxBrandSize - minBrandSize) + minBrandSize - 0.1;
-    // at this point, 25th percentile val is .36, 50th percentile is .8, 75th percentile val is 3.2
-    if (targetSize > maxBrandSize) { targetSize = maxBrandSize; }
-    if (targetSize < minBrandSize) { targetSize = minBrandSize; }
+    var charNum = Math.floor(Math.random() * numBrandChars);
+    var targetSize = 1.0;
+    do {
+      targetSize = Math.random();
+      targetSize = targetSize * 1.2 * (maxBrandSize - minBrandSize) + minBrandSize - 0.1;
+      // at this point, 25th percentile val is .36, 50th percentile is .8, 75th percentile val is 3.2
+      if (targetSize > maxBrandSize) { targetSize = maxBrandSize; }
+      if (targetSize < minBrandSize) { targetSize = minBrandSize; }
+    } while (
+      (Math.abs(targetSize - sizes[charNum]) < minDiff)
+      ||
+      (Math.abs(targetSize - sizes[charNum]) > maxDiff)
+      );
+    sizes[charNum] = targetSize;
+    if (charNum == 0) { targetSize += firstCharBonus; }
+//    alert("setting " + charNum + " to targetSize: " + targetSize)
     var selector = "#brand_" + charNum;
-    $(selector).animate({
-      fontSize: targetSize + 'rem'
-    }, reziseSpeed, function() {
-      setTimeout(function() {
-        resizeBrandChar();
-      }, waitBetweenResizings);
+    $(selector).css( { transition: "transform " + (reziseSpeed / 1000.0) + "s ease-out",
+      transform:  "scale(" + (0.5 + targetSize / 2.0) + ", " + targetSize + ")" } );
+//alert("resizing");
+//    $(selector).animate({
+//      height: targetSize + 'rem'
+//    }, reziseSpeed, function() {
+      numResizings++;
       waitBetweenResizings += waitBetweenResizingsDelta;
-    });
+      reziseSpeed += resizeSpeedDelta;
+      if (reziseSpeed > maxResizeSpeed) { reziseSpeed = maxResizeSpeed; }
+      if (numResizings < maxNumResizings) {
+        setTimeout(function() {
+          resizeBrandChar();
+        }, waitBetweenResizings);
+      }
+  //  });
   };
   for (var i = 0; i < numResizers; i++) {
     setTimeout(function() {

@@ -231,38 +231,8 @@ h1, .h1, h2, .h2, h3, .h3 {
 .navbar-brand::first-letter {
   font-size: 1.25em;
 }
-.navbar-brand::nth-letter(2) {
-  font-size: .9em;
-}
-.navbar-brand::nth-letter(3) {
-  font-size: .81em;
-}
-.navbar-brand::nth-letter(4) {
-  font-size: .73em;
-}
-.navbar-brand::nth-letter(5) {
-  font-size: .66em;
-}
-.navbar-brand::nth-letter(6) {
-  font-size: .59em;
-}
-.navbar-brand::nth-letter(7) {
-  font-size: .9em;
-}
-.navbar-brand::nth-letter(8) {
-  font-size: .9em;
-}
-.navbar-brand::nth-letter(9) {
-  font-size: .9em;
-}
-.navbar-brand::nth-letter(10) {
-  font-size: .9em;
-}
-.navbar-brand::nth-letter(11) {
-  font-size: .9em;
-}
-.navbar-brand::nth-letter(12) {
-  font-size: .9em;
+.navbar-brand .letter {
+  display:inline-block;
 }
 
 
