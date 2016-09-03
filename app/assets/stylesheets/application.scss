@@ -143,6 +143,7 @@ $break-md: 992px; // aka bootstrap grid "md", not used
   #inner-central-container {
     width: 320px;
   }
+<<<<<<< HEAD
 }
 // xs3
 @media only screen and (min-width: $break-xs3) and (max-width: $break-sm - 1) {
@@ -173,10 +174,45 @@ $break-md: 992px; // aka bootstrap grid "md", not used
 }
 // md
 @media only screen and (min-width: $break-md) {
+=======
+}
+// xs3
+@media only screen and (min-width: $break-xs3) and (max-width: $break-sm - 1) {
+>>>>>>> heroku/master
   html {
     font-size: 11px;
   }
   body {
+<<<<<<< HEAD
+=======
+    zoom: 2.0;
+    -moz-transform: scale(2.0);
+    -moz-transform-origin: 50% 0;
+  }
+  #inner-central-container {
+    width: 320px;
+  }
+}// sm
+@media only screen and (min-width: $break-sm) and (max-width: $break-md - 1) {
+  html {
+    font-size: 11px;
+  }
+  body {
+    zoom: 1.2;
+    -moz-transform: scale(1.2);
+    -moz-transform-origin: 83% 0;
+  }
+  #inner-central-container {
+    width: 640px;
+  }
+}
+// md
+@media only screen and (min-width: $break-md) {
+  html {
+    font-size: 11px;
+  }
+  body {
+>>>>>>> heroku/master
     zoom: 1.55;
     -moz-transform: scale(1.55);
     -moz-transform-origin: 64.5% 0;
