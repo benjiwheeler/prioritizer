@@ -372,64 +372,118 @@ var ready = function() {
   //    BRAND ANIMATION
   // ***********************
 
+  var randomWithRange = function(max, min, minMaxEdgeBonus, prev, minPrevDiff, maxPrevDiff) {
+    // make sure we won't run forever!
+    if (maxPrevDiff - minPrevDiff <= 0.0) {
+      return null;
+    }
+    var randVal = 0;
+    do {
+      randVal = Math.random();
+      // scale randVal to min-max distance
+      randVal = randVal * (max - min + 2 * minMaxEdgeBonus);
+      // translate it down to be even
+      randVal = randVal + min - minMaxEdgeBonus;
+      // pull it in to min or max if past them
+      if (randVal > max) { randVal = max; }
+      if (randVal < min) { randVal = min; }
+
+      // if it's too small a change from prev val,
+      // or too large a change, do a new rand val instead
+    } while (
+      (Math.abs(randVal - prev) < minPrevDiff)
+      ||
+      (Math.abs(randVal - prev) > maxPrevDiff)
+      );
+    return randVal;
+  }
+
   var numBrandChars = "Prioritizer".length;
   var maxBrandSize = 1.5;
+  var defaultBrandSize = 1.0;
   var minBrandSize = 0.5;
-  var minDiff = 0.4;
+  var minDiff = 0.2;
   var maxDiff = 0.8;
-  var reziseSpeed = 100;
-  var resizeSpeedDelta = 50;
-  var maxResizeSpeed = 10000;
-  var waitBetweenResizings = 10;
-  var waitBetweenResizingsDelta = 20;
-  var numResizers = 1;
+  var waitBeforeStartingResize = 1000;
+  var resizeStage = "start";
+  var startResizeSpeed = 400;
+  var curResizeSpeed = startResizeSpeed;
+  var startResizeSpeedDelta = -50;
+  var advanceResizeStageAfterNumResizings = 2 * numBrandChars;
+  var middleResizeSpeedDelta = 50;
+  var finalResizeSpeed = 1200;
+  var waitBetweenResizings = 300;
+  var waitBetweenResizingsDelta = 25;
+  var extraWaitBeforeFinalResize = 2000;
+  var numResizers = numBrandChars;
   var firstCharBonus = 0.25;
   var numResizings = 0;
-  var maxNumResizings = 30;
+  var maxNumResizings = 5 * numBrandChars;
   var sizes = Array(numBrandChars);
   for (var i = 0; i < numBrandChars; i++) {
     sizes[i] = 1.0;
   }
-  var resizeBrandChar = function() {
-    var charNum = Math.floor(Math.random() * numBrandChars);
-    var targetSize = 1.0;
-    do {
-      targetSize = Math.random();
-      targetSize = targetSize * 1.2 * (maxBrandSize - minBrandSize) + minBrandSize - 0.1;
-      // at this point, 25th percentile val is .36, 50th percentile is .8, 75th percentile val is 3.2
-      if (targetSize > maxBrandSize) { targetSize = maxBrandSize; }
-      if (targetSize < minBrandSize) { targetSize = minBrandSize; }
-    } while (
-      (Math.abs(targetSize - sizes[charNum]) < minDiff)
-      ||
-      (Math.abs(targetSize - sizes[charNum]) > maxDiff)
-      );
-    sizes[charNum] = targetSize;
-    if (charNum == 0) { targetSize += firstCharBonus; }
-//    alert("setting " + charNum + " to targetSize: " + targetSize)
-    var selector = "#brand_" + charNum;
-    $(selector).css( { transition: "transform " + (reziseSpeed / 1000.0) + "s ease-out",
-      transform:  "scale(" + (0.5 + targetSize / 2.0) + ", " + targetSize + ")" } );
-//alert("resizing");
-//    $(selector).animate({
-//      height: targetSize + 'rem'
-//    }, reziseSpeed, function() {
-      numResizings++;
-      waitBetweenResizings += waitBetweenResizingsDelta;
-      reziseSpeed += resizeSpeedDelta;
-      if (reziseSpeed > maxResizeSpeed) { reziseSpeed = maxResizeSpeed; }
-      if (numResizings < maxNumResizings) {
-        setTimeout(function() {
-          resizeBrandChar();
-        }, waitBetweenResizings);
-      }
-  //  });
-  };
-  for (var i = 0; i < numResizers; i++) {
-    setTimeout(function() {
-      resizeBrandChar();
-    }, (reziseSpeed + 0.01) * i / (numResizers + 0.01));
+  var iterateResizeSpeed = function() {
+    if (numResizings >= advanceResizeStageAfterNumResizings) {
+      resizeStage = "middle";
+    }
+    if (resizeStage === "start") {
+      curResizeSpeed += startResizeSpeedDelta;
+    } else { // "middle"
+      curResizeSpeed += middleResizeSpeedDelta;
+    }
   }
+  var resizeAllBrandCharsRepeatedly = function() {
+    resizeAllBrandChars();
+    if (numResizings < maxNumResizings) {
+      setTimeout(function() {
+        resizeAllBrandCharsRepeatedly();
+      }, curResizeSpeed + waitBetweenResizings);
+      waitBetweenResizings += waitBetweenResizingsDelta;
+      iterateResizeSpeed();
+    } else {
+      setTimeout(function() {
+        resizeAllBrandCharsToFinal();
+      }, extraWaitBeforeFinalResize);
+    }
+  };
+  var resizeAllBrandChars = function() {
+    for (var i = 0; i < numBrandChars; i++) {
+      resizeBrandChar(i);
+    }
+  };
+  var resizeAllBrandCharsToFinal = function() {
+    for (var i = 0; i < numBrandChars; i++) {
+      resizeBrandCharToFinal(i);
+    }
+  };
+  var resizeBrandCharToFinal = function(charNum) {
+    resizeBrandChar(charNum, defaultBrandSize, finalResizeSpeed);
+  };
+  var resizeBrandChar = function(charNum = null, targetSize = null, resizeSpeed = null) {
+    if (charNum === null) {
+      charNum = Math.floor(Math.random() * numBrandChars);
+    }
+    if (targetSize === null) {
+      targetSize = randomWithRange(maxBrandSize, minBrandSize, 0.1, sizes[charNum], minDiff, maxDiff)
+    }
+    if (resizeSpeed === null) {
+      resizeSpeed = curResizeSpeed;
+    }
+    sizes[charNum] = targetSize;
+    var selector = "#brand_" + charNum;
+    var newXScale = (targetSize > defaultBrandSize) ? targetSize : defaultBrandSize;
+    $(selector).css(
+      {
+        transition: "transform " + (resizeSpeed / 1000.0) + "s ease-out",
+        transform:  "scale(" + newXScale + ", " + targetSize + ")"
+      }
+    );
+    numResizings++;
+  };
+  setTimeout(function() {
+    resizeAllBrandCharsRepeatedly();
+  }, waitBeforeStartingResize);
 };
 
 $(document).ready(ready);

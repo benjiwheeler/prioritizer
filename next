@@ -1,3 +1,4 @@
+get splitting working
 maintain tags across shortcut presses???
 link to other tags or tag list from next
 
@@ -11,12 +12,6 @@ figure out daily recurring things...
 * daily or full icebox?
 * time of day?
 * preempts priority? fully? partially? maybe gets a bonus?
-
-for bootstrap:
-create new works
-finish doesn't show it again
-can edit, finish, work, postpone
-works ok on my phone
 
 
 countdown:
@@ -117,4 +112,8 @@ new task page: only fields that matter: days/weeks/ever
 initial load of new page focuses on name field
 imp animates
 new task shortcut
+create new works
+finish doesn't show it again
+can edit, finish, work, postpone
+works ok on my phone
 
