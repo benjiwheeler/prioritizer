@@ -463,7 +463,7 @@ var ready = function() {
   // special speed
   var resizeAllBrandCharsToFinal = function() {
     for (var i = 0; i < numBrandChars; i++) {
-      resizeBrandChar(charNum, defaultBrandSize, finalResizeSpeed);
+      resizeBrandChar(i, defaultBrandSize, finalResizeSpeed);
     }
   };
   // resize one char

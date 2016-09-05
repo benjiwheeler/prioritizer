@@ -1,5 +1,9 @@
+bootstrap dropdown tags; so from bare next, can easily get to just errands or whatever
 get splitting working
-maintain tags across shortcut presses???
+maintain tags across shortcut presses:
+ * tag in url
+ * do next
+ * should be there
 link to other tags or tag list from next
 
 get js etc loading on heroku... needed package bower install???
