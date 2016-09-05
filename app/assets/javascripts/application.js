@@ -404,7 +404,7 @@ var ready = function() {
   var minBrandSize = 0.5;
   var minDiff = 0.2;
   var maxDiff = 0.8;
-  var waitBeforeStartingResize = 1000;
+
   var resizeStage = "start";
   var startResizeSpeed = 400;
   var curResizeSpeed = startResizeSpeed;
@@ -412,17 +412,21 @@ var ready = function() {
   var advanceResizeStageAfterNumResizings = 2 * numBrandChars;
   var middleResizeSpeedDelta = 50;
   var finalResizeSpeed = 1200;
+
+  var waitBeforeStartingResize = 1000;
   var waitBetweenResizings = 300;
   var waitBetweenResizingsDelta = 25;
   var extraWaitBeforeFinalResize = 2000;
-  var numResizers = numBrandChars;
-  var firstCharBonus = 0.25;
   var numResizings = 0;
   var maxNumResizings = 5 * numBrandChars;
+
+  // load initial sizes of chars
   var sizes = Array(numBrandChars);
   for (var i = 0; i < numBrandChars; i++) {
-    sizes[i] = 1.0;
+    sizes[i] = defaultBrandSize;
   }
+  // change resize speed to be correct for the
+  // next resizing event
   var iterateResizeSpeed = function() {
     if (numResizings >= advanceResizeStageAfterNumResizings) {
       resizeStage = "middle";
@@ -433,6 +437,8 @@ var ready = function() {
       curResizeSpeed += middleResizeSpeedDelta;
     }
   }
+  // perform resizings of all chars,
+  // then recursively call this same function again
   var resizeAllBrandCharsRepeatedly = function() {
     resizeAllBrandChars();
     if (numResizings < maxNumResizings) {
@@ -441,26 +447,28 @@ var ready = function() {
       }, curResizeSpeed + waitBetweenResizings);
       waitBetweenResizings += waitBetweenResizingsDelta;
       iterateResizeSpeed();
-    } else {
+    } else { // the last time, do the "final" version
       setTimeout(function() {
         resizeAllBrandCharsToFinal();
       }, extraWaitBeforeFinalResize);
     }
   };
+  // resize all chars once
   var resizeAllBrandChars = function() {
     for (var i = 0; i < numBrandChars; i++) {
       resizeBrandChar(i);
     }
   };
+  // resize all chars back to original size, at
+  // special speed
   var resizeAllBrandCharsToFinal = function() {
     for (var i = 0; i < numBrandChars; i++) {
-      resizeBrandCharToFinal(i);
+      resizeBrandChar(charNum, defaultBrandSize, finalResizeSpeed);
     }
   };
-  var resizeBrandCharToFinal = function(charNum) {
-    resizeBrandChar(charNum, defaultBrandSize, finalResizeSpeed);
-  };
+  // resize one char
   var resizeBrandChar = function(charNum = null, targetSize = null, resizeSpeed = null) {
+    // handle defaults for when params missing
     if (charNum === null) {
       charNum = Math.floor(Math.random() * numBrandChars);
     }
@@ -470,7 +478,14 @@ var ready = function() {
     if (resizeSpeed === null) {
       resizeSpeed = curResizeSpeed;
     }
+
+    // record new size of this char
     sizes[charNum] = targetSize;
+    // we count resizings of *each* char, to be
+    // as fine grained as possible
+    numResizings++;
+
+    // transition CSS to fit new size
     var selector = "#brand_" + charNum;
     var newXScale = (targetSize > defaultBrandSize) ? targetSize : defaultBrandSize;
     $(selector).css(
@@ -479,8 +494,8 @@ var ready = function() {
         transform:  "scale(" + newXScale + ", " + targetSize + ")"
       }
     );
-    numResizings++;
   };
+  // set the resizing going initially
   setTimeout(function() {
     resizeAllBrandCharsRepeatedly();
   }, waitBeforeStartingResize);
