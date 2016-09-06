@@ -23,16 +23,14 @@
       %ul.nav.navbar-nav.navbar-right
         %li.dropdown
           %a.dropdown-toggle{href: "#", "data-toggle" => "dropdown", role: "button", "aria-haspopup" => "true", "aria-expanded" => "false"}
-            Dropdown
+            Context
             %span.caret
           %ul.dropdown-menu
             - if current_user.present? && current_user.tags.present?
-              %li
-                Tags:
-              %li.divider{role: "separator"}
               - current_user.tags.each do |tag|
                 %li
                   %a{href: next_task_path(tag: tag.name)}
-                  = tag.name
+                    %span{style: "color: green;"}
+                      = tag.name
         - if @suppress_nav_auth != true
           = render partial: 'nav/auth_section', locals: {}

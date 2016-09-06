@@ -1,13 +1,3 @@
-bootstrap dropdown tags; so from bare next, can easily get to just errands or whatever
-get splitting working
-maintain tags across shortcut presses:
- * tag in url
- * do next
- * should be there
-link to other tags or tag list from next
-
-get js etc loading on heroku... needed package bower install???
-Facebook longer login?
 Map out architecture and types of question?
 Types of session, usage lifecycle
 
@@ -90,6 +80,7 @@ manifesto:
 someday:
 recurrence: MTWetc checkboxes, # of the month, time of day
 can make subtasks while editing a task
+Facebook longer login?
 
 done:
 user can see just one
