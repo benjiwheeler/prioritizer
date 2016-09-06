@@ -26,12 +26,13 @@
             Dropdown
             %span.caret
           %ul.dropdown-menu
-            %li
-              Tags:
-            %li.divider{role: "separator"}
-            - current_user.tags.each do |tag|
+            - if current_user.present? && current_user.tags.present?
               %li
-                %a{href: next_task_path(tag: tag.name)}
-                = tag.name
+                Tags:
+              %li.divider{role: "separator"}
+              - current_user.tags.each do |tag|
+                %li
+                  %a{href: next_task_path(tag: tag.name)}
+                  = tag.name
         - if @suppress_nav_auth != true
           = render partial: 'nav/auth_section', locals: {}
