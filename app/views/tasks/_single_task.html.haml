@@ -15,9 +15,34 @@
 .row
   .col-xs-3 Actions:
   .col-xs-9
-    = link_to 'Edit', edit_task_path(task, tag: tag_name), id: "edit_link", class: "shortcut-link"
-    = link_to 'Destroy', task_path(task, tag: tag_name), :method => :delete, :data => { :confirm => 'Are you sure?' }, id: "destroy_link", class: "shortcut-link"
-    = link_to 'Finished', task_done_path(task, tag: tag_name), method: :post, id: "finished_link", class: "shortcut-link"
-    = link_to 'Worked on it', task_worked_path(task, tag: tag_name), method: :post, id: "worked_link", class: "shortcut-link"
-    = link_to 'Postpone', task_postpone_path(task, tag: tag_name), method: :post, id: "postpone_link", class: "shortcut-link"
-    = link_to 'Split', task_split_path(task, tag: tag_name), id: "split_link", method: :get, class: "shortcut-link"
+    = link_to task_done_path(task, tag: tag_name), {method: :post, id: "finished_link", class: "action-link"} do
+      .action-logo
+        = fa_icon "check"
+      .shortcut-link Finished
+    = link_to task_worked_path(task, tag: tag_name), {method: :post, id: "worked_link", class: "action-link"} do
+      .action-logo
+        = fa_icon "gavel"
+      .shortcut-link Worked on it
+    = link_to task_postpone_path(task, tag: tag_name), {method: :post, id: "postpone_link", class: "action-link"} do
+      .action-logo
+        = fa_icon "clock-o"
+      .shortcut-link Postpone
+    = link_to task_split_path(task, tag: tag_name), {id: "split_link", method: :get, class: "action-link"} do
+      .action-logo
+        = fa_icon "strikethrough"
+      .shortcut-link Split
+.row
+  .col-xs-3
+  .col-xs-9
+    = link_to task_path(task, tag: tag_name), {:method => :delete, :data => { :confirm => 'Are you sure?' }, id: "destroy_link", class: "action-link"} do
+      .action-logo
+        = fa_icon "times"
+      .shortcut-link Destroy
+    = link_to edit_task_path(task, tag: tag_name), {id: "edit_link", class: "action-link"} do
+      .action-logo
+        = fa_icon "pencil"
+      .shortcut-link Edit
+    = link_to new_task_path, {id: "new_link", class: "action-link"} do
+      .action-logo
+        = fa_icon "lightbulb-o"
+      .shortcut-link New Task

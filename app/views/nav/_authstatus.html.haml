@@ -12,6 +12,7 @@
     = fa_icon provider_icon
     = prefix + current_user.auth_field(provider, displayname)
 - else
-  %a.navbar-link{href: user_omniauth_authorize_path(provider.to_sym)}
-    = fa_icon provider_icon
-    Add #{provider.to_s.capitalize}
+  %p.navbar-text
+    %a.navbar-link{href: user_omniauth_authorize_path(provider.to_sym)}
+      = fa_icon provider_icon
+      Add #{provider.to_s.capitalize}

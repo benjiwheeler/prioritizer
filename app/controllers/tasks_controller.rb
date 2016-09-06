@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
-  before_action :set_tag, only: [:index, :split, :show, :next]
+  before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :split]
   before_action :set_task, only: [:done, :postpone, :worked, :split, :show, :edit, :update, :destroy]
 
   def sort
@@ -11,10 +11,10 @@ class TasksController < ApplicationController
   end
 
   def next
-    @task = current_user.get_next_task!(index_params[:tag])
+    @task = current_user.get_next_task!(@tag_name)
     if @task.blank?
       respond_to do |format|
-        format.html { redirect_to :new_task, notice: 'No more tasks; create one?' }
+        format.html { redirect_to new_task_path(tag: @tag_name), notice: 'No more tasks; create one?' }
       end
     end
     # else display next task view
@@ -25,7 +25,7 @@ class TasksController < ApplicationController
     @task.attempts << Attempt.new(completed: true)
     respond_to do |format|
       if @task.save
-        format.html { redirect_to :next_task, notice: 'Task was marked done.' }
+        format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was marked done.' }
       else
         format.html { render :edit }
         format.json { render json: @task.errors, status: :unprocessable_entity }
@@ -41,7 +41,7 @@ class TasksController < ApplicationController
     @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
     respond_to do |format|
       if @task.save
-        format.html { redirect_to :next_task, notice: 'Task was postponed.' }
+        format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was postponed.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -58,10 +58,10 @@ class TasksController < ApplicationController
     @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
     respond_to do |format|
       if @task.save
-        format.html { redirect_to :next_task, notice: 'Task was worked on.' }
+        format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was worked on.' }
         format.json { render :show, status: :created, location: @task }
       else
-        format.html { render :new }
+        format.html { render :next, notice: "Couldn't update task to record work :(" }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
@@ -73,7 +73,7 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @ordered_tasks = current_user.n_ordered_tasks!(index_params[:tag])
+    @ordered_tasks = current_user.n_ordered_tasks!(@tag_name)
     @task = Task.new # for task form
     Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
   end
@@ -100,7 +100,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
-        format.html { redirect_to :next_task, notice: 'Task was successfully created.' }
+        format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
         format.html { render :new }
@@ -114,7 +114,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to :next_task, notice: 'Task was successfully updated.' }
+        format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit }
@@ -137,8 +137,10 @@ private
   # Use callbacks to share common setup or constraints between actions.
   def set_tag
     @tag = nil
+    @tag_name = nil
     if params[:tag].present?
       @tag = ActsAsTaggableOn::Tag.find_by(name: params[:tag])
+      @tag_name = @tag.name
     end
   end
 
@@ -152,7 +154,4 @@ private
      :children_attributes => [:id, :name, :notes, :due, :parent_id, :days_imp, :weeks_imp, :ever_imp, :position, :exp_dur_mins, :min_dur_mins, tag_list: []])
   end
 
-  def index_params
-    params.permit(:tag)
-  end
 end

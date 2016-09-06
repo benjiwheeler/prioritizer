@@ -22,6 +22,12 @@ class Task < ActiveRecord::Base
   end
 
   def before_save_steps
+    if self.parent.present? && self.parent.user.present?
+      self.user = self.parent.user
+      Rails.logger.warn "Using parent user for task #{self.name}"
+    else
+      Rails.logger.warn "Can't useparent's user for task #{self.name} because user could not be gotten from parent"
+    end
     self.set_default_imps
     self.generate_importance
     # if we have changed attributes that influence importance, clear importance cache
@@ -32,6 +38,7 @@ class Task < ActiveRecord::Base
   end
 
   def after_save_steps
+
   end
 
   def set_default_imps
