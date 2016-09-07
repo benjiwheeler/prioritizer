@@ -209,13 +209,19 @@ h1, .h1, h2, .h2, h3, .h3 {
   min-height: 2rem;
 }
 
-ul:not(.dropdown-menu).navbar-nav li {
+ul.navbar-nav li {
   line-height: 1.0rem;
   padding-top: 1.25rem;
   padding-bottom: 0.5rem;
   padding-left: 0;
   padding-right: 2.5rem;
 }
+
+ul.navbar-nav li.dropdown a {
+  line-height: 2rem;
+}
+
+
 
 .navbar-header {
   min-height: 2.5rem;
@@ -317,10 +323,6 @@ animated dropdown menu
   .bottom-bar {
     transform: rotate(0);
   }
-}
-
-li.dropdown {
-  line-height: 2rem;
 }
 
 /* *********************************
