@@ -55,7 +55,6 @@ class TasksController < ApplicationController
     @task.days_imp = @task.days_imp * 0.9
     @task.days_imp = 0 if @task.days_imp < 0
     @task.weeks_imp = 0.1 + 0.9 * @task.weeks_imp
-    @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
     respond_to do |format|
       if @task.save
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was worked on.' }

@@ -101,18 +101,18 @@ class Task < ActiveRecord::Base
   end
 
   def addressed_recently_amount
-    addressed_age_score = 0
+    has_not_addressed = 1.0
     # we only look at one addressed record, the latest one
     self.attempts.order(created_at: :desc).each do |att|
       if att.addressed == true
         age_in_s = Time.now - att.updated_at
+        # age_score is small for recent attempts,
+        # large (thus insignificant) for old ones
         age_score = Task.unit_scale_log_val(age_in_s, 0, Task.attempt_typical_extension)
-        # greater time since addressed,
-        addressed_age_score = -1.0 + age_score
-        break
+        has_not_addressed = has_not_addressed * age_score
       end
     end
-    return addressed_age_score
+    return has_not_addressed - 1.0
   end
 
   def get_importance!
