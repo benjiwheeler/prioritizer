@@ -9,12 +9,22 @@ class Task < ActiveRecord::Base
   before_save :before_save_steps
   after_save :after_save_steps
 
+  def Task.unit_scale_log_val(raw_val, expected_mean, halflife)
+    diff_from_mean = raw_val - expected_mean
+    sign = diff_from_mean < 0 ? -1.0 : 1.0
+    return sign * (1.0 - halflife/(diff_from_mean.abs + halflife))
+  end
+
   def Task.attributes_influencing_imp
     ["done", "due", "overall_imp", "days_imp", "weeks_imp", "ever_imp", "exp_dur_mins", "min_dur_mins", "position", ]
   end
 
   def Task.postpone_size_s
-    7200
+    60 * 60 * 24
+  end
+
+  def Task.attempt_typical_extension
+    60 * 60 * 24 * 5
   end
 
   def Task.default_imp
@@ -91,15 +101,18 @@ class Task < ActiveRecord::Base
   end
 
   def addressed_recently_amount
+    addressed_age_score = 0
+    # we only look at one addressed record, the latest one
     self.attempts.order(created_at: :desc).each do |att|
       if att.addressed == true
         age_in_s = Time.now - att.updated_at
-        if age_in_s < Task.postpone_size_s
-          return -0.5
-        end
+        age_score = Task.unit_scale_log_val(age_in_s, 0, Task.attempt_typical_extension)
+        # greater time since addressed,
+        addressed_age_score = -1.0 + age_score
+        break
       end
     end
-    return 0
+    return addressed_age_score
   end
 
   def get_importance!

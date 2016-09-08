@@ -105,9 +105,10 @@ $break-md: 992px; // aka bootstrap grid "md", not used
 // xs0
 @media only screen and (max-width: $break-xs1) {
   html {
-    font-size: 11px;
+    font-size: 12px;
   }
   body {
+    font-size: 12px;
     zoom: 1.0;
     -moz-transform: scale(1.0);
     -moz-transform-origin: 100% 0;
@@ -122,6 +123,7 @@ $break-md: 992px; // aka bootstrap grid "md", not used
     font-size: 11px;
   }
   body {
+    font-size: 11px;
     zoom: 1.25;
     -moz-transform: scale(1.25);
     -moz-transform-origin: 80% 0;
@@ -136,6 +138,7 @@ $break-md: 992px; // aka bootstrap grid "md", not used
     font-size: 11px;
   }
   body {
+    font-size: 11px;
     zoom: 1.5;
     -moz-transform: scale(1.5);
     -moz-transform-origin: 67% 0;
@@ -147,9 +150,10 @@ $break-md: 992px; // aka bootstrap grid "md", not used
 // xs3
 @media only screen and (min-width: $break-xs3) and (max-width: $break-sm - 1) {
   html {
-    font-size: 11px;
+    font-size: 9px;
   }
   body {
+    font-size: 9px;
     zoom: 2.0;
     -moz-transform: scale(2.0);
     -moz-transform-origin: 50% 0;
@@ -160,9 +164,10 @@ $break-md: 992px; // aka bootstrap grid "md", not used
 }// sm
 @media only screen and (min-width: $break-sm) and (max-width: $break-md - 1) {
   html {
-    font-size: 11px;
+    font-size: 12px;
   }
   body {
+    font-size: 12px;
     zoom: 1.2;
     -moz-transform: scale(1.2);
     -moz-transform-origin: 83% 0;
@@ -177,6 +182,7 @@ $break-md: 992px; // aka bootstrap grid "md", not used
     font-size: 11px;
   }
   body {
+    font-size: 11px;
     zoom: 1.55;
     -moz-transform: scale(1.55);
     -moz-transform-origin: 64.5% 0;
@@ -209,6 +215,7 @@ h1, .h1, h2, .h2, h3, .h3 {
   min-height: 2rem;
 }
 
+// override navbar items
 ul.navbar-nav li {
   line-height: 1.0rem;
   padding-top: 1.25rem;
@@ -217,11 +224,21 @@ ul.navbar-nav li {
   padding-right: 2.5rem;
 }
 
+// override context menu nav bar dropdown title
 ul.navbar-nav li.dropdown a {
   line-height: 2rem;
 }
 
-
+// override context menu items
+ul.navbar-nav > li.dropdown > ul.dropdown-menu > li {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+ul.navbar-nav > li.dropdown > ul.dropdown-menu > li > a {
+  line-height: 1.25rem;
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
 
 .navbar-header {
   min-height: 2.5rem;
