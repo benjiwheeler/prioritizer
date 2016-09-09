@@ -13,6 +13,7 @@ class Task < ActiveRecord::Base
     diff_from_mean = raw_val - expected_mean
     sign = diff_from_mean < 0 ? -1.0 : 1.0
     return sign * (1.0 - halflife/(diff_from_mean.abs + halflife))
+  end
 
   def user_to_s
     if self.user.present?
