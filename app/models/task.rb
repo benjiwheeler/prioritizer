@@ -196,7 +196,7 @@ class Task < ActiveRecord::Base
       # check if matches withAttributes
       i_match_attributes = true
       withAttributes.each do |key, val|
-        if self.key?(key) && self[key] != val
+        if self.has_attribute?(key) && self[key] != val
           i_match_attributes = false
           break
         end
