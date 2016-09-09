@@ -13,6 +13,13 @@ class Task < ActiveRecord::Base
     diff_from_mean = raw_val - expected_mean
     sign = diff_from_mean < 0 ? -1.0 : 1.0
     return sign * (1.0 - halflife/(diff_from_mean.abs + halflife))
+
+  def user_to_s
+    if self.user.present?
+      self.user.to_s
+    else
+      "Missing User"
+    end
   end
 
   def Task.attributes_influencing_imp
@@ -44,6 +51,9 @@ class Task < ActiveRecord::Base
     if (Task.attributes_influencing_imp & self.changed).present?
       # invalidate user's cached task importance listing
       self.user.expire_redis_tasks_keys!
+      Rails.logger.warn "After saving task, User #{self.user_to_s} tasks cache expired"
+    else
+      Rails.logger.warn "After saving task, User #{self.user_to_s} tasks cache not expired"
     end
   end
 
@@ -170,15 +180,36 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def first_youngest_descendent
+  def first_youngest_descendent(withAttributes = {})
+    # if there is an even "younger" (ie, deeper) descendent with right attributes,
+    # return that.
+    # else, if i match, return me.
+    # else return nil.
+    younger_descendent_with_attributes = nil
     if self.children.count > 0
-      self.children.first.first_youngest_descendent
+      younger_descendent_with_attributes = self.children.first.first_youngest_descendent(withAttributes)
+    end
+    if younger_descendent_with_attributes.present?
+      return younger_descendent_with_attributes
     else
-      self
+      # check if matches withAttributes
+      i_match_attributes = true
+      withAttributes.each do |key, val|
+        if self.key?(key) && self[key] != val
+          i_match_attributes = false
+          break
+        end
+      end
+      # now i_match_attributes is set right
+      if i_match_attributes
+        return self
+      else
+        return nil
+      end
     end
   end
 
-  def first_task_in_family_tree
-    self.oldest_ancestor.first_youngest_descendent
+  def first_task_in_family_tree(withAttributes = {})
+    self.oldest_ancestor.first_youngest_descendent(withAttributes)
   end
 end

@@ -186,7 +186,7 @@ class User < ActiveRecord::Base
   def get_next_task!(tag_str = nil)
     first_ordered_task = self.first_ordered_task!(tag_str)
     if first_ordered_task.present?
-      return first_ordered_task.first_task_in_family_tree()
+      return first_ordered_task.first_task_in_family_tree({done: false})
     else
       Rails.logger.error("user:get_next_task!: error: first_ordered_task is nil")
       return nil
