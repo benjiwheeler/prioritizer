@@ -187,26 +187,31 @@ class Task < ActiveRecord::Base
     # else, if i match, return me.
     # else return nil.
     younger_descendent_with_attributes = nil
-    if self.children.count > 0
-      younger_descendent_with_attributes = self.children.first.first_youngest_descendent(withAttributes)
+    # find the first child with a valid descendent,
+    # return first such descendent we find.
+    # NOTE: this should be redone to balance
+    # postponed state, order, simplicity, etc.
+    self.children.each do |child|
+      this_child_youngest_descendent_with_attributes = child.first_youngest_descendent(withAttributes)
+      if this_child_youngest_descendent_with_attributes.present?
+        return younger_descendent_with_attributes
+      end
     end
-    if younger_descendent_with_attributes.present?
-      return younger_descendent_with_attributes
+    # if we're still here, we didn't find a valid
+    # descendent. so,
+    # check if this one matches withAttributes
+    i_match_attributes = true
+    withAttributes.each do |key, val|
+      if self.has_attribute?(key) && self[key] != val
+        i_match_attributes = false
+        break
+      end
+    end
+    # now i_match_attributes is set right
+    if i_match_attributes
+      return self
     else
-      # check if matches withAttributes
-      i_match_attributes = true
-      withAttributes.each do |key, val|
-        if self.has_attribute?(key) && self[key] != val
-          i_match_attributes = false
-          break
-        end
-      end
-      # now i_match_attributes is set right
-      if i_match_attributes
-        return self
-      else
-        return nil
-      end
+      return nil
     end
   end
 
