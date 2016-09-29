@@ -101,7 +101,7 @@ class Task < ActiveRecord::Base
 
   def raw_position_amount
     if self.position.present?
-      return .1 - .1 * self.position
+      return 0.1 - 0.1 * self.position
     else
       return 0
     end
