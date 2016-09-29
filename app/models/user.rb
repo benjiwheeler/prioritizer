@@ -169,7 +169,7 @@ class User < ActiveRecord::Base
     end
     sorted_tasks = sorted_tasks.sort do |taskA, taskB|
       #Rails.logger.warn("during sorting: score of id #{task.id} is #{score}")
-      taskA.overall_imp <=> taskB.overall_imp
+      taskA.overall_imp_with_rand <=> taskB.overall_imp_with_rand
     end
     Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
     sorted_tasks.each do |task|
@@ -186,7 +186,8 @@ class User < ActiveRecord::Base
   def get_next_task!(tag_str = nil)
     first_ordered_task = self.first_ordered_task!(tag_str)
     if first_ordered_task.present?
-      return first_ordered_task.first_task_in_family_tree({done: false})
+      return first_ordered_task.first_youngest_descendent({done: false})
+#      return first_ordered_task.first_task_in_family_tree({done: false})
     else
       Rails.logger.error("user:get_next_task!: error: first_ordered_task is nil")
       return nil

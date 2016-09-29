@@ -99,6 +99,25 @@ class Task < ActiveRecord::Base
     return false
   end
 
+  def raw_position_amount
+    if self.position.present?
+      return .1 - .1 * self.position
+    else
+      return 0
+    end
+  end
+
+
+  def position_amount
+    my_raw_position_amount = raw_position_amount
+    parent_position_amount = 0
+    if self.parent.present?
+      parent_position_amount = self.parent.position_amount
+    end
+    return my_raw_position_amount + parent_position_amount
+  end
+
+
   def postponed_recently_amount
     self.attempts.order(created_at: :desc).each do |att|
       if att.snoozed == true
@@ -154,16 +173,19 @@ class Task < ActiveRecord::Base
     imp -= 1.0 if self.attempts_report_done?
     imp += self.postponed_recently_amount
     imp += self.addressed_recently_amount
+    imp += self.position_amount
     return imp
   end
 
   def generate_importance
     self.overall_imp = self.calc_importance
+    self.overall_imp_with_rand = self.overall_imp + self.random_amount
   end
 
   def generate_importance!
     old_imp = self.overall_imp
-    new_imp = self.generate_importance
+    self.generate_importance
+    new_imp = self.overall_imp
     if old_imp != new_imp
       self.save
     end
