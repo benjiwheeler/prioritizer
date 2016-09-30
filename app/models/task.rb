@@ -90,17 +90,17 @@ class Task < ActiveRecord::Base
     srand randSeed
 
     rand_float = rand
-    # (rand_float * rand_float * 0.25):
-    # 25th percentile: 2%
-    # 50th percentile: 6%
-    # 75th percentile: 14%
+    # (rand_float * rand_float * rand_float * 0.25):
+    # 25th percentile: 0%
+    # 50th percentile: 3%
+    # 75th percentile: 10%
     # max: 25%
-    # then subtract median of 6%, making:
-    # 25th percentile: -5%
+    # then subtract median of 3%, making:
+    # 25th percentile: -3%
     # 50th percentile: 0%
-    # 75th percentile: 8%
-    # max: 19%
-    return rand_float * rand_float * 0.25 - 0.0625
+    # 75th percentile: 7%
+    # max: 22%
+    return rand_float * rand_float * rand_float * 0.25 - 0.03
   end
 
   def attempts_report_done?
