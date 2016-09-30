@@ -6,6 +6,7 @@ class Task < ActiveRecord::Base
   accepts_nested_attributes_for :children
   acts_as_taggable
   acts_as_list
+  attr_accessor :overall_imp_with_rand # don't persist this to db, just use for sorting
   before_save :before_save_steps
   after_save :after_save_steps
 
