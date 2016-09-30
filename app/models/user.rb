@@ -169,7 +169,7 @@ class User < ActiveRecord::Base
     end
     sorted_tasks = sorted_tasks.sort do |taskA, taskB|
       #Rails.logger.warn("during sorting: score of id #{task.id} is #{score}")
-      taskA.overall_imp_with_rand <=> taskB.overall_imp_with_rand
+      taskA.overall_imp <=> taskB.overall_imp
     end
     Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
     sorted_tasks.each do |task|

@@ -177,12 +177,12 @@ class Task < ActiveRecord::Base
     imp += self.postponed_recently_amount
     imp += self.addressed_recently_amount
     imp += self.position_amount
+    imp += self.random_amount
     return imp
   end
 
   def generate_importance
     self.overall_imp = self.calc_importance
-    self.overall_imp_with_rand = self.overall_imp + self.random_amount
   end
 
   def generate_importance!
