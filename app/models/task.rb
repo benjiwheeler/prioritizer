@@ -177,7 +177,6 @@ class Task < ActiveRecord::Base
     imp += self.postponed_recently_amount
     imp += self.addressed_recently_amount
     imp += self.position_amount
-    binding.pry
     return imp
   end
 
