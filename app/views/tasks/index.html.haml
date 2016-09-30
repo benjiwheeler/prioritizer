@@ -12,8 +12,21 @@ Tags:
 - else
   %p= link_to "start", next_task_path, style: "font-size: 2em"
   %p all tasks:
-- @ordered_tasks.each do |task|
-  = render partial: 'listable_task', locals: {task: task}
+  %table
+    %tr
+      %td{style: 'padding: .4em; vertical-align: bottom'} Task
+      %td{style: 'padding: .4em; vertical-align: bottom'} Overall
+      %td{style: 'padding: .4em; vertical-align: bottom'} Days-Weeks-Ever
+      %td{style: 'padding: .4em; vertical-align: bottom'} Rand
+      %td{style: 'padding: .4em; vertical-align: bottom'} Doneness
+      %td{style: 'padding: .4em; vertical-align: bottom'} Postponed-ness
+      %td{style: 'padding: .4em; vertical-align: bottom'} Addressed-ness
+      %td{style: 'padding: .4em; vertical-align: bottom'} Position-ness
+      %td{style: 'padding: .4em; vertical-align: bottom'} Actions
+      %td{style: 'padding: .4em; vertical-align: bottom'}
+      %td{style: 'padding: .4em; vertical-align: bottom'}
+    - @ordered_tasks.each do |task|
+      = render partial: 'listable_task', locals: {task: task}
 
 New task:
 = link_to 'New Task', new_task_path

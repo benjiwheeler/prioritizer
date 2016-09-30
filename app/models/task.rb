@@ -10,6 +10,10 @@ class Task < ActiveRecord::Base
   before_save :before_save_steps
   after_save :after_save_steps
 
+  def Task.NUM_SECONDS_UNTIL_RAND_EXPIRES
+    600
+  end
+
   def Task.unit_scale_log_val(raw_val, expected_mean, halflife)
     diff_from_mean = raw_val - expected_mean
     sign = diff_from_mean < 0 ? -1.0 : 1.0
@@ -77,6 +81,14 @@ class Task < ActiveRecord::Base
 
 
   def random_amount
+    # seed rand with current time and this id
+    nowSec = Time.now.to_i
+    randSeed = (nowSec / (Task.NUM_SECONDS_UNTIL_RAND_EXPIRES + 0.0001)).truncate
+    if self.id.present?
+      randSeed += self.id.to_i
+    end
+    srand randSeed
+
     rand_float = rand
     # (rand_float * rand_float * 0.25):
     # 25th percentile: 2%
