@@ -33,7 +33,7 @@
           %i.icon-down-right-arrow{style: "float: left; position: relative"}
           = task_builder.label :days
           %span{:id=>"days_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
-          %input{:type=>"hidden", :id=>"days_imp_slider_amount_hidden", :name=>"task[days_imp]"}
+          %input{:type=>"hidden", :id=>"days_imp_slider_amount_hidden", :name=>"task[days_imp]", :value=>"#{@task.days_imp}"}
       .field.col-xs-9
         #days_imp_slider.imp_slider{style: "margin-top: 3px"}
 
@@ -43,7 +43,7 @@
           %i.icon-down-right-arrow{style: "float: left; position: relative"}
           = task_builder.label :weeks
           %span{:id=>"weeks_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
-          %input{:type=>"hidden", :id=>"weeks_imp_slider_amount_hidden", :name=>"task[weeks_imp]"}
+          %input{:type=>"hidden", :id=>"weeks_imp_slider_amount_hidden", :name=>"task[weeks_imp]", :value=>"#{@task.weeks_imp}"}
       .field.col-xs-9
         #weeks_imp_slider.imp_slider{style: "margin-top: 3px"}
 
@@ -53,7 +53,7 @@
           %i.icon-down-right-arrow{style: "float: left; position: relative"}
           = task_builder.label :ever
           %span{:id=>"ever_imp_slider_amount_shown", :style => "border:0; color: #f6931f; font-weight:bold;"}
-          %input{:type=>"hidden", :id=>"ever_imp_slider_amount_hidden", :name=>"task[ever_imp]"}
+          %input{:type=>"hidden", :id=>"ever_imp_slider_amount_hidden", :name=>"task[ever_imp]", :value=>"#{@task.ever_imp}"}
       .field.col-xs-9
         #ever_imp_slider.imp_slider{style: "margin-top: 3px"}
 

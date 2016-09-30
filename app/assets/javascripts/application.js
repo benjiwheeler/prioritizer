@@ -66,20 +66,38 @@ var ready = function() {
     // that makes 5/9 of space taken up, only 4/9 left for
     // 6 through 10 -- 5 numbers. So must make each value
     // above 5 bigger.
-    var roundedVal = newVal;
-    if (newVal >= 6.0) {
-      roundedVal -= 6.0;
-      roundedVal *= 6.0/5.0; // better than 5/4 because
-                             // this way 10 is smaller
-      roundedVal += 6.0;
-    }
-    roundedVal = Math.floor(roundedVal);
-//     var roundedVal = Math.round(newVal * 19.0 / 18.0 - .1);
-    if (roundedVal < 1) { roundedVal = 1 }
     var sliderId = $(element).attr('id');
-    $(element).slider("value", newVal);
-    $( "#" + sliderId + "_amount_hidden" ).val(roundedVal);
-    $( "#" + sliderId + "_amount_shown" ).html(roundedVal);
+    var sliderPosVal = newVal;
+    var sliderNumVal = newVal;
+    if (typeof newVal == 'undefined' || newVal === null) {
+      var hiddenVal = $( "#" + sliderId + "_amount_hidden" ).val();
+      if (typeof hiddenVal == 'undefined' || hiddenVal === null || hiddenVal === "") {
+        // have to fall back on default
+        sliderNumVal = 3.0;
+      } else {
+        hiddenVal = Number(hiddenVal);
+        if (typeof hiddenVal == 'undefined' || hiddenVal === null || hiddenVal === NaN) {
+          // have to fall back on default
+          sliderNumVal = 3.0;
+        } else { // hidden value was good, so use it!
+          sliderNumVal = hiddenVal;
+        }
+      }
+      // since newVal is not present, best we can do with Num position is set it to
+      sliderPosVal = sliderNumVal;
+    }
+    if (sliderNumVal >= 6.0) {
+      sliderNumVal -= 6.0;
+      sliderNumVal *= 6.0/5.0; // better than 5/4 because
+                             // this way 10 is smaller
+      sliderNumVal += 6.0;
+    }
+    sliderNumVal = Math.floor(sliderNumVal);
+//     var roundedVal = Math.round(newVal * 19.0 / 18.0 - .1);
+    if (sliderNumVal < 1) { sliderNumVal = 1 }
+    $(element).slider("value", sliderPosVal);
+    $( "#" + sliderId + "_amount_hidden" ).val(sliderNumVal);
+    $( "#" + sliderId + "_amount_shown" ).html(sliderNumVal);
   };
   // $(selector).attr('data-name','value')
   var slide = function(element, delay) {
@@ -165,7 +183,7 @@ var ready = function() {
   $( ".imp_slider" ).slider({
     value:3, min: 1, max: 10, step: .1,
     create: function( event, ui ) { // set initial value
-      setSliderVal(this, 3);
+      setSliderVal(this, null);
     },
     slide: function( event, ui ) { // called on mouse move
       $(this).attr("data-mousedragging", "true")

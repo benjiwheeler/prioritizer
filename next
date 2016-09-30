@@ -6,7 +6,6 @@ can set fear in sliders
 logic notes a session starting, reshuffles to put some shorter ones at top
 
 
-when edit should set vals on sliders to existing vals
 on next tag, do new, should fill in with that tag
 done with create new, should go back to prev tag
 need duration and difficultywg4panue;qpflnu0l8ptfUY]4641/.51h651
@@ -46,10 +45,7 @@ still active if daily and no completions from today!
 
 new task page: walks you through, so tab, return or space all advance you
 user can navigate to next from edit, split, tasks overall
-user can type keyboard shortcut "f" for finished task;
 user can type keyboard shortcut "t" to start timer; (at end, it prompts you to choose among the shortcuts)
-user can type "w" for worked on it;
-user can type "e" for "edit":
 skip shows screen of choices:  posptone, split, explain.
 "p" to postpone it, "s" to split, "e" for explain
 user can type "n"  to create new task at any time
@@ -107,6 +103,10 @@ can make subtasks while editing a task
 Facebook longer login?
 
 done:
+when edit should set vals on sliders to existing vals
+user can type "w" for worked on it;
+user can type "e" for "edit":
+user can type keyboard shortcut "f" for finished task;
 user can see just one
 user can enter new task
 new task can include tags as string
