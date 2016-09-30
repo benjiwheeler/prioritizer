@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   end
 
   def User.USER_TASKS_REDIS_VALID_SECS
-    10
+    1000
   end
 
   def to_s

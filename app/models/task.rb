@@ -102,7 +102,9 @@ class Task < ActiveRecord::Base
 
   def raw_position_amount
     if self.position.present?
-      return 0.1 - 0.1 * self.position
+      return 0
+# reenable when i fix position! now the positions are all over the place...
+#      return 0.1 - 0.1 * self.position
     else
       return 0
     end
@@ -175,6 +177,7 @@ class Task < ActiveRecord::Base
     imp += self.postponed_recently_amount
     imp += self.addressed_recently_amount
     imp += self.position_amount
+    binding.pry
     return imp
   end
 
