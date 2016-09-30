@@ -33,7 +33,7 @@ class Task < ActiveRecord::Base
   end
 
   def Task.attempt_typical_extension
-    60 * 60 * 24 * 5
+    60 * 60 * 24 * 2
   end
 
   def Task.default_imp
@@ -100,6 +100,14 @@ class Task < ActiveRecord::Base
     return false
   end
 
+  def attempts_report_done_amount
+    if self.attempts_report_done?
+      -1.0
+    else
+      0.0
+    end
+  end
+
   def raw_position_amount
     if self.position.present?
       return 0
@@ -159,21 +167,21 @@ class Task < ActiveRecord::Base
     imp = 0.25
     num_fields = 0
     if !self.days_imp.nil?
-      imp += self.days_imp
+      imp += self.days_imp / 10.0
       num_fields = num_fields + 1.0
     end
     if !self.weeks_imp.nil?
-      imp += self.weeks_imp
+      imp += self.weeks_imp / 10.0
       num_fields = num_fields + 1.0
     end
     if !self.ever_imp.nil?
-      imp += self.ever_imp
+      imp += self.ever_imp / 10.0
       num_fields = num_fields + 1.0
     end
     if num_fields > 0
       imp = imp / (num_fields + 0.00001)
     end
-    imp -= 1.0 if self.attempts_report_done?
+    imp += self.attempts_report_done_amount
     imp += self.postponed_recently_amount
     imp += self.addressed_recently_amount
     imp += self.position_amount
