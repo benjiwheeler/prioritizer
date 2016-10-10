@@ -1,4 +1,8 @@
 editing should use actual tags not randos!
+fb login -> next
+main page -> next
+
+why fb logout?
 
 can set time/size/length in sliders
 can set fear in sliders
@@ -30,6 +34,9 @@ recurring tasks:
 reduce ev untagged by 10%
 handle last email in inbox/drafts/starred/important
 etc.
+
+"tags" -> "place"
+"anytime" -> "anywhere"; will show up in any context
 
 countdown:
 play/pause

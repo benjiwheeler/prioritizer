@@ -10,6 +10,9 @@ class AuthorizationsController < Devise::OmniauthCallbacksController
       existing_auth.update_tokens(oauth_params)
       relevant_auth = existing_auth
       notice = "Welcome back, #{relevant_auth.user}!"
+      if relevant_auth.oauth_expires_at.present?
+        notice += "Login good until #{relevant_auth.expire_s}"
+      end
     else # no existing auth; this auth is for a new source!
       # we probably have a current_user... who may be a guest or registered.
       ensure_user # at least start with a guest!
@@ -22,6 +25,9 @@ class AuthorizationsController < Devise::OmniauthCallbacksController
           # upgrade user from guest to registered
           current_user.register_with_key_and_save(relevant_auth.user_key)
           notice = "Welcome, #{relevant_auth.user}!"
+          if relevant_auth.oauth_expires_at.present?
+            notice += "Login good until #{relevant_auth.expire_s}"
+          end
         end
       else
         notice = "Error: failed to create any user at all!"

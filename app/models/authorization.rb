@@ -45,10 +45,12 @@ class Authorization < ActiveRecord::Base
     newauth
   end
 
+  # existing auth with this provider found by Authorization.find_from_oauth;
+  # so we just update.
   def update_tokens(oauth_params)
 #    binding.pry
     self.oauth_token = oauth_params.credentials.token
-    # facebook
+    # facebook, google provide this; twitter, linkedin don't
     self.oauth_expires_at = Time.at(oauth_params.credentials.expires_at) if oauth_params.credentials.expires_at
     # twitter
     self.oauth_secret = oauth_params.credentials.secret if oauth_params.credentials.secret
@@ -73,6 +75,11 @@ class Authorization < ActiveRecord::Base
       retval = self.name
     end
     retval
+  end
+
+  # human readable expiry
+  def expire_s
+    self.oauth_expires_at
   end
 
 end
