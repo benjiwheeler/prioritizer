@@ -3,9 +3,10 @@ fb login -> next
 main page -> next
 
 why fb logout? plan:
- * print expiry strings
- * investigate why diff
- * if same, look at fb response in logs
+ * seems to be session issue on mobile chrome...
+ * try on mobile safari
+ * inspect cookies on android using http://stackoverflow.com/questions/36101403/how-do-i-extract-and-view-cookies-from-android-chrome
+
 
 can set time/size/length in sliders
 can set fear in sliders
