@@ -42,7 +42,8 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # added this so that local precomiling in production vs development mode store in different places
-  config.assets.prefix = "/dev-assets"
+  # NOTE: DISABLED FOR EXPEDIENCY, TURN BACK ON FOR PRODUCTION
+  # config.assets.prefix = "/dev-assets"
 
   config.hardcoded_current_user_key = "dev"
 
