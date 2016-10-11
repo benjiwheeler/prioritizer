@@ -49,6 +49,7 @@ protected
   def logged_in?
     # was:
     # current_user != nil && current_user.registered?
+    @current_session_user_id_debug = session[:user_id]
     @current_user_from_session_debug = User.find_by_id(session[:user_id])
     @current_user_debug = current_user
     @current_user_found_debug = current_user?
