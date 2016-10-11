@@ -8,7 +8,8 @@ Bundler.require(*Rails.groups)
 
 # Invokes rake bower:resolve before precompilation. Defaults to false
 BowerRails.configure do |bower_rails|
-  bower_rails.resolve_before_precompile = true
+  # NOTE: DISABLED FOR EXPEDIENCY, TURN BACK ON FOR PRODUCTION
+  # bower_rails.resolve_before_precompile = true
 end
 
 module Prioritizer

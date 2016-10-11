@@ -52,7 +52,7 @@ protected
     @current_user_from_session_debug = User.find_by_id(session[:user_id])
     @current_user_debug = current_user
     @current_user_found_debug = current_user?
-    @current_user_registered_debug = current_user.registered?
+    @current_user_registered_debug = current_user? && current_user.registered?
     current_user? && current_user.registered?
   end
   def create_guest
