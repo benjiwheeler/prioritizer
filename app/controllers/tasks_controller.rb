@@ -72,9 +72,12 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @ordered_tasks = current_user.n_ordered_tasks!(@tag_name)
-    #@task = Task.new # for task form
-    Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
+    @ordered_tasks = []
+    if current_user?
+      @ordered_tasks = current_user.n_ordered_tasks!(@tag_name)
+      #@task = Task.new # for task form
+      Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
+    end
   end
 
   # GET /tasks/1
