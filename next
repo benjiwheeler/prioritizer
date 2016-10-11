@@ -2,7 +2,10 @@ editing should use actual tags not randos!
 fb login -> next
 main page -> next
 
-why fb logout?
+why fb logout? plan:
+ * print expiry strings
+ * investigate why diff
+ * if same, look at fb response in logs
 
 can set time/size/length in sliders
 can set fear in sliders
