@@ -15,15 +15,15 @@ class TasksController < ApplicationController
     @task = nil
     if current_user?
       @task = current_user.get_next_task!(@tag_name)
+      if @task.blank?
+        respond_to do |format|
+          format.html { redirect_to new_task_path(tag: @tag_name), notice: 'No more tasks; create one?' }
+        end
+      end
     else
       respond_to do |format|
         format.html { head :no_content, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
-    end
-    if @task.blank?
-      respond_to do |format|
-        format.html { redirect_to new_task_path(tag: @tag_name), notice: 'No more tasks; create one?' }
       end
     end
     # else display next task view
