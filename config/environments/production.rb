@@ -34,13 +34,9 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  # NOTE: turn off after debugging; just trying to make deployment to heroku fasetr...
-  config.assets.debug = true
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   # config.assets.compile = false
-  # NOTE: turn off after debugging; just trying to make deployment to heroku fasetr...
-  config.assets.compile = false
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
