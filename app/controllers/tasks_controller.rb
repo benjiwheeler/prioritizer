@@ -12,7 +12,15 @@ class TasksController < ApplicationController
 
   def next
     cookies["tempname"] = { value: "tempval", expires: 25.days.from_now }
-    @task = current_user.get_next_task!(@tag_name)
+    @task = nil
+    if current_user?
+      @task = current_user.get_next_task!(@tag_name)
+    else
+      respond_to do |format|
+        format.html { render :new }
+        format.json { render json: @task.errors, status: :unprocessable_entity }
+      end
+    end
     if @task.blank?
       respond_to do |format|
         format.html { redirect_to new_task_path(tag: @tag_name), notice: 'No more tasks; create one?' }
