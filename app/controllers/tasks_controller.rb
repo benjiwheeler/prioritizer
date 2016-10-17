@@ -17,7 +17,7 @@ class TasksController < ApplicationController
       @task = current_user.get_next_task!(@tag_name)
     else
       respond_to do |format|
-        format.html { render :new }
+        format.html { head :no_content, status: :unprocessable_entity }
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
