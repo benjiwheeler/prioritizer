@@ -11,7 +11,6 @@ class TasksController < ApplicationController
   end
 
   def next
-    cookies["tempname"] = { value: "tempval", expires: 25.days.from_now }
     @task = nil
     if current_user?
       @task = current_user.get_next_task!(@tag_name)

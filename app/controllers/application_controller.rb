@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
 protected
   def current_user
-    @current_user ||= User.find_by_id(session[:user_id])
+    @current_user ||= User.find_by_id(cookies[:user_id])
     # allow user to be hardcoded in development
     if @current_user.nil? \
         && defined?(Rails.configuration.hardcoded_current_user_key) \
@@ -52,6 +52,7 @@ protected
     @tempname_cookie_val = cookies["tempname"]
     @current_session_user_id_debug = session[:user_id]
     @current_user_from_session_debug = User.find_by_id(session[:user_id])
+    @current_user_from_cookie_debug = User.find_by_id(cookies[:user_id])
     @current_user_debug = current_user
     @current_user_found_debug = current_user?
     @current_user_registered_debug = current_user? && current_user.registered?
@@ -65,6 +66,7 @@ protected
   end
   def set_current_user(user)
     session[:user_id] = user.id
+    cookies[:user_id] = { value: user.id, expires: 30.days.from_now }
     @current_user = user
   end
   def set_current_user_with_merge(other_user)
@@ -82,11 +84,8 @@ protected
   def user_id_str
     @user_id_str ||= set_user_id_str
   end
-  def get_session_token
-    ensure_user
-    session[:user_id]
-  end
-  helper_method :all_providers, :user_must_exist!, :user_must_be_logged_in, :current_user, :current_user?, :ensure_user, :create_guest, :logged_in?, :set_current_user, :set_current_user_with_merge, :set_user_id_str, :user_id_str, :get_session_token
+
+  helper_method :all_providers, :user_must_exist!, :user_must_be_logged_in, :current_user, :current_user?, :ensure_user, :create_guest, :logged_in?, :set_current_user, :set_current_user_with_merge, :set_user_id_str, :user_id_str
 
   # handle failure of csrf authenticity token, per
   # https://technpol.wordpress.com/2014/04/17/rails4-angularjs-csrf-and-devise/
