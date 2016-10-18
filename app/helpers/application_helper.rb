@@ -35,9 +35,12 @@ module ApplicationHelper
           haml_tag :input, type: "hidden", id: amount_hidden_id, name: "task[#{attribute_s}]", value: "#{@task[attribute_s]}"
         end
       end
-      haml_tag :div, class: "field.col-xs-9"
+      haml_tag :div, class: "field.col-xs-9" do
+        haml_tag :div, id: "days_imp_slider", class: "imp_slider", style: "margin-top: 3px"
     end
   end
+
+
 
   def toggleable_form_section(attribute, actual_detail_level,
     exclude_if_below_level, collapse_if_below_level,
