@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160728230911) do
+ActiveRecord::Schema.define(version: 20161017220428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,10 @@ ActiveRecord::Schema.define(version: 20160728230911) do
     t.integer  "user_id"
     t.integer  "position"
     t.boolean  "done",         default: false
+    t.decimal  "vital"
+    t.decimal  "immediate"
+    t.decimal  "heavy"
+    t.decimal  "long"
   end
 
   add_index "tasks", ["due"], name: "index_tasks_on_due", using: :btree

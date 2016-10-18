@@ -1,3 +1,28 @@
+expand task ratings to
+ * vital
+ * immediate
+ * heavy
+ * long
+ * target time of day...
+
+migrate existing gasks to default heaviness etc.?
+
+session detection: new work session after some timeout, using redis or last attempt times?
+
+ability to sort and find a spark, in the code...
+ * make sorted list of tasks by heavy/longness; some rand factor?
+ * make hash of adjustments for ind'l items: one in each of first 3 percentiles
+
+add spark task via session boost?
+
+daily tasks:
+ * ability to mark as "daily" when creating/editing
+ * can set hour it happens, not more fine
+ * daily "finished" isn't done... so don't mark it done, just add an attempt.
+ * daily "postponed" is until later that day, not longer!
+ * static tasks; penalize if was "done" within current calendar day, so doesn't get picked again.
+ * boost overall, or if near its target time.
+
 editing should use actual tags not randos!
 fb login -> next
 main page -> next

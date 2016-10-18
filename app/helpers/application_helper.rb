@@ -22,6 +22,23 @@ module ApplicationHelper
     end
   end
 
+  def form_slider(attribute_s, label_html)
+    slider_id = attribute_s + "_slider"
+    amount_shown_id = slider_id + "_amount_shown"
+    amount_hidden_id = slider_id + "_amount_hidden"
+    haml_tag :div, class: "row", style: "margin-top: 5px" do
+      haml_tag :div, class: "col-xs-3" do
+        haml_tag :div, style: "padding-left: 5px" do
+          haml_tag :i, class: "icon-down-right-arrow", style: "float: left; position: relative"
+          haml_concat label_html
+          haml_tag :span, id: amount_shown_id, style: "border:0; color: #f6931f; font-weight:bold;"
+          haml_tag :input, type: "hidden", id: amount_hidden_id, name: "task[#{attribute_s}]", value: "#{@task[attribute_s]}"
+        end
+      end
+      haml_tag :div, class: "field.col-xs-9"
+    end
+  end
+
   def toggleable_form_section(attribute, actual_detail_level,
     exclude_if_below_level, collapse_if_below_level,
     label_html, input_html)
