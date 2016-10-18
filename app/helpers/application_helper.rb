@@ -37,6 +37,7 @@ module ApplicationHelper
       end
       haml_tag :div, class: "field.col-xs-9" do
         haml_tag :div, id: "days_imp_slider", class: "imp_slider", style: "margin-top: 3px"
+      end
     end
   end
 
