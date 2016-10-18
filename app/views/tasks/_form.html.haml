@@ -28,9 +28,9 @@
           %b really,
           if not done within:
 
-    slider("days_imp", task_builder.label(:days))
-    slider("weeks_imp", task_builder.label(:weeks))
-    slider("ever_imp", task_builder.label(:ever))
+    - slider("days_imp", task_builder.label(:days))
+    - slider("weeks_imp", task_builder.label(:weeks))
+    - slider("ever_imp", task_builder.label(:ever))
 
   - if view_detail_level > 8
     .field
