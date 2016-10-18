@@ -7,7 +7,10 @@ expand task ratings to
 
 migrate existing gasks to default heaviness etc.?
 
-session detection: new work session after some timeout, using redis or last attempt times?
+session detection
+ * record tiee of last meaningful action with login in a cookie
+ * function to decide there is a new session, if last login was after thresh
+ * in ordering, use "is new" boolean to decide whether to do spark task step.
 
 ability to sort and find a spark, in the code...
  * make sorted list of tasks by heavy/longness; some rand factor?
