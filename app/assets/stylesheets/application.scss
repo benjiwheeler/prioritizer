@@ -16,7 +16,8 @@
  * from Bower:
  * this is weird and needs special treatment:
  * disabled...
- * disabled: = require_ tree ../../../vendor/assets/bower_components/jquery-ui/themes/base
+ * enabled:
+ *= require_ tree ../../../vendor/assets/bower_components/jquery-ui/themes/base
  * these are resolved thanks to bower-rails:
  *= require bootstrap-sass-official
  *= require bootstrap-datepicker
