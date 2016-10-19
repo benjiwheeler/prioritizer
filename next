@@ -1,16 +1,13 @@
 expand task ratings to
- * vital
- * immediate
- * heavy
- * long
  * target time of day...
-
-migrate existing gasks to default heaviness etc.?
 
 session detection
  * record tiee of last meaningful action with login in a cookie
  * function to decide there is a new session, if last login was after thresh
- * in ordering, use "is new" boolean to decide whether to do spark task step.
+ * if so, reset cookie of "tasks worked on in session" to 0
+ * when worked or done action, increment that
+ * in ordering, use "tasks worked on" to decide whether to do spark task step.
+ * that way, not relying on state.
 
 ability to sort and find a spark, in the code...
  * make sorted list of tasks by heavy/longness; some rand factor?
