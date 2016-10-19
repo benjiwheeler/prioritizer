@@ -28,9 +28,10 @@
           %b really,
           if not done within:
 
-    - form_slider("days_imp", task_builder.label(:days))
-    - form_slider("weeks_imp", task_builder.label(:weeks))
-    - form_slider("ever_imp", task_builder.label(:ever))
+    - form_slider("vital", task_builder.label(:vital))
+    - form_slider("immediate", task_builder.label(:immediate))
+    - form_slider("heavy", task_builder.label(:heavy))
+    - form_slider("long", task_builder.label(:long))
 
   - if view_detail_level > 8
     .field

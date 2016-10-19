@@ -35,7 +35,7 @@ module ApplicationHelper
           haml_tag :input, type: "hidden", id: amount_hidden_id, name: "task[#{attribute_s}]", value: "#{@task[attribute_s]}"
         end
       end
-      haml_tag :div, class: "field.col-xs-9" do
+      haml_tag :div, class: "field col-xs-9" do # note that "field" probably not necessary
         haml_tag :div, id: slider_id, class: "imp_slider", style: "margin-top: 3px"
       end
     end
