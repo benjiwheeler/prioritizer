@@ -24,7 +24,7 @@
 // bootstrap
 //= require bootstrap-sass-official
 //= require bootstrap-datepicker
-//= require clockpicker
+//= require jquery-timepicker-wvega
 //
 // third party
 //= require select2
@@ -229,6 +229,19 @@ var ready = function() {
     daysOfWeekHighlighted: "0,6",
     autoclose: true
   });
+
+$('input#due_time_input').timepicker({
+    timeFormat: 'h:mm p',
+    interval: 30,
+    minTime: '5',
+    maxTime: '10:00pm',
+    defaultTime: '10',
+    startTime: '9',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true
+});
+
 
   // ***********************
   //     COUNTDOWN

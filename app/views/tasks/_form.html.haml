@@ -43,6 +43,7 @@
 
   - toggleable_form_section(:notes, view_detail_level, 3, 7, task_builder.label(:notes), task_builder.text_area(:notes, style: "width: 100%"))
   - toggleable_form_section(:due, view_detail_level, 3, 7, task_builder.label(:due), task_builder.text_field(:due, id: "due_date_input", class: "form-control"))
+  - toggleable_form_section(:time, view_detail_level, 3, 7, task_builder.label(:time), task_builder.text_field(:time, id: "due_time_input", class: "form-control"))
   - if defined?(show_children) && !show_children.nil?
     - toggleable_form_section(:children, view_detail_level, 3, 7, task_builder.label(:children), render("children_section", task: @task, task_builder: task_builder) )
 
