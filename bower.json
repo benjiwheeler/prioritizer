@@ -3,8 +3,8 @@
     "name": "bower-rails generated vendor assets",
     "dependencies": {
       "bootstrap-sass-official": "~3.3",
+      "bootstrap-datepicker": "~1.6",
       "jquery-timepicker-wvega": "*",
-      "clockpicker": "~0.0.7",
       "font-awesome": "~4.0.3",
       "jquery-ui": "~1.11",
       "jquery": "~2.1",
