@@ -23,6 +23,9 @@ daily tasks:
  * static tasks; penalize if was "done" within current calendar day, so doesn't get picked again.
  * boost overall, or if near its target time.
 
+worked on it should be like 6 hours
+postponed should be additive, with longer times each time, from 2->6->24->100->500 hours
+
 reenable redirect on no login
 
 editing should use actual tags not randos!
