@@ -390,6 +390,7 @@ $('input#due_time_input').timepicker({
   }
   createFormSectionToggle('notes');
   createFormSectionToggle('due');
+  createFormSectionToggle('time');
   createFormSectionToggle('children');
 
   // ***********************

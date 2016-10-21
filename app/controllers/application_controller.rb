@@ -24,13 +24,11 @@ class ApplicationController < ActionController::Base
 protected
   def current_user
     @current_user ||= User.find_by_id(cookies[:user_id])
-    binding.pry
     # allow user to be hardcoded in development
     if @current_user.nil? \
         && Rails.configuration.hardcoded_current_user_key.present?
       hardcoded_user = User.find_by(key: Rails.configuration.hardcoded_current_user_key)
       set_current_user(hardcoded_user)
-      binding.pry
     end
     @current_user
   end
@@ -45,7 +43,6 @@ protected
         && current_user == User.find_by(key: Rails.configuration.hardcoded_current_user_key)
       true
     else
-      binding.pry
       false
     end
   end
