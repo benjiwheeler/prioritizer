@@ -28,6 +28,7 @@ module Prioritizer
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
+    config.hardcoded_current_user_key = nil
 
     # load custom modules
     config.autoload_paths << File.join(Rails.root, "lib", "classes")

@@ -15,8 +15,8 @@ class ApplicationController < ActionController::Base
       if current_user_is_dev?
         # do nothing
       else
-        # NOTE: temporarily disabled
-        #redirect_to login_path
+        # NOTE: was temporarily disabled
+        redirect_to login_path
       end
     end
   end
@@ -24,25 +24,28 @@ class ApplicationController < ActionController::Base
 protected
   def current_user
     @current_user ||= User.find_by_id(cookies[:user_id])
+    binding.pry
     # allow user to be hardcoded in development
     if @current_user.nil? \
-        && defined?(Rails.configuration.hardcoded_current_user_key) \
         && Rails.configuration.hardcoded_current_user_key.present?
       hardcoded_user = User.find_by(key: Rails.configuration.hardcoded_current_user_key)
       set_current_user(hardcoded_user)
+      binding.pry
     end
     @current_user
   end
+
   def current_user?
     current_user != nil
   end
+
   def current_user_is_dev?
-    if @current_user.present? \
-        && defined?(Rails.configuration.hardcoded_current_user_key) \
+    if current_user.present? \
         && Rails.configuration.hardcoded_current_user_key.present? \
-        && @current_user == User.find_by(key: Rails.configuration.hardcoded_current_user_key)
+        && current_user == User.find_by(key: Rails.configuration.hardcoded_current_user_key)
       true
     else
+      binding.pry
       false
     end
   end
