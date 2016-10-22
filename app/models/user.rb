@@ -12,25 +12,8 @@ class User < ActiveRecord::Base
     "user:#{self.id}"
   end
 
-  def redis_tasks_key_prefix
-    self.redis_key + "::tasks"
-  end
-
-  def User.USER_TASKS_REDIS_VALID_SECS
-    60 * 60
-  end
-
   def to_s
     self.name
-  end
-
-  def redis_user_tag_tasks_key(tag_str)
-    self.redis_tasks_key_prefix + "::tag:" + tag_str.to_s + "::task_ids"
-  end
-
-  def expire_redis_tasks_keys!
-    keys = $redis.keys "#{redis_tasks_key_prefix}*"
-    $redis.del(*keys) unless keys.empty?
   end
 
   def name
@@ -120,78 +103,6 @@ class User < ActiveRecord::Base
     d { user_b }
     user_b.delete
     return user_a
-  end
-
-  # task handling
-  def n_ordered_tasks!(tag_str = nil, n = :all)
-    cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key(tag_str), 0, -1)
-    if cached_ordered_task_ids.blank?
-      Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key(tag_str)}")
-      cached_ordered_task_ids = self.generate_ordered_tasks!(tag_str)
-    else
-      Rails.logger.warn("redis tag #{self.redis_user_tag_tasks_key(tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
-    end
-    n_ordered_task_ids = cached_ordered_task_ids
-#    n_ordered_tasks = n_ordered_task_ids.map { |id| Task.find_by(id: id) }
-    n_ordered_tasks = n_ordered_task_ids.reduce([]) { |memo, id|
-      thisTask = Task.find_by(id: id)
-      if thisTask.present? && thisTask.done == false
-        memo.push thisTask
-      else
-        memo
-      end
-    }
-    if n.is_a? Numeric
-      n_ordered_tasks = n_ordered_tasks.first(n)
-    end
-
-    Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
-    return n_ordered_tasks
-  end
-
-  def first_ordered_task!(tag_str = nil)
-    one_ordered_task_array = self.n_ordered_tasks!(tag_str, 1)
-    if one_ordered_task_array.blank?
-      Rails.logger.warn("user:first_ordered_task!: no tasks for user #{self}")
-      return nil
-    else
-      return one_ordered_task_array.first
-    end
-  end
-
-  def generate_ordered_tasks!(tag_str = nil)
-    sorted_tasks = self.tasks
-    if tag_str.present?
-      sorted_tasks = sorted_tasks.tagged_with(tag_str)
-    end
-    sorted_tasks.each do |task|
-      task.generate_importance! #+ Task.random_score
-    end
-    sorted_tasks = sorted_tasks.sort do |taskA, taskB|
-      #Rails.logger.warn("during sorting: score of id #{task.id} is #{score}")
-      taskA.overall_imp + taskA.random_amount <=> taskB.overall_imp + taskB.random_amount
-    end
-    Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
-    sorted_tasks.each do |task|
-      Rails.logger.warn("after sorting: score of id #{task.id} is #{task.overall_imp}")
-    end.reverse!
-    sorted_tasks.each do |task|
-      Rails.logger.warn("redis adding task #{task.id} to #{self.redis_user_tag_tasks_key(tag_str)}")
-      $redis.rpush(self.redis_user_tag_tasks_key(tag_str), task.id);
-    end
-    $redis.expire self.redis_user_tag_tasks_key(tag_str), User.USER_TASKS_REDIS_VALID_SECS
-    return sorted_tasks
-  end
-
-  def get_next_task!(tag_str = nil)
-    first_ordered_task = self.first_ordered_task!(tag_str)
-    if first_ordered_task.present?
-      return first_ordered_task.first_youngest_descendent({done: false})
-#      return first_ordered_task.first_task_in_family_tree({done: false})
-    else
-      Rails.logger.error("user:get_next_task!: error: first_ordered_task is nil")
-      return nil
-    end
   end
 
   def tags

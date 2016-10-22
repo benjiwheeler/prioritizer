@@ -230,13 +230,12 @@ var ready = function() {
     autoclose: true
   });
 
-$('input#due_time_input').timepicker({
+$('input#time_of_day_input').timepicker({
     timeFormat: 'h:mm p',
     interval: 30,
     minTime: '5',
     maxTime: '10:00pm',
-    defaultTime: '10',
-    startTime: '9',
+    startTime: '5',
     dynamic: false,
     dropdown: true,
     scrollbar: true
@@ -390,7 +389,7 @@ $('input#due_time_input').timepicker({
   }
   createFormSectionToggle('notes');
   createFormSectionToggle('due');
-  createFormSectionToggle('time');
+  createFormSectionToggle('time_of_day');
   createFormSectionToggle('children');
 
   // ***********************

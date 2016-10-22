@@ -2,6 +2,8 @@ class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
   before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :split]
   before_action :set_task, only: [:done, :postpone, :worked, :split, :show, :edit, :update, :destroy]
+  before_action :record_significant_action, only: [:done, :postpone, :worked, :split, :create, :update, :destroy]
+  before_action :record_instance_of_work, only: [:done, :worked]
 
   def sort
     params[:task].each_with_index do |id, index|
@@ -13,7 +15,7 @@ class TasksController < ApplicationController
   def next
     @task = nil
     if current_user?
-      @task = current_user.get_next_task!(@tag_name)
+      @task = TaskOrdering.get_next_task!(current_user, @tag_name)
       if @task.blank?
         respond_to do |format|
           format.html { redirect_to new_task_path(tag: @tag_name), notice: 'No more tasks; create one?' }
@@ -33,6 +35,7 @@ class TasksController < ApplicationController
     @task.attempts << Attempt.new(completed: true)
     respond_to do |format|
       if @task.save
+        TaskOrdering.expire_redis_tasks_keys!(current_user)
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was marked done.' }
       else
         format.html { render :edit }
@@ -49,6 +52,7 @@ class TasksController < ApplicationController
     @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
     respond_to do |format|
       if @task.save
+        TaskOrdering.expire_redis_tasks_keys!(current_user)
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was postponed.' }
         format.json { render :show, status: :created, location: @task }
       else
@@ -65,6 +69,7 @@ class TasksController < ApplicationController
     @task.weeks_imp = 0.1 + 0.9 * @task.weeks_imp
     respond_to do |format|
       if @task.save
+        TaskOrdering.expire_redis_tasks_keys!(current_user)
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was worked on.' }
         format.json { render :show, status: :created, location: @task }
       else
@@ -82,7 +87,7 @@ class TasksController < ApplicationController
   def index
     @ordered_tasks = []
     if current_user?
-      @ordered_tasks = current_user.n_ordered_tasks!(@tag_name)
+      @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
       #@task = Task.new # for task form
       Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
     end
@@ -160,8 +165,27 @@ private
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def task_params
-    params.require(:task).permit(:id, :name, :notes, :due, :parent_id, :days_imp, :weeks_imp, :ever_imp, :position, :exp_dur_mins, :min_dur_mins, tag_list: [],
-     :children_attributes => [:id, :name, :notes, :due, :parent_id, :days_imp, :weeks_imp, :ever_imp, :position, :exp_dur_mins, :min_dur_mins, tag_list: []])
+    # note that children do NOT have:
+    # * is_daily
+    good_params = params.require(:task).permit(:id, :name, :notes, :due, :time_of_day, \
+      :parent_id, :vital, :immediate, :heavy, :long, :position, :exp_dur_mins, :min_dur_mins, \
+      :is_daily, tag_list: [], \
+     :children_attributes => [:id, :name, :notes, :due, :time_of_day, :parent_id, \
+      :vital, :immediate, :heavy, :long, :position, :exp_dur_mins, :min_dur_mins, tag_list: []])
+
+    # need to convert tome_of_day from string to num seconds
+    if good_params.has_key? :time_of_day
+      good_params[:time_of_day] = Task.time_param_to_num_secs(good_params[:time_of_day])
+    end
+    if good_params.has_key? :children_attributes
+      good_params[:children_attributes].each do |child_key, child_params|
+        if good_params[:children_attributes][child_key].has_key? :time_of_day
+          good_params[:children_attributes][child_key][:time_of_day] = \
+            Task.time_param_to_num_secs(good_params[:children_attributes][child_key][:time_of_day])
+        end
+      end
+    end
+    return good_params
   end
 
 end

@@ -1,11 +1,5 @@
-expand task ratings to
- * target time of day...
 
 session detection
- * record tiee of last meaningful action with login in a cookie
- * function to decide there is a new session, if last login was after thresh
- * if so, reset cookie of "tasks worked on in session" to 0
- * when worked or done action, increment that
  * in ordering, use "tasks worked on" to decide whether to do spark task step.
  * that way, not relying on state.
 
@@ -22,6 +16,8 @@ daily tasks:
  * daily "postponed" is until later that day, not longer!
  * static tasks; penalize if was "done" within current calendar day, so doesn't get picked again.
  * boost overall, or if near its target time.
+
+actually use vital, important, etc.
 
 worked on it should be like 6 hours
 postponed should be additive, with longer times each time, from 2->6->24->100->500 hours
@@ -148,6 +144,11 @@ can make subtasks while editing a task
 Facebook longer login?
 
 done:
+ * record tiee of last meaningful action with login in a cookie
+ * function to decide there is a new session, if last login was after thresh
+ * if so, reset cookie of "tasks worked on in session" to 0
+ * when worked or done action, increment that
+
 when edit should set vals on sliders to existing vals
 user can type "w" for worked on it;
 user can type "e" for "edit":

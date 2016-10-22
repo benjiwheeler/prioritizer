@@ -3,9 +3,69 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  ############################################################
+  #                    Auth
+  ############################################################
+
   def all_providers
     [:twitter, :facebook]
   end
+
+  ############################################################
+  #                    Practical Session
+  ############################################################
+
+  # need a complete break of this long to reset session
+  def session_timeout_seconds
+    60 * 60 * 0.5
+  end
+
+  # always know how long it's been since a significant action
+  # not really used at the moment
+  def record_significant_action
+    cookies[:last_significant_action_secs] = { value: Time.now.to_i, expires: 1.hours.from_now }
+  end
+
+  # not really used at the moment
+  def secs_since_significant_action
+    ret_val = 86400 # large num
+    if cookies[:last_significant_action_secs].present?
+      ret_val = Time.now.to_i - cookies[:last_significant_action_secs].to_i
+    end
+    return ret_val
+  end
+
+  # not really used at the moment
+  def is_new_practical_session
+    secs_since_significant_action > SESSION_TIMEOUT_SECONDS
+  end
+
+  # always know how many times we've achieved work in this session
+  def num_work_instances_in_session
+    @num_work_instances_in_session ||= 0
+    if @num_work_instances_in_session.blank? && cookies[:num_work_instances_in_session].present?
+      @num_work_instances_in_session = cookies[:num_work_instances_in_session].to_f
+    end
+    return @num_work_instances_in_session
+  end
+
+  # always know how many times we've achieved work in this session
+  def set_num_work_instances_in_session(new_val)
+    cookies[:num_work_instances_in_session] = { value: new_val, expires: session_timeout_seconds.seconds.from_now }
+    @num_work_instances_in_session = new_val
+  end
+
+  # always know how many times we've achieved work in this session
+  def record_instance_of_work
+    set_num_work_instances_in_session(num_work_instances_in_session + 1)
+  end
+
+
+  ############################################################
+  #                    Login-related
+  ############################################################
+
+public
   def user_must_exist!
     ensure_user
     redirect_to login_path unless current_user?
@@ -85,7 +145,9 @@ protected
     @user_id_str ||= set_user_id_str
   end
 
-  helper_method :all_providers, :user_must_exist!, :user_must_be_logged_in, :current_user, :current_user?, :ensure_user, :create_guest, :logged_in?, :set_current_user, :set_current_user_with_merge, :set_user_id_str, :user_id_str
+  ############################################################
+  #                    Security
+  ############################################################
 
   # handle failure of csrf authenticity token, per
   # https://technpol.wordpress.com/2014/04/17/rails4-angularjs-csrf-and-devise/
@@ -94,4 +156,12 @@ protected
     cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
     render :error => 'invalid token', :status => :unprocessable_entity
   end
+
+
+  ############################################################
+  #                    Expose helper functions
+  ############################################################
+
+  helper_method :all_providers, :user_must_exist!, :user_must_be_logged_in, :current_user, :current_user?, :ensure_user, :create_guest, :logged_in?, :set_current_user, :set_current_user_with_merge, :set_user_id_str, :user_id_str, :record_significant_action
+
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161017220428) do
+ActiveRecord::Schema.define(version: 20161021210550) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,6 +99,8 @@ ActiveRecord::Schema.define(version: 20161017220428) do
     t.decimal  "immediate"
     t.decimal  "heavy"
     t.decimal  "long"
+    t.integer  "time_of_day",  default: 32400
+    t.boolean  "is_daily",     default: false
   end
 
   add_index "tasks", ["due"], name: "index_tasks_on_due", using: :btree
