@@ -13,6 +13,7 @@ class TasksController < ApplicationController
   end
 
   def next
+    set_tag_menu_kind(:next)
     @task = nil
     if current_user?
       @task = TaskOrdering.get_next_task!(current_user, @tag_name)

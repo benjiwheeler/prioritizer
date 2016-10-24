@@ -13,3 +13,7 @@ end
 if dev_user.authorizations.count < 1
   dev_user.authorizations << Authorization.create(provider: "facebook", name: "dev", uid: 0)
 end
+all_tag = ActsAsTaggableOn::Tag.find_by(name: "all")
+if all_tag.blank?
+  all_tag = ActsAsTaggableOn::Tag.create(name: "all")
+end

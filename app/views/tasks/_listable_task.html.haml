@@ -1,20 +1,36 @@
 %tr
-  %td{style: "padding: .4em"}= task.name
-  %td{style: "padding: .4em"}= "%.2f" % task.get_overall_imp_alone!
-  %td{style: "padding: .4em"}
-    v:
-    = "%.2f" % task.vital
-    i:
-    = "%.2f" % task.immediate
-    h:
-    = "%.2f" % task.heavy
-    l:
-    = "%.2f" % task.long
-  %td{style: "padding: .4em"}= "%.2f" % task.get_session_rand!
-  %td{style: "padding: .4em"}= "%.2f" % task.attempts_report_done_amount
-  %td{style: "padding: .2em"}= "%.2f" % task.postponed_recently_amount
-  %td{style: "padding: .4em"}= "%.2f" % task.addressed_recently_amount
-  %td{style: "padding: .4em"}= "%.2f" % task.position_amount
-  %td{style: "padding: .4em"}= link_to 'Show', task
-  %td{style: "padding: .4em"}= link_to 'Edit', edit_task_path(task)
-  %td{style: "padding: .4em"}= link_to 'Destroy', task, :method => :delete, :data => { :confirm => 'Are you sure?' }
+  %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .1rem; padding-bottom: .9rem; vertical-align: top; line-height: 1em"}
+    = task.name
+    / v:
+  /   = "%.2f" % task.vital
+  /   i:
+  /   = "%.2f" % task.immediate
+  /   h:
+  /   = "%.2f" % task.heavy
+  /   l:
+  /   = "%.2f" % task.long
+  / %td{style: "padding: .4em"}= "%.2f" % task.get_session_rand!
+  / %td{style: "padding: .4em"}= "%.2f" % task.attempts_report_done_amount
+  / %td{style: "padding: .2em"}= "%.2f" % task.postponed_recently_amount
+  / %td{style: "padding: .4em"}= "%.2f" % task.addressed_recently_amount
+  / %td{style: "padding: .4em"}= "%.2f" % task.position_amount
+  - listable_circle_cell(task.vital, "#09bc36")
+  - listable_circle_cell(task.immediate, "#f9d507")
+  - listable_circle_cell(task.heavy, "#ed1409")
+  - listable_circle_cell(task.long, "#1061e5")
+  %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .1rem; padding-bottom: .5rem; vertical-align: top;"}
+    = link_to task_path(task), {class: "list-action-link"} do
+      .list-action-logo
+        = fa_icon "play-circle"
+  %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .1rem; padding-bottom: .5rem; vertical-align: top;"}
+    = link_to task_path(task), {:method => :delete, :data => { :confirm => 'Are you sure?' }, class: "list-action-link"} do
+      .list-action-logo
+        = fa_icon "times"
+  %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .1rem; padding-bottom: .5rem; vertical-align: top;"}
+    = link_to edit_task_path(task), {id: "edit_link", class: "list-action-link"} do
+      .list-action-logo
+        = fa_icon "pencil"
+  %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .1rem; padding-bottom: .5rem; vertical-align: top;"}
+    = link_to task_done_path(task), {method: :post, class: "list-action-link"} do
+      .list-action-logo
+        = fa_icon "check"

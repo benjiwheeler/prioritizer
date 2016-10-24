@@ -22,6 +22,19 @@ module ApplicationHelper
     end
   end
 
+  def listable_circle_cell(size_f, color_s)
+    smallest_size = 3
+    scale_factor = 1.5
+    size_f = 1 if size_f.blank?
+    size_f = scale_factor * (size_f.to_i + smallest_size)/(10.0 + smallest_size)
+    spacer_size = scale_factor * smallest_size/(10.0 + smallest_size)
+    spacer_size -= size_f / 2.0
+    spacer_size += 0.2 # extra spacing
+    haml_tag :td, style: "padding-left: .1rem; padding-right: .1rem; padding-top: .5rem; padding-bottom: .5rem; vertical-align: top;" do
+      haml_tag :div, class: "circle", style: "background-color: #{color_s}; width: #{size_f}em; height: #{size_f}em; margin-left: #{spacer_size}em; margin-top: #{spacer_size}em"
+    end
+  end
+
   def form_slider(attribute_s, label_html)
     slider_id = attribute_s + "_slider"
     amount_shown_id = slider_id + "_amount_shown"
@@ -40,8 +53,6 @@ module ApplicationHelper
       end
     end
   end
-
-
 
   def toggleable_form_section(attribute, actual_detail_level,
     exclude_if_below_level, collapse_if_below_level,

@@ -21,8 +21,8 @@ class TaskOrdering
   # but ease is heavily weighted.
   def TaskOrdering.tasks_ordered_by_ease!(user, tag_str = nil)
     sorted_tasks = user.tasks
-    if tag_str.present?
-      sorted_tasks = sorted_tasks.where(done: false).tagged_with(tag_str)
+    if tag_str.present? && tag_str != "all" # "all" is the same as no tag!
+      sorted_tasks = sorted_tasks.where(done: false).tagged_with([tag_str, "all"], :any => true) # "all" is always ok!
     end
     # sort with best first, worst last
     sorted_tasks = sorted_tasks.sort do |taskA, taskB|
@@ -50,7 +50,8 @@ class TaskOrdering
     by_ease_last_division_bonus = 0.0
     this_bonus = by_ease_first_division_bonus
     ease_index = 0
-    by_ease_num_to_give_bonus.times do
+    # only do it the min number of times we should
+    [by_ease_num_to_give_bonus, tasks_by_ease.count].min.times do
       if ease_index >= tasks_by_ease.count
         ease_index = tasks_by_ease.count - 1
       end
@@ -67,8 +68,8 @@ class TaskOrdering
     # get complete ordering with all factors considered
     #
     unsorted_tasks = user.tasks
-    if tag_str.present?
-      unsorted_tasks = unsorted_tasks.tagged_with(tag_str)
+    if tag_str.present? && tag_str != "all" # "all" is the same as no tag!
+      unsorted_tasks = unsorted_tasks.where(done: false).tagged_with([tag_str, "all"], :any => true) # "all" is always ok!
     end
     unsorted_tasks.each do |task|
       if task_bonuses.has_key?(task.id)

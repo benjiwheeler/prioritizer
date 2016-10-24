@@ -380,8 +380,20 @@ draggable item
 shortcuts
 ********************************* */
 
+.list-action-logo {
+  font-size: 2rem;
+}
+
 .action-logo {
   font-size: 3.5rem;
+}
+
+.list-action-link {
+  display: inline-block;
+  padding-left: 4px;
+  padding-right: 6px;
+  line-height: 175%;
+  font-weight: 400;
 }
 
 .action-link {
@@ -428,4 +440,21 @@ input.blend {
 
 
 
+/* *********************************
+edit-in-place hacks
+********************************* */
 
+
+.vertical-text {
+  transform: rotate(-45deg);
+  transform-origin: left top 0;
+  margin-left: 2em;
+  }
+
+.circle {
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+  background-color: green;
+  /* width and height can be anything, as long as they're equal */
+}

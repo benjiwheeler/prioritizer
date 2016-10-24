@@ -60,6 +60,27 @@ class ApplicationController < ActionController::Base
     set_num_work_instances_in_session(num_work_instances_in_session + 1)
   end
 
+  ############################################################
+  #                    Tag menu
+  ############################################################
+
+public
+  def set_tag_menu_kind(new_kind) # [:list, :next]
+    @tag_menu_kind = new_kind
+    end
+  def tag_menu_kind
+    @tag_menu_kind ||= :list
+  end
+  def tag_menu_tag_link_path(tag_name)
+    case tag_menu_kind
+    when :list
+     tasks_path(tag: tag_name)
+    when :next
+     next_task_path(tag: tag_name)
+   else
+     tasks_path(tag: tag_name)
+   end
+  end
 
   ############################################################
   #                    Login-related
@@ -162,6 +183,6 @@ protected
   #                    Expose helper functions
   ############################################################
 
-  helper_method :all_providers, :user_must_exist!, :user_must_be_logged_in, :current_user, :current_user?, :ensure_user, :create_guest, :logged_in?, :set_current_user, :set_current_user_with_merge, :set_user_id_str, :user_id_str, :record_significant_action
+  helper_method :all_providers, :user_must_exist!, :user_must_be_logged_in, :current_user, :current_user?, :ensure_user, :create_guest, :logged_in?, :set_current_user, :set_current_user_with_merge, :set_user_id_str, :user_id_str, :record_significant_action, :tag_menu_kind, :set_tag_menu_kind, :tag_menu_tag_link_path
 
 end

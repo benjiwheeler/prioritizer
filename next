@@ -1,14 +1,4 @@
 
-session detection
- * in ordering, use "tasks worked on" to decide whether to do spark task step.
- * that way, not relying on state.
-
-ability to sort and find a spark, in the code...
- * make sorted list of tasks by heavy/longness; some rand factor?
- * make hash of adjustments for ind'l items: one in each of first 3 percentiles
-
-add spark task via session boost?
-
 daily tasks:
  * ability to mark as "daily" when creating/editing
  * can set hour it happens, not more fine
@@ -32,12 +22,6 @@ why fb logout? plan:
  * seems to be session issue on mobile chrome...
  * try on mobile safari
  * inspect cookies on android using http://stackoverflow.com/questions/36101403/how-do-i-extract-and-view-cookies-from-android-chrome
-
-
-can set time/size/length in sliders
-can set fear in sliders
-
-logic notes a session starting, reshuffles to put some shorter ones at top
 
 
 on next tag, do new, should fill in with that tag
@@ -144,6 +128,8 @@ can make subtasks while editing a task
 Facebook longer login?
 
 done:
+List view should have information I actually want, links
+
  * record tiee of last meaningful action with login in a cookie
  * function to decide there is a new session, if last login was after thresh
  * if so, reset cookie of "tasks worked on in session" to 0
