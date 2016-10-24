@@ -388,14 +388,6 @@ shortcuts
   font-size: 3.5rem;
 }
 
-.list-action-link {
-  display: inline-block;
-  padding-left: 4px;
-  padding-right: 6px;
-  line-height: 175%;
-  font-weight: 400;
-}
-
 .action-link {
   display: inline-block;
   padding-left: 4px;
@@ -411,6 +403,15 @@ shortcuts
 
 .shortcut-link:hover::first-letter {
   border-bottom: none;
+}
+
+.action-rollover-link {
+ line-height: 1em;
+ text-decoration: none;
+}
+
+.action-rollover-link:hover {
+ text-decoration: underline;
 }
 
 /* *********************************

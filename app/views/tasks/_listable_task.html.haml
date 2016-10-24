@@ -1,6 +1,7 @@
 %tr
   %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .1rem; padding-bottom: .9rem; vertical-align: top; line-height: 1em"}
-    = task.name
+    = link_to task_path(task), {class: "action-rollover-link"} do
+      = task.name
     / v:
   /   = "%.2f" % task.vital
   /   i:
