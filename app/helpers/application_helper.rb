@@ -30,8 +30,8 @@ module ApplicationHelper
     spacer_size = scale_factor * smallest_size/(10.0 + smallest_size)
     spacer_size -= size_f / 2.0
     spacer_size += 0.2 # extra spacing
-    haml_tag :td, style: "padding-left: .1rem; padding-right: .1rem; padding-top: .5rem; padding-bottom: .5rem; vertical-align: top;" do
-      haml_tag :div, class: "circle", style: "background-color: #{color_s}; width: #{size_f}em; height: #{size_f}em; margin-left: #{spacer_size}em; margin-top: #{spacer_size}em"
+    haml_tag :td, style: "padding-left: .1rem; padding-right: .1rem; padding-top: .7rem; padding-bottom: .5rem; vertical-align: top;" do
+      haml_tag :div, class: "circle", style: "background-color: #{color_s}; width: #{size_f}em; height: #{size_f}em; margin-left: #{spacer_size}em; margin-top: #{spacer_size + 0.5}em"
     end
   end
 

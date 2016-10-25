@@ -7,7 +7,7 @@
 /       - tag_with_links(tag.name, (tag == @tag), true)
 
 
-= link_to next_task_path( (defined?(@tag) && @tag.present?) ? @tag.name : ""), {class: "list-action-link"} do
+= link_to next_task_path( (defined?(@tag) && @tag.present?) ? @tag.name : ""), {class: "action-link"} do
   .action-logo
     = fa_icon "play-circle"
   .shortcut-link Start
@@ -17,18 +17,18 @@
   .shortcut-link New Task
 
 / %p all tasks:
-%table{style:"margin-top: 2.5em"}
+%table{class: "table", style:"margin-top: 6rem"}
   %thead
     %tr
-      %th{class: "col-xs-4 col-md-4 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Task
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Vital
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Imm.
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Heavy
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Long
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Start
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Del.
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Edit
-      %th{class: "col-xs-1 col-md-1 vertical-text", style: "padding-left: .1em; padding-right: .1em; vertical-align: bottom; text-align: left"} Done
+      %th{class: "col-xs-4 col-md-4 list-header-text"} Task
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Vital
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Imm.
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Heavy
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Long
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Start
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Del.
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Edit
+      %th{class: "col-xs-1 col-md-1 list-header-text"} Done
   %tbody
     - @ordered_tasks.each do |task|
       = render partial: 'listable_task', locals: {task: task}

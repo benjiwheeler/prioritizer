@@ -446,11 +446,17 @@ edit-in-place hacks
 ********************************* */
 
 
-.vertical-text {
+.list-header-text {
   transform: rotate(-45deg);
   transform-origin: left top 0;
-  margin-left: 2em;
-  }
+  padding-left: .1em !important;
+  padding-right: .1em !important;
+  padding-top: .1em !important;
+  padding-bottom: .3em !important;
+  vertical-align: bottom;
+  text-align: left;
+  line-height: .8rem !important;
+}
 
 .circle {
   border-radius: 50%;
@@ -458,4 +464,21 @@ edit-in-place hacks
   height: 1em;
   background-color: green;
   /* width and height can be anything, as long as they're equal */
+}
+
+.break-text {
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+    -ms-word-break: break-all;
+    word-break: break-all;
+
+ /* Non standard for webkit */
+     word-break: break-word;
+
+    -webkit-hyphens: auto;
+       -moz-hyphens: auto;
+        -ms-hyphens: auto;
+            hyphens: auto;
+
+    width: 100%;
 }
