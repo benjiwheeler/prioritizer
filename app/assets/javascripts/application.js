@@ -604,22 +604,20 @@ $('input#time_of_day_input').timepicker({
   // enable jquery lettering
   $("title#title-blur").lettering();
 
-  var text = $("#jquerybuddy"),
-  numLetters = text.find("span").length;
+  var titleElem = $("title#title-blur"),
+  numTitleLetters = titleElem.find("span").length;
 
   function randomBlurize() {
-  text.find("span:nth-child(" + (Math.floor(Math.random()*numLetters)+1) + ")")
-    .animate({
-      'textShadowBlur': Math.floor(Math.random()*25)+4,
-      'textShadowColor': 'rgba(0,100,0,' + (Math.floor(Math.random()*200)+55) + ')'
-    });
-  // Call itself recurssively
-  setTimeout(randomBlurize, 100);
-  } // Call once
+    titleElem.find("span:nth-child(" + (Math.floor(Math.random()*numTitleLetters)+1) + ")")
+      .animate({
+        'textShadowBlur': Math.floor(Math.random()*25)+4,
+        'textShadowColor': 'rgba(0,100,0,' + (Math.floor(Math.random()*200)+55) + ')'
+      });
+      // Call itself recurssively
+      setTimeout(randomBlurize, 100);
+   } // Call once
   randomBlurize();
-
-
-};
+;
 
 $(document).ready(ready);
 
