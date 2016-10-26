@@ -10,6 +10,7 @@
       "jquery": "~2.1",
       "jquery-ujs": "*",
       "jqueryui-touch-punch": "*",
+      "letteringjs": "~0.7",
       "lodash": "~3.7",
       "angular-ui": "*",
       "angular-ui-utils": "~0.2.2",

@@ -84,7 +84,7 @@ class TaskOrdering
     end
     Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
     sorted_tasks.each do |task|
-      Rails.logger.warn("redis adding task #{task.id} to #{self.redis_user_tag_tasks_key(user, tag_str)}")
+      Rails.logger.warn("redis adding task #{task.id} to #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
       $redis.rpush(TaskOrdering.redis_user_tag_tasks_key(user, tag_str), task.id);
     end
     # expire this ordering in an hour even if no significant changes to the tasks have been made
@@ -94,12 +94,12 @@ class TaskOrdering
 
   def TaskOrdering.n_ordered_tasks!(user, tag_str = nil, n = :all)
     # get the entire ordered list from Redis
-    cached_ordered_task_ids = $redis.lrange(self.redis_user_tag_tasks_key(user, tag_str), 0, -1)
+    cached_ordered_task_ids = $redis.lrange(TaskOrdering.redis_user_tag_tasks_key(user, tag_str), 0, -1)
     if cached_ordered_task_ids.blank?
-      Rails.logger.warn("redis tag blank: #{self.redis_user_tag_tasks_key(user, tag_str)}")
+      Rails.logger.warn("redis tag blank: #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
       cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
     else
-      Rails.logger.warn("redis tag #{self.redis_user_tag_tasks_key(user, tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
+      Rails.logger.warn("redis tag #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
     end
     # build an ordered list of only valid and unfinished tasks
     # NOTE: is this really necessary?
@@ -120,7 +120,7 @@ class TaskOrdering
   end
 
   def TaskOrdering.first_ordered_task!(user, tag_str = nil)
-    one_ordered_task_array = self.n_ordered_tasks!(user, tag_str, 1)
+    one_ordered_task_array = TaskOrdering.n_ordered_tasks!(user, tag_str, 1)
     if one_ordered_task_array.blank?
       Rails.logger.warn("user:first_ordered_task!: no tasks for user #{user}")
       return nil
@@ -131,7 +131,7 @@ class TaskOrdering
 
   # NOTE: need to integrate this logic more smartly
   def TaskOrdering.get_next_task!(user, tag_str = nil)
-    first_ordered_task = self.first_ordered_task!(user, tag_str)
+    first_ordered_task = TaskOrdering.first_ordered_task!(user, tag_str)
     if first_ordered_task.present?
       return first_ordered_task.first_youngest_descendent({done: false})
 #      return first_ordered_task.first_task_in_family_tree({done: false})
