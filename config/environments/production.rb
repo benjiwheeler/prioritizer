@@ -90,5 +90,7 @@ Rails.application.configure do
   # so you can assert
   SolidAssert.enable_assertions
 
+  config.lograge.enabled = true
+
   ENV["REDIS_PROVIDER"] = ENV["REDISTOGO_URL"]
 end
