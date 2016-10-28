@@ -28,7 +28,7 @@
       .list-action-logo
         = fa_icon "times"
   %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .3rem; padding-bottom: .5rem; vertical-align: top;"}
-    = link_to edit_task_path(task), {id: "edit_link", class: "list-action-link"} do
+    = link_to edit_task_path(task, tag: @tag_name), {id: "edit_link", class: "list-action-link"} do
       .list-action-logo
         = fa_icon "pencil"
   %td{style: "padding-left: .1rem; padding-right: .1rem; padding-top: .3rem; padding-bottom: .5rem; vertical-align: top;"}

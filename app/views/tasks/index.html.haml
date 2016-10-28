@@ -11,7 +11,7 @@
   .action-logo
     = fa_icon "play-circle"
   .shortcut-link Start
-= link_to new_task_path, {id: "new_link", class: "action-link"} do
+= link_to new_task_path(tag: @tag_name), {id: "new_link", class: "action-link"} do
   .action-logo
     = fa_icon "lightbulb-o"
   .shortcut-link New Task

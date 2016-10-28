@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
-  before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :split]
+  before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :split, :new]
   before_action :set_task, only: [:done, :postpone, :worked, :split, :show, :edit, :update, :destroy]
   before_action :record_significant_action, only: [:done, :postpone, :worked, :split, :create, :update, :destroy]
   before_action :record_instance_of_work, only: [:done, :worked]
@@ -102,10 +102,22 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
+    @tags_to_display = []
+    if @tag_name.present?
+      @tags_to_display = [@tag_name]
+    elsif current_user?
+      @tags_to_display = current_user.most_likely_new_tags
+    end
   end
 
   # GET /tasks/1/edit
   def edit
+    @tags_to_display = []
+    if @task.tag_list.present?
+      @tags_to_display = @task.tag_list
+    elsif current_user?
+      @tags_to_display = current_user.most_likely_new_tags
+    end
   end
 
   # POST /tasks

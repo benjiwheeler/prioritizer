@@ -8,7 +8,7 @@
   .field
     = task_builder.text_field :name, class: "initial-focus form-control", placeholder: "Task title"
   .field
-    = task_builder.select :tag_list, options_for_select(current_user.tags, current_user.most_likely_new_tags), {}, {class: "tag_select", multiple: "multiple", style: "width: 100%"}
+    = task_builder.select :tag_list, options_for_select(current_user.tags, @tags_to_display), {}, {class: "tag_select", multiple: "multiple", style: "width: 100%"}
   - if view_detail_level > 5
     - if @task.parent.present?
       %div

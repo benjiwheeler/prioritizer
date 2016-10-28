@@ -43,7 +43,7 @@
       .action-logo
         = fa_icon "pencil"
       .shortcut-link Edit
-    = link_to new_task_path, {id: "new_link", class: "action-link"} do
+    = link_to new_task_path(tag: tag_name), {id: "new_link", class: "action-link"} do
       .action-logo
         = fa_icon "lightbulb-o"
       .shortcut-link New Task
