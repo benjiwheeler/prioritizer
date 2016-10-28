@@ -270,7 +270,6 @@ ul.navbar-nav > li.dropdown > ul.dropdown-menu > li > a {
   display:inline-block;
 }
 
-
 .nav > li, .navbar-nav > li > a {
 //  padding: 0.75rem 0.75rem;
   padding: 0;
@@ -296,6 +295,25 @@ padding-right: 0.5rem;
 .navbar-default {
   background-color: #fff;
   border: none;
+}
+
+/* *********************************
+navbar title blur
+********************************* */
+
+#navbar-title-blur {
+  font-family: 'Roboto', helvetica, arial, verdana, sans-serif;
+  font-weight: 100;
+  padding-left: 0;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.5rem;
+  font-size: 2.0rem;
+  height: 2.5rem;
+
+  /* blur */
+  text-shadow: 0 0 4px rgba(0,100,0,1);
+  color: rgba(0,0,0,0.05);;
 }
 
 /* *********************************

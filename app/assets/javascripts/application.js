@@ -18,6 +18,7 @@
 //= require jquery/dist/jquery
 //= require jquery-ui/jquery-ui
 //= require jquery-ujs/src/rails
+//= require letteringjs
 //= require jqueryui-touch-punch
 //= require lodash/lodash
 //
@@ -533,7 +534,177 @@ $('input#time_of_day_input').timepicker({
 
 
   // ***********************
-  //    TEXT SHADOW
+  //    COLOR (for blur)
+  // ***********************
+
+  var colornames = {
+      transparent: { r:-1, g:-1, b:-1 }
+    },
+    // Not a complete list yet...
+    props = 'backgroundColor borderBottomColor borderLeftColor borderRightColor borderTopColor borderColor boxShadowColor color outlineColor textShadowColor'.split(' ');
+
+  $.color = {
+    normalize: function(input) {
+      var color, alpha,
+        result, name, i, l,
+        rhex    = /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})/,
+        rhexshort = /#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])/,
+        rrgb    = /rgb(?:a)?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(0*\.?\d+)\s*)?\)/,
+        rrgbpercent = /rgb(?:a)?\(\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(0*\.?\d+)\s*)?\)/,
+        rhsl    = /hsl(?:a)?\(\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(0*\.?\d+)\s*)?\)/;
+
+      // Handle color: #rrggbb
+      if (result = rhex.exec(input)) {
+        color = {
+          r:    parseInt(result[1], 16),
+          g:    parseInt(result[2], 16),
+          b:    parseInt(result[3], 16),
+          source: result[0]
+        };
+      }
+      // Handle color: #rgb
+      else if (result = rhexshort.exec(input)) {
+        color = {
+          r:    parseInt(result[1]+result[1], 16),
+          g:    parseInt(result[2]+result[2], 16),
+          b:    parseInt(result[3]+result[3], 16),
+          source: result[0]
+        };
+      }
+      // Handle color: rgb[a](r, g, b [, a])
+      else if (result = rrgb.exec(input)) {
+        color = {
+          r:    parseInt(result[1], 10),
+          g:    parseInt(result[2], 10),
+          b:    parseInt(result[3], 10),
+          alpha:  parseFloat(result[4], 10),
+          source: result[0]
+        };
+      }
+      // Handle color: rgb[a](r%, g%, b% [, a])
+      else if (result = rrgbpercent.exec(input)) {
+        color = {
+          r:    parseInt(result[1] * 2.55, 10),
+          g:    parseInt(result[2] * 2.55, 10),
+          b:    parseInt(result[3] * 2.55, 10),
+          alpha:  parseFloat(result[4], 10),
+          source: result[0]
+        };
+      }
+      // Handle color: hsl[a](h%, s%, l% [, a])
+      else if (result = rhsl.exec(input)) {
+        color = $.color.hsl_to_rgb(
+              parseFloat(result[1], 10) / 100,
+              parseFloat(result[2], 10) / 100,
+              parseFloat(result[3], 10) / 100
+            );
+        color.alpha = parseFloat(result[4], 10);
+        color.source = result[0];
+      }
+      // Handle color: name
+      else {
+        result = input.split(' ');
+        for (i = 0, l = result.length; i < l; i++) {
+          name = result[i];
+
+          if (colornames[name]) {
+            break;
+          }
+        }
+
+        if (!colornames[name]) {
+          name = 'transparent';
+        }
+
+        color = colornames[name];
+        color.source = name;
+      }
+
+      if (!color.alpha && color.alpha !== 0) {
+        delete color.alpha;
+      }
+
+      return color;
+    },
+
+    hsl_to_rgb: function(h, s, l, a) {
+      var r, g, b, m1, m2;
+
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        if (l <= 0.5) {
+          m2 = l * (s + 1);
+        } else {
+          m2 = (l + s) - (l * s);
+        }
+
+        m1 = (l * 2) - m2;
+        r = parseInt(255 * $.color.hue_to_rgb(m1, m2, h + (1/3)), 10);
+        g = parseInt(255 * $.color.hue_to_rgb(m1, m2, h), 10);
+        b = parseInt(255 * $.color.hue_to_rgb(m1, m2, h - (1/3)), 10);
+      }
+
+      return { r:r, g:g, b:b, alpha:a };
+    },
+
+    hue_to_rgb: function(m1, m2, h) {
+      if (h < 0) { h++; }
+      if (h > 1) { h--; }
+
+      if ((h * 6) < 1)    { return m1 + ((m2 - m1) * h * 6); }
+      else if ((h * 2) < 1) { return m2; }
+      else if ((h * 3) < 2) { return m1 + ((m2 - m1) * ((2/3) - h) * 6); }
+      else          { return m1; }
+    }
+  };
+
+  if ($.cssHooks) {
+    $.each(props, function(i, hook) {
+      $.cssHooks[hook] = {
+        set: function(elem, value) {
+          value = $.color.normalize(value);
+
+          if (!value.alpha) {
+            value.alpha = 1;
+          }
+
+          elem.style[hook] = 'rgba(' + value.r + ',' + value.g + ',' + value.b + ',' + value.alpha + ')';
+        }
+      };
+
+      $.fx.step[hook] = function(fx) {
+        var val;
+
+        if ( !fx.start || typeof fx.start === 'string' ) {
+          if ( !fx.start ) {
+            fx.start = $.css(fx.elem, hook);
+          }
+
+          fx.start = $.color.normalize(fx.start);
+          fx.end = $.color.normalize(fx.end);
+
+          if (!fx.start.alpha) {
+            fx.start.alpha = 1;
+          }
+
+          if (!fx.end.alpha) {
+            fx.end.alpha = 1;
+          }
+        }
+
+        $.style(fx.elem, hook, 'rgba('
+          + parseInt(fx.start.r + (fx.pos * (fx.end.r - fx.start.r)), 10) + ','
+          + parseInt(fx.start.g + (fx.pos * (fx.end.g - fx.start.g)), 10) + ','
+          + parseInt(fx.start.b + (fx.pos * (fx.end.b - fx.start.b)), 10) + ','
+          + parseFloat(fx.start.alpha + (fx.pos * (fx.end.alpha - fx.start.alpha))) + ')'
+        );
+      };
+    });
+  }
+
+  // ***********************
+  //    TEXT SHADOW (for blur)
   // ***********************
 
   var props = "Color X Y Blur".split(' '),
@@ -602,22 +773,22 @@ $('input#time_of_day_input').timepicker({
   // ***********************
 
   // enable jquery lettering
-  $("title#title-blur").lettering();
+  $("#navbar-title-blur").lettering();
 
-  var titleElem = $("title#title-blur"),
-  numTitleLetters = titleElem.find("span").length;
+  var titleElem = $("#navbar-title-blur");
+  var numTitleLetters = titleElem.find("span").length;
 
   function randomBlurize() {
     titleElem.find("span:nth-child(" + (Math.floor(Math.random()*numTitleLetters)+1) + ")")
       .animate({
-        'textShadowBlur': Math.floor(Math.random()*25)+4,
+        'textShadowBlur': Math.floor(Math.random()*30)-5,
         'textShadowColor': 'rgba(0,100,0,' + (Math.floor(Math.random()*200)+55) + ')'
-      });
+      }, {duration: 2000});
       // Call itself recurssively
-      setTimeout(randomBlurize, 100);
+      setTimeout(randomBlurize, 500);
    } // Call once
   randomBlurize();
-;
+};
 
 $(document).ready(ready);
 
