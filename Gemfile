@@ -166,3 +166,5 @@ gem 'acts-as-taggable-on'
 gem 'acts_as_list'
 gem "react_on_rails", "~> 6"
 #######################
+
+gem 'mini_racer', platforms: :ruby

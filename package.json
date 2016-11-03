@@ -1,21 +1,15 @@
 {
-  "name": "prioritizer",
-  "dependencies": {
-    "bower": "latest"
-  },
-  "engine": {
-    "node": "0.12.x",
-    "npm": "3.1.0"
+  "name": "react-webpack-rails-tutorial",
+  "version": "0.0.1",
+  "engines": {
+    "node": "5.10.0",
+    "npm": "3.5.0"
   },
   "scripts": {
+    "postinstall": "cd client && npm install",
+    "test": "rspec"
   },
-  "scripts_disabled": {
-    "start": "node index.js",
-    "postinstall": "rake bower:install",
-    "postinstall2": "bower install",
-    "postinstall3": "rake bower:install; rake bower:resolve"
-  },
-  "comments": {
-    "this file": "is node configuration; it will install bower, so no need for bower-specific buildpack"
+  "disabledscripts": {
+    "rails-server": "echo 'visit http://localhost:3000/hello_world' && foreman start -f Procfile.dev"
   }
 }

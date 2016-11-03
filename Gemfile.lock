@@ -124,6 +124,7 @@ GEM
     json (1.8.3)
     jwt (1.5.1)
     kgio (2.10.0)
+    libv8 (5.3.332.38.1)
     lograge (0.4.1)
       actionpack (>= 4, < 5.1)
       activesupport (>= 4, < 5.1)
@@ -137,6 +138,8 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_portile2 (2.1.0)
+    mini_racer (0.1.6)
+      libv8 (~> 5.3)
     minitest (5.9.0)
     multi_json (1.12.1)
     multi_xml (0.5.5)
@@ -311,6 +314,7 @@ DEPENDENCIES
   jquery-ui-rails
   jquery_mobile_rails
   lograge
+  mini_racer
   newrelic_rpm
   omniauth
   omniauth-facebook

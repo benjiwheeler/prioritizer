@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'hello_world', to: 'hello_world#index'
   resources :attempts
   match 'tasks/next', to: 'tasks#next', as: 'next_task', via: :get
   match 'tasks/:id/done', to: 'tasks#done', as: 'task_done', via: :post
