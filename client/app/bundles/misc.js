@@ -1,6 +1,6 @@
 console.log('OVER HERE TEST 0');
-var $ = require('jquery');
-var jQuery = require('jquery');
+// var $ = require('jquery');
+// //var jQuery = require('jquery');
 //var jQuery = require('jquery/dist/jquery.min.js');
 console.log('OVER HERE TEST 1');
 console.log($('body'));
@@ -16,12 +16,18 @@ require('hammerjs');
 //require('letterify');
 require('bootstrap-datepicker');
 //require('./jquery-timepicker.js');
-require('jquery-timepicker/jquery.timepicker');
-//var letterify = require('letterify');
-//require('jquery.lettering.js');
+require("imports?$=jquery!jquery-timepicker/jquery.timepicker")
+// require('jquery-timepicker/jquery.timepicker');
+// var letterify = require('letterify');
+// require('letteringjs');
+require("imports?$=jquery!./jquery.lettering.js")
+require("imports?$=jquery!./color.js")
 
+// require('lettering');
 
-$(document).load(function () {
+console.log('OVER HERE TEST 3');
+
+$(document).ready(function () {
 
   console.log("4: " + jQuery('div').first());
 
@@ -208,16 +214,16 @@ $('input#due_date_input').datepicker({
     autoclose: true
   });
 console.log("5: " + jQuery('div').first());
-// $('input#time_of_day_input').timepicker({
-//     timeFormat: 'h:mm p',
-//     interval: 30,
-//     minTime: '5',
-//     maxTime: '10:00pm',
-//     startTime: '5',
-//     dynamic: false,
-//     dropdown: true,
-//     scrollbar: true
-// });
+$('input#time_of_day_input').timepicker({
+    timeFormat: 'h:mm p',
+    interval: 30,
+    minTime: '5',
+    maxTime: '10:00pm',
+    startTime: '5',
+    dynamic: false,
+    dropdown: true,
+    scrollbar: true
+});
 
 
   // ***********************
@@ -528,9 +534,9 @@ console.log("5: " + jQuery('div').first());
       $.cssHooks[hook] = {
         get: function(elem, computed, extra) {
           return (function(elem, pos) {
-            var shadow = $.css(elem, 'textShadow'),
-              color = $.color.normalize(shadow),
-              ret;
+            var shadow = $.css(elem, 'textShadow');
+            var color = $.color.normalize(shadow);
+            var ret;
 
             if (pos === 0) {
               ret = 'rgb'
@@ -577,23 +583,33 @@ console.log("5: " + jQuery('div').first());
   //    BLUR ANIMATION
   // ***********************
 
-//   // enable jquery lettering
-//   $("#navbar-title-blur").lettering();
-// //letterify('#navbar-title-blur');
+  // enable jquery lettering
+  $("#navbar-title-blur").lettering();
+//letterify('#navbar-title-blur');
 
-//   var titleElem = $("#navbar-title-blur"),
-//   numTitleLetters = titleElem.find("span").length;
+  var titleElem = $("#navbar-title-blur");
+  var numTitleLetters = titleElem.find("span").length;
+  var whichLetter = 0;
+  var newBlur = 0;
+  var newColor = 0;
 
-//   function randomBlurize() {
-//     titleElem.find("span:nth-child(" + (Math.floor(Math.random()*numTitleLetters)+1) + ")")
-//       .animate({
-//         'textShadowBlur': Math.floor(Math.random()*25)+4,
-//         'textShadowColor': 'rgba(0,100,0,' + (Math.floor(Math.random()*200)+55) + ')'
-//       });
-//       // Call itself recurssively
-//       setTimeout(randomBlurize, 100);
-//    } // Call once
-//   randomBlurize();
+  function randomBlurize() {
+    whichLetter = (Math.floor(Math.random()*numTitleLetters)+1);
+    newBlur = Math.floor(Math.random()*20);
+    newBlur = newBlur * newBlur / 20.0;
+    newColor = Math.floor(Math.random()*200)+55;
+    titleElem.find("span:nth-child(" + whichLetter + ")")
+      .stop().animate({
+        'textShadowBlur': newBlur,
+        'textShadowColor': 'rgba(0,100,0,' + newColor + ')'
+      }, {
+        duration: 3000
+      });
+      // console.log("animating " + whichLetter + " to blur: " + newBlur + " and color: " + newColor);
+      // Call itself recurssively
+      setTimeout(randomBlurize, 2000);
+   } // Call once
+   setTimeout(randomBlurize, 2000);
 
 
   console.log("6: " + jQuery('div').first());
