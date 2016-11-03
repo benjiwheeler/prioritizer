@@ -1,5 +1,7 @@
+console.log('OVER HERE TEST 0');
 var $ = require('jquery');
-var jQuery = require('jquery/dist/jquery.min.js');
+var jQuery = require('jquery');
+//var jQuery = require('jquery/dist/jquery.min.js');
 console.log('OVER HERE TEST 1');
 console.log($('body'));
 console.log(jQuery('body'));
@@ -16,7 +18,7 @@ require('bootstrap-datepicker');
 //require('./jquery-timepicker.js');
 require('jquery-timepicker/jquery.timepicker');
 //var letterify = require('letterify');
-require('jquery.lettering.js');
+//require('jquery.lettering.js');
 
 
 $(document).load(function () {
@@ -575,23 +577,23 @@ console.log("5: " + jQuery('div').first());
   //    BLUR ANIMATION
   // ***********************
 
-  // enable jquery lettering
-  $("#navbar-title-blur").lettering();
-//letterify('#navbar-title-blur');
+//   // enable jquery lettering
+//   $("#navbar-title-blur").lettering();
+// //letterify('#navbar-title-blur');
 
-  var titleElem = $("#navbar-title-blur"),
-  numTitleLetters = titleElem.find("span").length;
+//   var titleElem = $("#navbar-title-blur"),
+//   numTitleLetters = titleElem.find("span").length;
 
-  function randomBlurize() {
-    titleElem.find("span:nth-child(" + (Math.floor(Math.random()*numTitleLetters)+1) + ")")
-      .animate({
-        'textShadowBlur': Math.floor(Math.random()*25)+4,
-        'textShadowColor': 'rgba(0,100,0,' + (Math.floor(Math.random()*200)+55) + ')'
-      });
-      // Call itself recurssively
-      setTimeout(randomBlurize, 100);
-   } // Call once
-  randomBlurize();
+//   function randomBlurize() {
+//     titleElem.find("span:nth-child(" + (Math.floor(Math.random()*numTitleLetters)+1) + ")")
+//       .animate({
+//         'textShadowBlur': Math.floor(Math.random()*25)+4,
+//         'textShadowColor': 'rgba(0,100,0,' + (Math.floor(Math.random()*200)+55) + ')'
+//       });
+//       // Call itself recurssively
+//       setTimeout(randomBlurize, 100);
+//    } // Call once
+//   randomBlurize();
 
 
   console.log("6: " + jQuery('div').first());

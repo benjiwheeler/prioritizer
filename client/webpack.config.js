@@ -13,7 +13,7 @@ const config = {
     'es5-shim/es5-sham',
     'babel-polyfill',
     './app/bundles/HelloWorld/startup/HelloWorldApp',
-    './app/bundles/jquery.lettering.js',
+    // './app/bundles/jquery.lettering.js',
     './app/bundles/misc',
   ],
 
@@ -28,6 +28,9 @@ const config = {
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom'),
     },
+    alias: { // use non-minified src jquery: http://stackoverflow.com/a/28989476/2308190
+      jquery: "jquery/src/jquery"
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -35,6 +38,13 @@ const config = {
         NODE_ENV: JSON.stringify(nodeEnv),
       },
     }),
+    // so not everyone needs to explicitly include jquery
+    //https://webpack.github.io/docs/shimming-modules.html
+    // new webpack.ProvidePlugin({
+    //   $: "jquery",
+    //   jQuery: "jquery",
+    //   "window.jQuery": "jquery"
+    // }),
   ],
   module: {
     loaders: [

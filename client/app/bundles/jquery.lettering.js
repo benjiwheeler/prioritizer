@@ -10,7 +10,7 @@
 *
 * Date: Mon Sep 20 17:14:00 2010 -0600
 */
-var jQuery = require('jquery/dist/jquery.min.js');
+//var jQuery = require('jquery/dist/jquery.min.js');
 
 (function($){
   function injector(t, splitter, klass, after) {
