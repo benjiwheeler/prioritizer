@@ -39,9 +39,9 @@ gem 'haml-rails'
 #######################
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
-gem 'jquery-rails'
-gem 'jquery_mobile_rails'
-gem 'jquery-ui-rails'
+# gem 'jquery-rails'
+# gem 'jquery_mobile_rails'
+# gem 'jquery-ui-rails'
 #######################
 # api
 # easy to build json apis

@@ -1,14 +1,27 @@
 var $ = require('jquery');
-var jQuery = require('jquery');
+var jQuery = require('jquery/dist/jquery.min.js');
+console.log('OVER HERE TEST 1');
+console.log($('body'));
+console.log(jQuery('body'));
+console.log('OVER HERE TEST 2');
 // require('jquery-ui/themes/base/core.css');
 require('jquery-ui');
 require('jquery-ui/ui/widgets/slider');
+require('jquery-ui/ui/widgets/sortable');
 require('select2');
+require('mousetrap');
+require('hammerjs');
+//require('letterify');
 require('bootstrap-datepicker');
-require('./jquery-timepicker.js');
-//require('jquery-timepicker');
+//require('./jquery-timepicker.js');
+require('jquery-timepicker/jquery.timepicker');
+//var letterify = require('letterify');
+require('jquery.lettering.js');
 
-var ready = function() {
+
+$(document).load(function () {
+
+  console.log("4: " + jQuery('div').first());
 
   // ***********************
   //        SLIDER
@@ -185,24 +198,25 @@ var ready = function() {
   //     DATE PICKER
   // ***********************
 
-  $('input#due_date_input').datepicker({
+$('input#due_date_input').datepicker({
     todayHighlight: true,
     startView: 0,
     maxViewMode: 2,
     daysOfWeekHighlighted: "0,6",
     autoclose: true
   });
+console.log("5: " + jQuery('div').first());
+// $('input#time_of_day_input').timepicker({
+//     timeFormat: 'h:mm p',
+//     interval: 30,
+//     minTime: '5',
+//     maxTime: '10:00pm',
+//     startTime: '5',
+//     dynamic: false,
+//     dropdown: true,
+//     scrollbar: true
+// });
 
-$('input#time_of_day_input').timepicker({
-    timeFormat: 'h:mm p',
-    interval: 30,
-    minTime: '5',
-    maxTime: '10:00pm',
-    startTime: '5',
-    dynamic: false,
-    dropdown: true,
-    scrollbar: true
-});
 
   // ***********************
   //     COUNTDOWN
@@ -282,7 +296,7 @@ $('input#time_of_day_input').timepicker({
       $.post($(this).data('update-url'), $(this).sortable('serialize'))
     }
   });
-  $( "#task_children_list" ).disableSelection();
+  //$( "#task_children_list" ).disableSelection();
 
   $("form").on('keypress', 'input.subtask_name', function(event) {
     if (event.keyCode == 13) {
@@ -562,9 +576,10 @@ $('input#time_of_day_input').timepicker({
   // ***********************
 
   // enable jquery lettering
-  $("title#title-blur").lettering();
+  $("#navbar-title-blur").lettering();
+//letterify('#navbar-title-blur');
 
-  var titleElem = $("title#title-blur"),
+  var titleElem = $("#navbar-title-blur"),
   numTitleLetters = titleElem.find("span").length;
 
   function randomBlurize() {
@@ -577,9 +592,13 @@ $('input#time_of_day_input').timepicker({
       setTimeout(randomBlurize, 100);
    } // Call once
   randomBlurize();
-};
 
-$(document).ready(ready);
+
+  console.log("6: " + jQuery('div').first());
+});
+
+console.log("7: " + jQuery('div').first());
+
 
 // have it rerun when turbolinks fires
 //$(document).on('turbolinks:load', ready);

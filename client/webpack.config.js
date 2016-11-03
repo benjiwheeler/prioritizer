@@ -13,8 +13,8 @@ const config = {
     'es5-shim/es5-sham',
     'babel-polyfill',
     './app/bundles/HelloWorld/startup/HelloWorldApp',
-    './app/bundles/jquery-timepicker.js',
-    './app/bundles/misc.js',
+    './app/bundles/jquery.lettering.js',
+    './app/bundles/misc',
   ],
 
   output: {
