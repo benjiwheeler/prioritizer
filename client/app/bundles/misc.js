@@ -596,7 +596,7 @@ $('input#time_of_day_input').timepicker({
   function randomBlurize() {
     whichLetter = (Math.floor(Math.random()*numTitleLetters)+1);
     newBlur = Math.floor(Math.random()*20);
-    newBlur = newBlur * newBlur / 20.0;
+    newBlur = newBlur * newBlur / 20.0 + 0.1; // don't go to 0, it'll turn black
     newColor = Math.floor(Math.random()*200)+55;
     titleElem.find("span:nth-child(" + whichLetter + ")")
       .stop().animate({
