@@ -18,7 +18,7 @@
  * disabled...
  * enabled:
  * note that bower:clean will blow this away!
- *= require_tree ../../../vendor/assets/bower_components/jquery-ui/themes/base
+ *= dontrequire_tree ../../../vendor/assets/bower_components/jquery-ui/themes/base
  * these are resolved thanks to bower-rails:
  *= require bootstrap-sass-official
  *= require bootstrap-datepicker
