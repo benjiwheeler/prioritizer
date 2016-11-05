@@ -3,6 +3,7 @@
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
@@ -12,6 +13,7 @@ const config = {
     'es5-shim/es5-shim',
     'es5-shim/es5-sham',
     'babel-polyfill',
+    'bootstrap-loader/extractStyles',
     './app/bundles/HelloWorld/startup/HelloWorldApp',
     './app/bundles/jquery.lettering',
     './app/bundles/color',
@@ -46,13 +48,20 @@ const config = {
       jQuery: "jquery",
       "window.jQuery": "jquery"
     }),
+
+    new ExtractTextPlugin("styles.css"),
+
   ],
   module: {
     loaders: [
-      // {
-      //   test: /\.css$/,
-      //   loader: ExtractTextPlugin.extract("style-loader", "css-loader")
-      // },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+      },
+      // note that these are needed for bootstrap 3; in bs 4, glyphicons are removed!
+      { test: /\.(woff2?|svg)$/, loader: 'url?limit=10000' },
+      { test: /\.(ttf|eot)$/, loader: 'file' },
+
       { test: require.resolve("jquery"),
         loader: "expose?$!expose?jQuery"
       },
