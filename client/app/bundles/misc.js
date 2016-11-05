@@ -589,16 +589,43 @@ $('input#time_of_day_input').timepicker({
 
   var titleElem = $("#navbar-title-blur");
   var numTitleLetters = titleElem.find("span").length;
+  var turnsSincePick = Array.apply(null, Array(numTitleLetters)).map(function (x, i) { return 9999 });
+  var minBlurDiff = 10;
+  var curBlurDiff;
+  var minColorDiff = 100;
+  var curColorDiff;
+  var curBlurVals = {}
+  for (var i = 0; i < numTitleLetters; i++) {
+    curBlurVals[i] = {"blur": -9999, "color": -9999};
+  }
   var whichLetter = 0;
   var newBlur = 0;
   var newColor = 0;
 
   function randomBlurize() {
-    whichLetter = (Math.floor(Math.random()*numTitleLetters)+1);
-    newBlur = Math.floor(Math.random()*20);
+    do {
+      whichLetter = (Math.floor(Math.random()*numTitleLetters));
+      console.log("tentatively picked " + whichLetter + " which has turnsSincePick " + turnsSincePick[whichLetter]);
+    } while (turnsSincePick[whichLetter] < Math.floor(numTitleLetters / 2.0));
+    console.log("picked " + whichLetter);
+    for (var i = 0; i < numTitleLetters; i++) {
+      turnsSincePick[i]++;
+    }
+    turnsSincePick[whichLetter] = 0;
+    do {
+      newBlur = Math.floor(Math.random()*20);
+      curBlurDiff = Math.abs(newBlur - curBlurVals[whichLetter]["blur"]);
+    } while (curBlurDiff < minBlurDiff);
+    console.log("picked blur " + newBlur + " with diff " + curBlurDiff);
+    curBlurVals[whichLetter]["blur"] = newBlur;
     newBlur = newBlur * newBlur / 20.0 + 0.1; // don't go to 0, it'll turn black
-    newColor = Math.floor(Math.random()*200)+55;
-    titleElem.find("span:nth-child(" + whichLetter + ")")
+    do {
+      newColor = Math.floor(Math.random()*200)+55;
+      curColorDiff = Math.abs(newColor - curBlurVals[whichLetter]["color"]);
+    } while (curColorDiff < minColorDiff);
+    console.log("picked color " + newColor + " with diff " + curColorDiff);
+    curBlurVals[whichLetter]["color"] = newColor;
+    titleElem.find("span:nth-child(" + (whichLetter + 1) + ")")
       .stop().animate({
         'textShadowBlur': newBlur,
         'textShadowColor': 'rgba(0,100,0,' + newColor + ')'
