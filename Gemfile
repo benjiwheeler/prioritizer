@@ -18,7 +18,8 @@ gem 'redis'
 #######################
 # server
 gem 'foreman'
-gem 'unicorn'
+gem 'puma'
+gem 'rack-timeout'
 #######################
 # deployment
 group :production, :staging do
