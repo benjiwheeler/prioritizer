@@ -165,7 +165,7 @@ gem "angular-rails-templates"
 gem 'acts-as-taggable-on'
 #gem 'cocoon'
 gem 'acts_as_list'
-gem "react_on_rails", "~> 6"
+gem "react_on_rails", git: "https://github.com/benjiwheeler/react_on_rails.git"
 #######################
 
 gem 'mini_racer', platforms: :ruby
