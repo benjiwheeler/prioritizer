@@ -24,7 +24,7 @@
       %ul.nav.navbar-nav.navbar-right
         %li
           %p.navbar-text
-            %a{href: tags_index_path(tag.name)}
+            %a{href: tasks_path(tag: @tag_name)}
         %li.dropdown
           %a.dropdown-toggle{href: "#", "data-toggle" => "dropdown", role: "button", "aria-haspopup" => "true", "aria-expanded" => "false"}
             Where
@@ -33,7 +33,7 @@
             - if current_user.present? && current_user.tags.present?
               - current_user.tags.each do |tag|
                 %li
-                  %a{href: tag_menu_tag_link_path(tag.name)}
+                  %a{href: tag_menu_tag_link_path(@tag_name)}
                     %span{style: "color: green;"}
                       = tag.name
         - if @suppress_nav_auth != true

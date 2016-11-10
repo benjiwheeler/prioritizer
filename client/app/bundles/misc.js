@@ -6,6 +6,8 @@ console.log('OVER HERE TEST 1');
 console.log($('body'));
 console.log(jQuery('body'));
 console.log('OVER HERE TEST 2');
+require('bootstrap/dist/js/bootstrap.js');
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 // require('jquery-ui/themes/base/core.css');
 require('jquery-ui');
 require('jquery-ui/ui/widgets/slider');
@@ -639,7 +641,7 @@ $('input#time_of_day_input').timepicker({
       // Call itself recurssively
       setTimeout(randomBlurize, 2000);
    } // Call once
-   setTimeout(randomBlurize, 2000);
+   //setTimeout(randomBlurize, 2000);
 
 
   console.log("6: " + jQuery('div').first());

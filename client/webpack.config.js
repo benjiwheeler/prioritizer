@@ -13,7 +13,6 @@ const config = {
     'es5-shim/es5-shim',
     'es5-shim/es5-sham',
     'babel-polyfill',
-    'bootstrap-loader/extractStyles',
     './app/bundles/HelloWorld/startup/HelloWorldApp',
     './app/bundles/jquery.lettering',
     './app/bundles/color',
@@ -49,7 +48,7 @@ const config = {
       "window.jQuery": "jquery"
     }),
 
-    new ExtractTextPlugin("styles.css"),
+    new ExtractTextPlugin("webpack-bundle.css"),
 
   ],
   module: {
@@ -57,6 +56,7 @@ const config = {
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        // or: loader: "style-loader!css-loader"
       },
       // note that these are needed for bootstrap 3; in bs 4, glyphicons are removed!
       // the url-loader uses DataUrls.
@@ -65,7 +65,16 @@ const config = {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff"
       },
       {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader"
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=application/octet-stream'
+      },
+      {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'file'
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url?limit=10000&mimetype=image/svg+xml'
       },
       { test: require.resolve("jquery"),
         loader: "expose?$!expose?jQuery"
@@ -75,9 +84,18 @@ const config = {
         loader: 'imports?shim=es5-shim/es5-shim&sham=es5-shim/es5-sham',
       },
       {
+        test: /\.png$/,
+        loader: "url-loader?limit=100000"
+      },
+      {
+        test: /\.jpg$/,
+        loader: "file-loader"
+      },
+      {
         test: /\.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
+        query: {presets: ['es2015', 'react', 'stage-0'], cacheDirectory: true}
       },
     ],
   },

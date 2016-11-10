@@ -168,7 +168,9 @@ private
     @tag_name = nil
     if params[:tag].present?
       @tag = ActsAsTaggableOn::Tag.find_by(name: params[:tag])
-      @tag_name = @tag.name
+      if @tag.present?
+        @tag_name = @tag.name
+      end
     end
   end
 

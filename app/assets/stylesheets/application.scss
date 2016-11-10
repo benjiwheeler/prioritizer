@@ -28,6 +28,7 @@
  *
  * standard rails:
  *= require_tree .
+ *= require webpack-bundle
  *= require_tree ../../../lib/assets/stylesheets
  *= require_tree ../../../vendor/assets/stylesheets
  *= require_self
