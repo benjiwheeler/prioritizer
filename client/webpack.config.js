@@ -59,9 +59,14 @@ const config = {
         loader: ExtractTextPlugin.extract("style-loader", "css-loader")
       },
       // note that these are needed for bootstrap 3; in bs 4, glyphicons are removed!
-      { test: /\.(woff2?|svg)$/, loader: 'url?limit=10000' },
-      { test: /\.(ttf|eot)$/, loader: 'file' },
-
+      // the url-loader uses DataUrls.
+      // the file-loader emits files.
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff"
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader"
+      },
       { test: require.resolve("jquery"),
         loader: "expose?$!expose?jQuery"
       },
