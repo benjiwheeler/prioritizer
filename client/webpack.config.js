@@ -17,6 +17,7 @@ const config = {
     './app/bundles/jquery.lettering',
     './app/bundles/color',
     './app/bundles/misc',
+    './app/bundles/misc.scss',
   ],
 
   output: {
@@ -58,6 +59,10 @@ const config = {
         loader: ExtractTextPlugin.extract("style-loader", "css-loader")
         // or: loader: "style-loader!css-loader"
       },
+      {
+        test: /\.scss$/,
+        loaders: ["style", "css", "sass"]
+      },
       // note that these are needed for bootstrap 3; in bs 4, glyphicons are removed!
       // the url-loader uses DataUrls.
       // the file-loader emits files.
@@ -76,7 +81,8 @@ const config = {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: 'url?limit=10000&mimetype=image/svg+xml'
       },
-      { test: require.resolve("jquery"),
+      {
+        test: require.resolve("jquery"),
         loader: "expose?$!expose?jQuery"
       },
       {
