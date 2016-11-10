@@ -11,11 +11,14 @@ require('jquery-ui');
 require('jquery-ui/ui/widgets/slider');
 require('jquery-ui/ui/widgets/sortable');
 require('select2');
+require('select2/dist/css/select2.css');
+require('font-awesome/css/font-awesome.css')
 require('mousetrap');
 require('hammerjs');
 //require('letterify');
 require('bootstrap-datepicker');
-//require('./jquery-timepicker.js');
+require('bootstrap-datepicker/dist/css/bootstrap-datepicker.css');
+require('jquery-timepicker/jquery.timepicker.css');
 require("imports?$=jquery!jquery-timepicker/jquery.timepicker")
 // require('jquery-timepicker/jquery.timepicker');
 // var letterify = require('letterify');

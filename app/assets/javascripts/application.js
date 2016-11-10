@@ -1,5 +1,3 @@
-//= require webpack-bundle
-
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -43,8 +41,10 @@
 //= dontrequire angular-ui-utils/ui-utils
 //= dontrequire angular-rails-templates
 //
+//= require webpack-bundle
+//
 // rails app files:
-//= dontrequire_tree ../../../lib/assets/javascripts
-//= dontrequire_tree ../../../vendor/assets/javascripts
+//= require_tree ../../../lib/assets/javascripts
+//= require_tree ../../../vendor/assets/javascripts
 //= require_tree .
 
