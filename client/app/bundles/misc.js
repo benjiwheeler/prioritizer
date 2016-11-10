@@ -8,8 +8,8 @@ console.log(jQuery('body'));
 console.log('OVER HERE TEST 2');
 require('bootstrap/dist/js/bootstrap.js');
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
-// require('jquery-ui/themes/base/core.css');
 require('jquery-ui');
+require('jquery-ui/themes/base/core.css');
 require('jquery-ui/ui/widgets/slider');
 require('jquery-ui/ui/widgets/sortable');
 require('select2');
@@ -595,6 +595,8 @@ $('input#time_of_day_input').timepicker({
   var titleElem = $("#navbar-title-blur");
   var numTitleLetters = titleElem.find("span").length;
   var turnsSincePick = Array.apply(null, Array(numTitleLetters)).map(function (x, i) { return 9999 });
+  var waitBaselineNumSecs = 3000;
+  var waitDelta = 500;
   var minBlurDiff = 10;
   var curBlurDiff;
   var minColorDiff = 100;
@@ -608,6 +610,9 @@ $('input#time_of_day_input').timepicker({
   var newColor = 0;
 
   function randomBlurize() {
+    var thisBlurDuration = Math.floor(Math.random()*4000) + 1000;
+    var thisWait = Math.floor(Math.random()*3000) + waitBaselineNumSecs;
+    waitBaselineNumSecs += waitDelta;
     do {
       whichLetter = (Math.floor(Math.random()*numTitleLetters));
       console.log("tentatively picked " + whichLetter + " which has turnsSincePick " + turnsSincePick[whichLetter]);
@@ -635,13 +640,13 @@ $('input#time_of_day_input').timepicker({
         'textShadowBlur': newBlur,
         'textShadowColor': 'rgba(0,100,0,' + newColor + ')'
       }, {
-        duration: 3000
+        duration: thisBlurDuration
       });
       // console.log("animating " + whichLetter + " to blur: " + newBlur + " and color: " + newColor);
       // Call itself recurssively
-      setTimeout(randomBlurize, 2000);
+      setTimeout(randomBlurize, thisWait);
    } // Call once
-   //setTimeout(randomBlurize, 2000);
+   setTimeout(randomBlurize, 2000);
 
 
   console.log("6: " + jQuery('div').first());

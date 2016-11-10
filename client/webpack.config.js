@@ -13,7 +13,7 @@ const config = {
     'es5-shim/es5-shim',
     'es5-shim/es5-sham',
     'babel-polyfill',
-    './app/bundles/HelloWorld/startup/HelloWorldApp',
+    './app/bundles/Tasks/startup/TasksApp',
     './app/bundles/jquery.lettering',
     './app/bundles/color',
     './app/bundles/misc',

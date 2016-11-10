@@ -11,36 +11,6 @@
 // about supported directives.
 //
 //
-// Bower:
-// these are resolved thanks to bower-rails:
-//
-// javascript
-//= dontrequire jquery/dist/jquery
-//= dontrequire jquery-ui/jquery-ui
-//= dontrequire jquery-ujs/src/rails
-//= dontrequire jqueryui-touch-punch
-//= dontrequire letteringjs
-//= dontrequire lodash/lodash
-//
-// bootstrap
-//= dontrequire bootstrap-sass-official
-//= dontrequire bootstrap-datepicker
-//= dontrequire jquery-timepicker-wvega
-//
-// third party
-//= dontrequire select2
-// disabled
-// DON'T dontrequire turbolinks
-//= dontrequire mousetrap
-//
-// angular
-//= dontrequire angular/angular
-//= dontrequire angular-resource/angular-resource
-//= dontrequire angular-sanitize/angular-sanitize
-//= dontrequire angular-ui-router/release/angular-ui-router
-//= dontrequire angular-ui-utils/ui-utils
-//= dontrequire angular-rails-templates
-//
 //= require webpack-bundle
 //
 // rails app files:
