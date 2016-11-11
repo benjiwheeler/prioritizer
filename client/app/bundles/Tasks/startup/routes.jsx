@@ -1,15 +1,15 @@
-var React = require('react');
-var ReactRouter = require('react-router');
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var IndexRoute = ReactRouter.IndexRoute;
-var TaskList = require('../components/TaskList');
+import React, {Component} from 'react';
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router'
+import TaskList from '../components/TaskList';
 
-var routes = (
-  <Router>
-    <Route path='/' component={TaskList} />
-  </Router>
-);
 
-module.export = routes;
+export default class routes extends Component {
+  render() {
+    return (
+      <Router history={hashHistory}>
+        <Route path='/' component={TaskList} />
+      </Router>
+    )
+  }
+}
 
