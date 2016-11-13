@@ -7,6 +7,8 @@
  * Copyright (c) 2016 Willington Vega; Licensed MIT, GPL
  */
 
+// NOTE: currently unused!!!
+
 var $ = require('jquery');
 var jQuery = require('jquery');
 require('jquery-ui');

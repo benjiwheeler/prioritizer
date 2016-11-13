@@ -13,11 +13,11 @@ const config = {
     'es5-shim/es5-shim',
     'es5-shim/es5-sham',
     'babel-polyfill',
-    './app/bundles/Tasks/startup/TasksApp',
-    './app/bundles/jquery.lettering',
-    './app/bundles/color',
-    './app/bundles/misc',
-    './app/bundles/misc.scss',
+    './app/bundles/Tasks/TasksApp',
+    './lib/jquery.lettering',
+    './lib/color',
+    './app/bundles/Tasks/index',
+    './app/bundles/Tasks/index.scss',
   ],
 
   output: {

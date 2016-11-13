@@ -9,7 +9,7 @@ console.log('OVER HERE TEST 2');
 require('bootstrap/dist/js/bootstrap.js');
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 require('jquery-ui');
-require('jquery-ui/themes/base/core.css');
+require('jquery-ui/themes/base/all.css');
 require('jquery-ui/ui/widgets/slider');
 require('jquery-ui/ui/widgets/sortable');
 require('select2');
@@ -25,8 +25,8 @@ require("imports?$=jquery!jquery-timepicker/jquery.timepicker")
 // require('jquery-timepicker/jquery.timepicker');
 // var letterify = require('letterify');
 // require('letteringjs');
-require("imports?$=jquery!./jquery.lettering.js")
-require("imports?$=jquery!./color.js")
+require("imports?$=jquery!letteringjs/jquery.lettering.js")
+require("imports?$=jquery!../../../lib/color.js")
 
 // require('lettering');
 
