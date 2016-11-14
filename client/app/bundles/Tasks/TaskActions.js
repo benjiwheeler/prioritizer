@@ -15,7 +15,7 @@ export function provideInitialState() {
 export function requestToServer() {
   return axios({
     url: "http://localhost:5000/tasks.json",
-//    url: "https://prioritizershake.herokuapp.com/tasks/",
+//    url: "https://prioritizershake.herokuapp.com/tasks.json",
     timeout: 20000,
     method: 'get',
     responseType: 'json'

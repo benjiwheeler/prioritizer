@@ -615,9 +615,9 @@ $('input#time_of_day_input').timepicker({
     waitBaselineNumSecs += waitDelta;
     do {
       whichLetter = (Math.floor(Math.random()*numTitleLetters));
-      console.log("tentatively picked " + whichLetter + " which has turnsSincePick " + turnsSincePick[whichLetter]);
+      // console.log("tentatively picked " + whichLetter + " which has turnsSincePick " + turnsSincePick[whichLetter]);
     } while (turnsSincePick[whichLetter] < Math.floor(numTitleLetters / 2.0));
-    console.log("picked " + whichLetter);
+    // console.log("picked " + whichLetter);
     for (var i = 0; i < numTitleLetters; i++) {
       turnsSincePick[i]++;
     }
@@ -626,14 +626,14 @@ $('input#time_of_day_input').timepicker({
       newBlur = Math.floor(Math.random()*20);
       curBlurDiff = Math.abs(newBlur - curBlurVals[whichLetter]["blur"]);
     } while (curBlurDiff < minBlurDiff);
-    console.log("picked blur " + newBlur + " with diff " + curBlurDiff);
+    // console.log("picked blur " + newBlur + " with diff " + curBlurDiff);
     curBlurVals[whichLetter]["blur"] = newBlur;
     newBlur = newBlur * newBlur / 20.0 + 0.1; // don't go to 0, it'll turn black
     do {
       newColor = Math.floor(Math.random()*200)+55;
       curColorDiff = Math.abs(newColor - curBlurVals[whichLetter]["color"]);
     } while (curColorDiff < minColorDiff);
-    console.log("picked color " + newColor + " with diff " + curColorDiff);
+    // console.log("picked color " + newColor + " with diff " + curColorDiff);
     curBlurVals[whichLetter]["color"] = newColor;
     titleElem.find("span:nth-child(" + (whichLetter + 1) + ")")
       .stop().animate({
