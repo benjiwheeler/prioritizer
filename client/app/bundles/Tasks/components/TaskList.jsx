@@ -26,7 +26,7 @@ export default class TaskList extends React.Component {
   componentWillMount() { // called by React.Component
     TaskStore.attachListener(this, ["tasks"]);
     provideInitialState();
-    //requestToServer();
+    requestToServer();
   }
 
   componentWillUnmount() {
