@@ -13,5 +13,7 @@
     "rails-server": "echo 'visit http://localhost:3000/hello_world' && foreman start -f Procfile.dev"
   },
   "devDependencies": {
+    "eslint": "^3.10.0",
+    "eslint-plugin-react": "^6.6.0"
   }
 }
