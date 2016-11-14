@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react';
+import TaskStore from '../store/TaskStore.js';
+import {provideInitialState, requestToServer} from '../TaskActions'
 
 
 export class Task extends React.Component {
@@ -7,7 +9,7 @@ export class Task extends React.Component {
     return (
       <div>
         A task:
-        { this.props.name }
+        { this.props.task.name }
       </div>
     );
   }
@@ -18,19 +20,23 @@ export default class TaskList extends React.Component {
 
   constructor(props) { // list of objects
     super(props);
-    this.state = {
-      tasks: [
-        {name: "task1"},
-        {name: "task2"},
-        {name: "task3"}
-      ]
-    }
+    this.state = TaskStore.getData(["tasks"]);
+  }
+
+  componentWillMount() { // called by React.Component
+    TaskStore.attachListener(this, ["tasks"]);
+    provideInitialState();
+    //requestToServer();
+  }
+
+  componentWillUnmount() {
+    TaskStore.removeListener(this);
   }
 
   render() {
     let { tasks } = this.state;
     var allTasks = tasks.map((task, index) => (
-        <Task key={index} name={task.name} />
+        <Task key={index} task={task} />
       ));
 
     return (

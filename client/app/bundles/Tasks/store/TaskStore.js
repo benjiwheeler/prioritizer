@@ -1,4 +1,4 @@
-export default class TaskStore {
+export default {
   state: {},
   listeners: [],
   setState: function(data) {
@@ -43,4 +43,4 @@ export default class TaskStore {
     // we'll provide full list of properties to this object, even if unchanged
     listener.comp.setState(this.getData(listener.props));
   }
-};
+}
