@@ -18,9 +18,17 @@ export function setShowAddForm(doShow) {
 }
 
 export function requestToServer() {
-  $.ajax({
-    url: "http://localhost:3000/abc"
-  }).then(function(response) {
-    debugger;
+  return axios({
+    url: url,
+    timeout: 20000,
+    method: 'get',
+    responseType: 'json'
+  })
+  .then(function(response) {
+    dispatch(receiveData(response.data));
+  })
+  .catch(function(response){
+    dispatch(receiveError(response.data));
+    dispatch(pushState(null,'/error'));
   });
 }
