@@ -72,7 +72,7 @@ TaskListable.contextTypes = { // if you want to use this.context, you must defin
 };
 
 
-export default class TaskList extends React.Component {
+export class TaskList extends React.Component {
 
   constructor(props) { // list of objects
     super(props);

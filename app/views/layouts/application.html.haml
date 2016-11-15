@@ -16,4 +16,5 @@
             %p.notice= notice
           - if alert.present?
             %p.alert= alert
+          = react_component("TasksApp")
           = yield
