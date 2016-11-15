@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
+import Component from 'react';
 import TaskStore from '../store/TaskStore.js';
 import {provideInitialState, requestToServer} from '../TaskActions';
+import { Router, Route, Link, browserHistory } from 'react-router'
 
 
 export class CircleCell extends React.Component {
@@ -33,13 +35,15 @@ CircleCell.propTypes = {
 };
 
 
-export class Task extends React.Component {
+export class TaskListable extends React.Component {
 
   render() {
     return (
       <tr>
         <td className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
-          { this.props.task.name }
+          <Link to={"/tasks/" + this.props.task.id}>
+            { this.props.task.name }
+          </Link>
         </td>
         <CircleCell size={Number(this.props.task.vital)} color="#09bc36" />
         <CircleCell size={Number(this.props.task.immediate)} color="#f9d507" />
@@ -63,6 +67,10 @@ export class Task extends React.Component {
     );
   }
 }
+TaskListable.contextTypes = { // if you want to use this.context, you must define contextTypes
+  router: React.PropTypes.object
+};
+
 
 export default class TaskList extends React.Component {
 
@@ -84,7 +92,7 @@ export default class TaskList extends React.Component {
   render() {
     let { tasks } = this.state;
     var allTasks = tasks.map((task, index) => (
-        <Task key={index} task={task} />
+        <TaskListable key={index} task={task} />
       ));
 
     return (

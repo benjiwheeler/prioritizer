@@ -3,11 +3,11 @@ import axios from 'axios';
 
 export function provideInitialState() {
   TaskStore.setState({
-      tasks: [
-        {name: "task1"},
-        {name: "task2"},
-        {name: "task3"}
-      ]
+    tasks: [
+      {name: "task1"},
+      {name: "task2"},
+      {name: "task3"}
+    ]
   });
 }
 
