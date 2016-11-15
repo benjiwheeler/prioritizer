@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Component from 'react';
 import TaskStore from '../store/TaskStore.js';
-import {provideInitialState, requestToServer} from '../TaskActions';
+import {deleteTask} from '../TaskActions';
 import { Router, Route, Link, browserHistory } from 'react-router'
 
 
@@ -36,30 +36,75 @@ CircleCell.propTypes = {
 
 
 export class TaskListable extends React.Component {
+  constructor(props) { // list of objects
+    super(props);
+    this.state = TaskStore.getData(["tasksById"]);
+    this.taskId = props.taskId;
+  }
+
+  componentWillMount() { // called by React.Component
+    TaskStore.attachListener(this, ["tasksById"]);
+  }
+
+  componentWillUnmount() {
+    TaskStore.removeListener(this);
+  }
+
+  attemptDelete(e) {
+    e.preventDefault();
+    var retVal = confirm("Sure?");
+    if (retVal === true) {
+      TaskActions.deleteTask(this.taskId);
+    } else {
+    }
+  }
 
   render() {
+    let task = null;
+    let { tasksById } = this.state;
+    if (this.props.taskId !== undefined && this.props.taskId !== null) {
+      task = tasksById[this.props.taskId];
+    } else if (this.props.params !== undefined && this.props.params !== null &&
+      this.props.params.taskId !== undefined && this.props.params.taskId !== null) {
+      task = tasksById[this.props.params.taskId];
+    }
+
     return (
       <tr>
         <td className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
-          <Link to={"/tasks/" + this.props.task.id}>
-            { this.props.task.name }
+          <Link to={"/tasks/" + task.id}>
+            { task.name }
           </Link>
         </td>
-        <CircleCell size={Number(this.props.task.vital)} color="#09bc36" />
-        <CircleCell size={Number(this.props.task.immediate)} color="#f9d507" />
-        <CircleCell size={Number(this.props.task.heavy)} color="#ed1409" />
-        <CircleCell size={Number(this.props.task.long)} color="#1061e5" />
+        <CircleCell size={Number(task.vital)} color="#09bc36" />
+        <CircleCell size={Number(task.immediate)} color="#f9d507" />
+        <CircleCell size={Number(task.heavy)} color="#ed1409" />
+        <CircleCell size={Number(task.long)} color="#1061e5" />
         <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link">
             <div className="list-action-logo">
-              <i className="fa-icon fa-play-circle"></i>
+              <i className="fa fa-play-circle"></i>
+            </div>
+          </a>
+        </td>
+        <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+          <a href="" className="list-action-link" onClick={this.attemptDelete}>
+            <div className="list-action-logo">
+              <i className="fa fa-times"></i>
             </div>
           </a>
         </td>
         <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link">
             <div className="list-action-logo">
-              <i className="fa-icon fa-play-circle"></i>
+              <i className="fa fa-check"></i>
+            </div>
+          </a>
+        </td>
+        <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+          <a href="" className="list-action-link">
+            <div className="list-action-logo">
+              <i className="fa fa-check"></i>
             </div>
           </a>
         </td>
@@ -76,13 +121,11 @@ export class TaskList extends React.Component {
 
   constructor(props) { // list of objects
     super(props);
-    this.state = TaskStore.getData(["tasks"]);
+    this.state = TaskStore.getData(["tasksOrdered"]);
   }
 
   componentWillMount() { // called by React.Component
-    TaskStore.attachListener(this, ["tasks"]);
-    provideInitialState();
-    requestToServer();
+    TaskStore.attachListener(this, ["tasksOrdered"]);
   }
 
   componentWillUnmount() {
@@ -90,10 +133,13 @@ export class TaskList extends React.Component {
   }
 
   render() {
-    let { tasks } = this.state;
-    var allTasks = tasks.map((task, index) => (
-        <TaskListable key={index} task={task} />
+    let { tasksOrdered } = this.state;
+    let allTasksJsx = (<tr></tr>);
+    if (tasksOrdered !== undefined && tasksOrdered !== null) {
+      allTasksJsx = tasksOrdered.map((task, index) => (
+        <TaskListable key={index} taskId={task.id} />
       ));
+    }
 
     return (
       <div>
@@ -113,7 +159,7 @@ export class TaskList extends React.Component {
             </tr>
           </thead>
           <tbody>
-            { allTasks }
+            { allTasksJsx }
           </tbody>
         </table>
       </div>

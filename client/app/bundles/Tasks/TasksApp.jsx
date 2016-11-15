@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 import ReactOnRails from 'react-on-rails';
-import routes from './routes';
+import TaskRoutes from './TaskRoutes';
 
 const TasksApp = (props) => (
-  React.createElement(routes)
+  React.createElement(TaskRoutes)
 );
 
 // This is how react_on_rails can see the HelloWorldApp in the browser.

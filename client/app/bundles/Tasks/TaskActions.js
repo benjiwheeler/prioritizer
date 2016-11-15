@@ -3,11 +3,8 @@ import axios from 'axios';
 
 export function provideInitialState() {
   TaskStore.setState({
-    tasks: [
-      {name: "task1"},
-      {name: "task2"},
-      {name: "task3"}
-    ]
+    tasksOrdered: [],
+    tasksById: {}
   });
 }
 
@@ -20,8 +17,21 @@ export function requestToServer() {
     method: 'get',
     responseType: 'json'
   }).then(function(info) {
-    console.log(info);
-    TaskStore.setState({tasks: info.data.tasks});
+    var tasksById = {};
+    info.data.tasks.forEach((task) => {
+      tasksById[task.id] = task;
+    });
+    TaskStore.setState({
+      tasksOrdered: info.data.tasks,
+      tasksById: tasksById
+    });
   });
 
+}
+
+export function deleteTask(taskId) {
+  const curOrdered = TaskStore.getData(["tasksOrdered"]);
+  TaskStore.setState({
+    tasksOrdered: curOrdered.filter(task => task.id !== taskId)
+  });
 }

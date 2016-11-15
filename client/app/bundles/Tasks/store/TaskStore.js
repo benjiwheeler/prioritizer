@@ -8,7 +8,6 @@ export default {
     };
     console.log(this.state, data);
     this.notifyComponents(data);
-
   },
   getData: function(props) {
     let result = {};
@@ -22,7 +21,7 @@ export default {
     this.listeners.push({
       comp: obj,
       props
-    })
+    });
   },
   removeListener: function(obj) {
     let listener = this.listeners.filter( (_listener) => _listener.comp === obj );
@@ -43,4 +42,4 @@ export default {
     // we'll provide full list of properties to this object, even if unchanged
     listener.comp.setState(this.getData(listener.props));
   }
-}
+};
