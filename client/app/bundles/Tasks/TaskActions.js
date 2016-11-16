@@ -1,6 +1,5 @@
 import TaskStore from './store/TaskStore.js';
 import RequestHelper from '../../../lib/RequestHelper';
-import axios from 'axios';
 
 
 export function provideInitialState() {
@@ -23,7 +22,8 @@ var handleTasks = function(info) {
 
 export function fetchTasks() {
 //    url: "https://prioritizershake.herokuapp.com/tasks.json"
-  return RequestHelper.get("http://localhost:5000/tasks.json")
+  var rh = new RequestHelper();
+  return rh.get("http://localhost:5000/tasks.json")
   .then(function(jsonData) {
     handleTasks(jsonData);
   });
@@ -34,7 +34,8 @@ export function deleteTask(taskId) {
   TaskStore.setState({
     tasksOrdered: tasksOrdered.filter(task => task.id !== taskId)
   });
-  return RequestHelper.delete("http://localhost:5000/tasks/" + taskId + ".json")
+  var rh = new RequestHelper();
+  return rh.delete("http://localhost:5000/tasks/" + taskId + ".json")
   .then(function() {
     fetchTasks();
   });
@@ -45,7 +46,8 @@ export function finishTask(taskId) {
   TaskStore.setState({
     tasksOrdered: tasksOrdered.filter(task => task.id !== taskId)
   });
-  return RequestHelper.post("http://localhost:5000/tasks/" + taskId + "/done.json")
+  var rh = new RequestHelper();
+  return rh.post("http://localhost:5000/tasks/" + taskId + "/done.json")
   .then(function() {
     fetchTasks();
   });

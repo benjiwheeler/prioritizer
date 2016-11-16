@@ -20,7 +20,7 @@ export default class RequestHelper {
       responseType: 'json',
       ...this.defaultParams
     }).then(function(response) {
-      return response.json();
+      return response;
     });
   }
 
@@ -34,7 +34,7 @@ export default class RequestHelper {
       body: JSON.stringify(props),
       ...this.defaultParams
     }).then(function(response) {
-      return response.json();
+      return response;
     });
   }
 
@@ -48,7 +48,7 @@ export default class RequestHelper {
       body: JSON.stringify(props),
       ...this.defaultParams
     }).then(function(response) {
-      return response.json();
+      return response;
     });
   }
 
@@ -61,7 +61,7 @@ export default class RequestHelper {
       responseType: 'json',
       ...this.defaultParams
     }).then(function(response) {
-      return response.json();
+      return response;
     });
   }
 }
