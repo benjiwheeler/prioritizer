@@ -38,48 +38,46 @@ CircleCell.propTypes = {
 export class TaskListable extends React.Component {
   constructor(props) { // list of objects
     super(props);
-    this.state = TaskStore.getData(["tasksById"]);
-    this.taskId = props.taskId;
-  }
-
-  componentWillMount() { // called by React.Component
-    TaskStore.attachListener(this, ["tasksById"]);
-  }
-
-  componentWillUnmount() {
-    TaskStore.removeListener(this);
+    this.state = {
+      rowClass: "testing"
+    };
   }
 
   attemptDelete(e) {
     e.preventDefault();
     var retVal = confirm("Sure?");
     if (retVal === true) {
-      deleteTask(this.taskId);
-    } else {
+      this.setState({
+        rowClass: "removed"
+      });
+      setTimeout(function() {
+        deleteTask(this.props.task.id);
+      }.bind(this), 500);
     }
   }
 
-  render() {
-    let task = null;
-    let { tasksById } = this.state;
-    if (this.props.taskId !== undefined && this.props.taskId !== null) {
-      task = tasksById[this.props.taskId];
-    } else if (this.props.params !== undefined && this.props.params !== null &&
-      this.props.params.taskId !== undefined && this.props.params.taskId !== null) {
-      task = tasksById[this.props.params.taskId];
-    }
+  markFinished(e) {
+    e.preventDefault();
+    this.setState({
+      rowClass: "removed"
+    });
+    setTimeout(function() {
+      finishTask(this.props.task.id);
+    }.bind(this), 500);
+  }
 
+  render() {
     return (
-      <tr>
+      <tr className={this.state.rowClass}>
         <td className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
-          <Link to={"/tasks/" + task.id}>
-            { task.name }
+          <Link to={"/tasks/" + this.props.task.id}>
+            { this.props.task.name } { this.state.rowClass }
           </Link>
         </td>
-        <CircleCell size={Number(task.vital)} color="#09bc36" />
-        <CircleCell size={Number(task.immediate)} color="#f9d507" />
-        <CircleCell size={Number(task.heavy)} color="#ed1409" />
-        <CircleCell size={Number(task.long)} color="#1061e5" />
+        <CircleCell size={Number(this.props.task.vital)} color="#09bc36" />
+        <CircleCell size={Number(this.props.task.immediate)} color="#f9d507" />
+        <CircleCell size={Number(this.props.task.heavy)} color="#ed1409" />
+        <CircleCell size={Number(this.props.task.long)} color="#1061e5" />
         <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link">
             <div className="list-action-logo">
@@ -88,7 +86,7 @@ export class TaskListable extends React.Component {
           </a>
         </td>
         <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
-          <a href="" className="list-action-link" onClick={this.attemptDelete}>
+          <a href="" className="list-action-link" onClick={this.attemptDelete.bind(this)}>
             <div className="list-action-logo">
               <i className="fa fa-times"></i>
             </div>
@@ -115,6 +113,9 @@ export class TaskListable extends React.Component {
 TaskListable.contextTypes = { // if you want to use this.context, you must define contextTypes
   router: React.PropTypes.object
 };
+TaskListable.propTypes = {
+  task: React.PropTypes.object.isRequired
+};
 
 
 export class TaskList extends React.Component {
@@ -137,7 +138,7 @@ export class TaskList extends React.Component {
     let allTasksJsx = (<tr></tr>);
     if (tasksOrdered !== undefined && tasksOrdered !== null) {
       allTasksJsx = tasksOrdered.map((task, index) => (
-        <TaskListable key={index} taskId={task.id} />
+        <TaskListable key={task.id} task={task} />
       ));
     }
 

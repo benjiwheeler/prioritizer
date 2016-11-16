@@ -157,7 +157,14 @@ class TasksController < ApplicationController
     @task.destroy
     respond_to do |format|
       format.html { redirect_to tasks_url, notice: 'Task was successfully destroyed.' }
-      format.json { head :no_content }
+      format.json {
+        if current_user?
+          @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
+          render :index, status: :ok
+        else
+          render :no_content
+        end
+      }
     end
   end
 

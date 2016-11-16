@@ -464,3 +464,43 @@ edit-in-place hacks
 
     width: 100%;
 }
+
+/* *********************************
+List removal intimation
+********************************* */
+
+.removed {
+
+  -webkit-animation: disapear 1s;
+  -webkit-animation-fill-mode: forwards;
+  animation: disapear 1s;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes disapear{
+
+  50% {
+
+    -webkit-transform: translateX(-5%);
+    transform: translateX(-5%);
+  }
+
+  100% {
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+  }
+}
+
+@keyframes disapear{
+
+  50% {
+
+    -webkit-transform: translateX(-5%);
+    transform: translateX(-5%);
+  }
+
+  100% {
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+  }
+}

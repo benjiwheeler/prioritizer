@@ -13,7 +13,7 @@ export default {
     let result = {};
     let state = this.state;
     props.forEach( function(prop) {
-      result[prop] = state[prop]
+      result[prop] = state[prop];
     });
     return result;
   },

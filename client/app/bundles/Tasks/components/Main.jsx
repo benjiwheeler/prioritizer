@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
-import {provideInitialState, requestToServer} from '../TaskActions';
+import {provideInitialState, fetchTasks} from '../TaskActions';
 
 export class NavBar extends React.Component {
   render() {
@@ -14,7 +14,7 @@ export class NavBar extends React.Component {
 export class Main extends React.Component {
   componentWillMount() { // called by React.Component
     provideInitialState();
-    requestToServer();
+    fetchTasks();
   }
 
   render() {
