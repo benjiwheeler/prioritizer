@@ -54,7 +54,7 @@ export class TaskListable extends React.Component {
     e.preventDefault();
     var retVal = confirm("Sure?");
     if (retVal === true) {
-      TaskActions.deleteTask(this.taskId);
+      deleteTask(this.taskId);
     } else {
     }
   }
