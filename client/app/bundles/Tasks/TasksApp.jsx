@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom';
 import ReactOnRails from 'react-on-rails';
 import TaskRoutes from './TaskRoutes';
 
+window.globalAppInfo = {
+testprop: "testval"
+
+};
+
 const TasksApp = (props) => (
   React.createElement(TaskRoutes, props)
 );

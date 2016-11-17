@@ -59,7 +59,7 @@ export class TaskListable extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      rowClass: "testing"
+      rowClass: "testing",
     };
   }
 
@@ -90,7 +90,7 @@ export class TaskListable extends React.Component {
     return (
       <tr className={this.state.rowClass}>
         <td className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
-          <Link to={"/tasks/" + this.props.task.id}>
+          <Link to={{pathname: `/tasks/${this.props.task.id}`, query: {tagName: this.props.tagName}}}>
             { this.props.task.name } { this.state.rowClass }
           </Link>
         </td>
@@ -134,7 +134,8 @@ TaskListable.contextTypes = { // if you want to use this.context, you must defin
   router: React.PropTypes.object
 };
 TaskListable.propTypes = {
-  task: React.PropTypes.object.isRequired
+  task: React.PropTypes.object.isRequired,
+  tagName: React.PropTypes.string
 };
 
 
@@ -142,7 +143,9 @@ export class TaskList extends React.Component {
 
   constructor(props) { // list of objects
     super(props);
-    this.state = TaskStore.getData(["tasksOrdered"]);
+    this.state = {
+      ...TaskStore.getData(["tasksOrdered"])
+    };
   }
 
   componentWillMount() { // called by React.Component
@@ -154,17 +157,15 @@ export class TaskList extends React.Component {
   }
 
   render() {
-    let { tasksOrdered } = this.state;
     let allTasksJsx = (<tr></tr>);
-    if (tasksOrdered !== undefined && tasksOrdered !== null) {
-      allTasksJsx = tasksOrdered.map((task) => (
-        <TaskListable key={task.id} task={task} />
+    if (this.state.tasksOrdered !== undefined && this.state.tasksOrdered !== null) {
+      allTasksJsx = this.state.tasksOrdered.map((task) => (
+        <TaskListable key={task.id} task={task} tagName={this.props.params.tagName}/>
       ));
     }
 
     return (
       <div>
-        Tasks go here!
         <table className="table" style={{marginTop: '6rem'}}>
           <thead>
             <tr>
@@ -187,3 +188,6 @@ export class TaskList extends React.Component {
     );
   }
 }
+TaskList.propTypes = {
+  tagName: React.PropTypes.string
+};

@@ -24,10 +24,7 @@ export class NavBar extends React.Component {
       allTagsJsx = tagsOrdered.map((tag) => (
                             <li key={tag.id}>
                           {tag.name}
-          <Link to={{
-              pathname: "/tasks/next",
-              query: {tag: tag.name}
-              }}>
+          <Link to={{pathname: '/tasks/next', query: {tagName: tag.name}}}>
                         <span style={{color: "green"}}>
                           {tag.name}
                         </span>
@@ -36,8 +33,12 @@ export class NavBar extends React.Component {
       ));
     }
     return (
-      <ul>
-                <li className='dropdown'>
+      <div>
+          <Link to={{pathname: '/tasks', query: {tagName: this.props.tagName}}}>
+              &lt;Task List
+                      </Link>
+
+                <div className='dropdown'>
                   <a aria-expanded='false' aria-haspopup='true' className='dropdown-toggle' data-toggle='dropdown' href='#' role='button'>
                     Where
                     <span className='caret'></span>
@@ -45,8 +46,8 @@ export class NavBar extends React.Component {
                   <ul className='dropdown-menu'>
                           {allTagsJsx}
                   </ul>
-                </li>
-      </ul>
+                </div>
+      </div>
     );
   }
 }
@@ -61,9 +62,7 @@ export class Main extends React.Component {
   render() {
     return (
       <div>
-        Main
-        <NavBar />
-        <div>Other Content</div>
+        <NavBar tagName={this.props.params.tagName} />
         {this.props.children}
       </div>
     );

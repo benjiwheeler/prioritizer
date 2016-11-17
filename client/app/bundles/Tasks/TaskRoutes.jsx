@@ -5,11 +5,6 @@ import { Main } from './components/Main';
 import { NextTask } from './components/TaskFocus';
 import { TaskList } from './components/TaskList';
 
-window.globalAppInfo = {
-testprop: "testval"
-
-};
-
 export default class routes extends Component {
   constructor(props) { // called by React.Component
     super(props);
@@ -23,11 +18,10 @@ export default class routes extends Component {
     return (
       <div>APP HERE
       <Router history={hashHistory}>
-        <Route path='/' component={Main}>
+        <Route path='tasks' component={Main}>
           <IndexRoute component={TaskList} />
-          <Route path='/tasks' component={TaskList} />
-          <Route path='/tasks/next' component={NextTask} />
-          <Route path='/tasks/:taskId' component={TaskFocus} />
+          <Route path='next' component={NextTask} />
+          <Route path=':taskId' component={TaskFocus} />
         </Route>
       </Router>
       </div>
