@@ -16,5 +16,5 @@
             %p.notice= notice
           - if alert.present?
             %p.alert= alert
-          = react_component("TasksApp")
+          = react_component("TasksApp", props: {user_id: current_user.id})
           = yield

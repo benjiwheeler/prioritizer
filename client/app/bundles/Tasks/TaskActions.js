@@ -4,6 +4,7 @@ import RequestHelper from '../../../lib/RequestHelper';
 
 export function provideInitialState() {
   TaskStore.setState({
+    tagsOrdered: [],
     tasksOrdered: [],
     tasksById: {}
   });
@@ -19,6 +20,21 @@ var handleTasks = function(info) {
     tasksById: tasksById
   });
 };
+
+var handleTags = function(info) {
+  TaskStore.setState({
+    tagsOrdered: info.data.tags
+  });
+};
+
+export function fetchTags() {
+//    url: "https://prioritizershake.herokuapp.com/tasks.json"
+  var rh = new RequestHelper();
+  return rh.get("http://localhost:5000/users/" + window.globalAppInfo.user_id + "/tags.json")
+  .then(function(jsonData) {
+    handleTags(jsonData);
+  });
+}
 
 export function fetchTasks() {
 //    url: "https://prioritizershake.herokuapp.com/tasks.json"

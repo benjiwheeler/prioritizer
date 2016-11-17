@@ -7,6 +7,13 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
+  # GET /users
+  # GET /users.json
+  def tags
+    @user = User.find(params.require(:id))
+    @tags = @user.tags
+  end
+
   # GET /users/1
   # GET /users/1.json
   def show

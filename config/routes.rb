@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   match 'users/logout', to: 'sessions#destroy', as: 'logout', via: :delete
   match 'users/logout', to: 'sessions#destroy', via: :get # in case a provider directs us back to /logout, trying to be helpful!
   match 'users/login', to: 'sessions#login', as: 'login', via: :get
+  match 'users/:id/tags', to: 'users#tags', as: 'user_tags', via: :get
   resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

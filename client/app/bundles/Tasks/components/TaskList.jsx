@@ -2,29 +2,49 @@ import React, { PropTypes } from 'react';
 import Component from 'react';
 import TaskStore from '../store/TaskStore.js';
 import {deleteTask} from '../TaskActions';
-import { Router, Route, Link, browserHistory } from 'react-router'
+import { Link } from 'react-router';
 
 
 export class CircleCell extends React.Component {
   constructor(props) { // list of objects
     super(props);
+    this.state = {
+      color: props.color,
+      ...this.calcSize(props.size)
+    };
+  }
+
+  calcSize(size) {
     var smallest_size = 3;
     var scale_factor = 1.5;
-    this.size = props.size;
-    if (props.size === undefined || props.size === null) {
-      this.size = 1;
+    if (size === undefined || size === null) {
+      size = 1;
     }
-    this.size = scale_factor * (this.size + smallest_size)/(10.0 + smallest_size);
-    this.spacer_size = scale_factor * smallest_size/(10.0 + smallest_size);
-    this.spacer_size -= this.size / 2.0;
-    this.spacer_size += 0.2; // extra spacing
-    this.color = props.color;
+    size = scale_factor * (size + smallest_size)/(10.0 + smallest_size);
+    var spacer_size = scale_factor * smallest_size/(10.0 + smallest_size);
+    spacer_size -= size / 2.0;
+    spacer_size += 0.2; // extra spacing
+    return {
+      size: size,
+      spacer_size: spacer_size
+    };
+  }
+
+  setSize(size) {
+    this.setState({
+      ...this.calcSize(size)
+    });
+  }
+
+  toggleResize(e) {
+    e.preventDefault();
+    this.setSize(5);
   }
 
   render() {
     return (
-      <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
-        <div className="circle" style={{backgroundColor: this.color, width: this.size + 'em', height: this.size + 'em', marginLeft: this.spacer_size + 'em', marginTop: (this.spacer_size + 0.5) + 'em'}}></div>
+      <td onClick={this.toggleResize.bind(this)} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        <div className="circle" style={{backgroundColor: this.state.color, width: this.state.size + 'em', height: this.state.size + 'em', marginLeft: this.state.spacer_size + 'em', marginTop: (this.state.spacer_size + 0.5) + 'em'}}></div>
       </td>
     );
   }
@@ -137,7 +157,7 @@ export class TaskList extends React.Component {
     let { tasksOrdered } = this.state;
     let allTasksJsx = (<tr></tr>);
     if (tasksOrdered !== undefined && tasksOrdered !== null) {
-      allTasksJsx = tasksOrdered.map((task, index) => (
+      allTasksJsx = tasksOrdered.map((task) => (
         <TaskListable key={task.id} task={task} />
       ));
     }

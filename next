@@ -1,6 +1,26 @@
+backend:
+2 can nav to list from next
+8 endpoint that will return all lists of tags, for each tag
+4 request and store all these in main
+4 router has tag in routes
+4 deleting/finishing removes from ALL lists
+4 postpone/worked reports to server, tag list by tag list, for all changed lists
+4 postpone/worked also removes locally, NOT on server
+4 next has explicit, separate cur task; updating list doesn't change it
+4 next page: shows next after done, by getting 2nd before any local or server update
+2 new task component displaying... start with just name, tag
+2 get sliders working
+2 new task wired in; submitting puts new one on server
+8 get next formatting looking how i want
+___
+52, approx 7 days
+
+get keyboard shortcuts working
+request each
+
+
 get link from next to all working (_A_)
 
-react experiment:
 
 
 make overall algo text document
