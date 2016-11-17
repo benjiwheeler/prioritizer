@@ -38,6 +38,10 @@ class TasksController < ApplicationController
       if @task.save
         TaskOrdering.expire_redis_tasks_keys!(current_user)
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was marked done.' }
+        format.json do
+          @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
+          render :index, status: :ok
+        end
       else
         format.html { render :edit }
         format.json { render json: @task.errors, status: :unprocessable_entity }

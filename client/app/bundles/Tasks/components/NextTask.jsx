@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
+import { TaskFocus } from './TaskFocus';
 import {provideInitialState, requestToServer} from '../TaskActions';
 
 
@@ -18,15 +19,23 @@ export class NextTask extends React.Component {
   }
 
   render() {
-    let task = null;
+    let taskId = null;
     let { tasksOrdered } = this.state;
     if (tasksOrdered !== undefined && tasksOrdered !== null && tasksOrdered.length > 0) {
-      task = tasksOrdered[0];
+      taskId = tasksOrdered[0].id;
+      return (
+        <TaskFocus taskId={taskId} />
+      );
+    } else {
+      return (
+        <div>
+          Missing task
+        </div>
+      );
     }
 
-    return (
-      <TaskFocus taskId={task.id}>
-      </TaskFocus>
-    );
   }
 }
+NextTask.contextTypes = { // if you want to use this.context, you must define contextTypes
+  router: React.PropTypes.object
+};

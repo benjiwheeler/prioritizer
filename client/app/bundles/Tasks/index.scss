@@ -469,38 +469,86 @@ edit-in-place hacks
 List removal intimation
 ********************************* */
 
-.removed {
-
-  -webkit-animation: disapear 1s;
+.doComplete {
+  -webkit-animation: completeAnim 1s;
   -webkit-animation-fill-mode: forwards;
-  animation: disapear 1s;
+  animation: completeAnim 1s;
   animation-fill-mode: forwards;
 }
 
-@-webkit-keyframes disapear{
-
+@-webkit-keyframes completeAnim{
   50% {
-
     -webkit-transform: translateX(-5%);
     transform: translateX(-5%);
+    background-color: #ffffff;
+  }
+  100% {
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+    background-color: #44ff44;
+  }
+}
+@keyframes completeAnim{
+  50% {
+    -webkit-transform: translateX(-5%);
+    transform: translateX(-5%);
+    background-color: #ffffff;
   }
 
   100% {
     -webkit-transform: translateX(200%);
     transform: translateX(200%);
+    background-color: #44ff44;
   }
 }
 
-@keyframes disapear{
 
+
+.doDelete {
+  -webkit-animation: deleteAnim 1s;
+  -webkit-animation-fill-mode: forwards;
+  animation: deleteAnim 1s;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes deleteAnim{
   50% {
-
-    -webkit-transform: translateX(-5%);
-    transform: translateX(-5%);
+    -webkit-transform: translateX(5%);
+    transform: translateX(5%);
+    background-color: #ffffff;
+  }
+  100% {
+    -webkit-transform: translateX(-200%);
+    transform: translateX(-200%);
+    background-color: #ff4444;
+  }
+}
+@keyframes deleteAnim{
+  50% {
+    -webkit-transform: translateX(5%);
+    transform: translateX(5%);
+    background-color: #ffffff;
   }
 
   100% {
-    -webkit-transform: translateX(200%);
-    transform: translateX(200%);
+    -webkit-transform: translateX(-200%);
+    transform: translateX(-200%);
+    background-color: #ff4444;
   }
+}
+
+
+
+.doFadeIn {
+  -webkit-animation: fadein 1s linear forwards;
+  animation: fadein 4s linear forwards;
+}
+
+@-webkit-keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes fadein {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }

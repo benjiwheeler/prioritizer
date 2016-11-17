@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Component from 'react';
 import TaskStore from '../store/TaskStore.js';
-import {deleteTask} from '../TaskActions';
+import {deleteTask, finishTask} from '../TaskActions';
 import { Link } from 'react-router';
 
 
@@ -59,7 +59,7 @@ export class TaskListable extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      rowClass: "testing",
+      rowClass: "",
     };
   }
 
@@ -68,22 +68,22 @@ export class TaskListable extends React.Component {
     var retVal = confirm("Sure?");
     if (retVal === true) {
       this.setState({
-        rowClass: "removed"
+        rowClass: "doDelete"
       });
       setTimeout(function() {
         deleteTask(this.props.task.id);
-      }.bind(this), 500);
+      }.bind(this), 1000);
     }
   }
 
   markFinished(e) {
     e.preventDefault();
     this.setState({
-      rowClass: "removed"
+      rowClass: "doComplete"
     });
     setTimeout(function() {
       finishTask(this.props.task.id);
-    }.bind(this), 500);
+    }.bind(this), 1000);
   }
 
   render() {
@@ -120,7 +120,7 @@ export class TaskListable extends React.Component {
           </a>
         </td>
         <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
-          <a href="" className="list-action-link">
+          <a href="" className="list-action-link" onClick={this.markFinished.bind(this)}>
             <div className="list-action-logo">
               <i className="fa fa-check"></i>
             </div>

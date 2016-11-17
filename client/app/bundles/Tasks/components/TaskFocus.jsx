@@ -1,11 +1,31 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
-import {provideInitialState, requestToServer} from '../TaskActions';
+import {provideInitialState, requestToServer, finishTask, deleteTask} from '../TaskActions';
 
 export class TaskFocus extends React.Component {
   constructor(props) { // list of objects
     super(props);
-    this.state = TaskStore.getData(["tasksById"]);
+    this.state = {
+      ...TaskStore.getData(["tasksById"]),
+      taskId: this.getTaskIdFromProps(props),
+      rowClass: ""
+    };
+  }
+
+  getTaskIdFromProps(props) {
+    let taskId = props.taskId;
+    if ((taskId === undefined || taskId === null) &&
+        (props.params !== undefined && props.params !== null)) {
+      taskId = props.params.taskId;
+    }
+    return taskId
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      taskId: this.getTaskIdFromProps(newProps),
+      rowClass: "doFadeIn"
+    });
   }
 
   componentWillMount() { // called by React.Component
@@ -16,19 +36,26 @@ export class TaskFocus extends React.Component {
     TaskStore.removeListener(this);
   }
 
+  markFinished(taskId, e) {
+    e.preventDefault();
+    this.setState({
+      rowClass: "doComplete"
+    });
+    setTimeout(function() {
+      finishTask(taskId);
+    }.bind(this), 1000);
+
+  }
+
   render() {
     let task = null;
-    let { tasksById } = this.state;
-    if (this.props.taskId !== undefined && this.props.taskId !== null) {
-      task = tasksById[this.props.taskId];
-    } else if (this.props.params !== undefined && this.props.params !== null &&
-      this.props.params.taskId !== undefined && this.props.params.taskId !== null) {
-      task = tasksById[this.props.params.taskId];
+    if (this.state.taskId !== undefined && this.state.taskId !== null) {
+      task = this.state.tasksById[this.state.taskId];
     }
 
     if (task !== undefined && task !== null) {
       return (
-        <div>
+        <div className={this.state.rowClass}>
           <div className='row'>
             <div className='col-xs-8'>
               <div className='h3'>
@@ -45,7 +72,7 @@ export class TaskFocus extends React.Component {
           <div className='row'>
             <div className='col-xs-3'>Actions:</div>
             <div className='col-xs-9'>
-              <a id="finished_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/done">
+              <a id="finished_link" className="action-link" rel="nofollow" data-method="post" href="" onClick={this.markFinished.bind(this, task.id)}>
                 <div className='action-logo'>
                   <i className="fa fa-check"></i>
                 </div>
@@ -92,7 +119,7 @@ export class TaskFocus extends React.Component {
         </div>
       );
     } else {
-      console.log("Error: task is null");
+      console.log("Warning: task is null");
       return (
         <div>
         </div>
