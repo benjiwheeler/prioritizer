@@ -18,10 +18,12 @@ export default class routes extends Component {
     return (
       <div>APP HERE
       <Router history={hashHistory}>
-        <Route path='tasks' component={Main}>
-          <IndexRoute component={TaskList} />
-          <Route path='next' component={NextTask} />
-          <Route path=':taskId' component={TaskFocus} />
+        <Route path='/' component={Main}>
+          <Route path='tasks'>
+            <IndexRoute component={TaskList} />
+            <Route path='next' component={NextTask} />
+            <Route path=':taskId' component={TaskFocus} />
+          </Route>
         </Route>
       </Router>
       </div>

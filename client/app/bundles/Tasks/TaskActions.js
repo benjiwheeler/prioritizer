@@ -28,7 +28,7 @@ var handleTags = function(info) {
 
 export function fetchTags() {
   var rh = new RequestHelper();
-  return rh.get(window.globalAppInfo.host + window.globalAppInfo.user_id + "/tags.json")
+  return rh.get(window.globalAppInfo.host + "/users/" + window.globalAppInfo.user_id + "/tags.json")
   .then(function(jsonData) {
     handleTags(jsonData);
   });
@@ -61,7 +61,7 @@ export function finishTask(taskId) {
     tasksOrdered: tasksOrdered.filter(task => task.id !== taskId)
   });
   var rh = new RequestHelper();
-  return rh.post("http://localhost:5000/tasks/" + taskId + "/done.json")
+  return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/done.json")
   .then(function() {
     fetchTasks();
   });
