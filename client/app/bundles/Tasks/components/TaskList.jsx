@@ -4,7 +4,6 @@ import TaskStore from '../store/TaskStore.js';
 import {deleteTask, finishTask} from '../TaskActions';
 import { Link } from 'react-router';
 
-
 export class CircleCell extends React.Component {
   constructor(props) { // list of objects
     super(props);
@@ -13,6 +12,7 @@ export class CircleCell extends React.Component {
       ...this.calcSize(props.size)
     };
   }
+
 
   calcSize(size) {
     var smallest_size = 3;

@@ -1,7 +1,6 @@
 import TaskStore from './store/TaskStore.js';
 import RequestHelper from '../../../lib/RequestHelper';
 
-
 export function provideInitialState() {
   TaskStore.setState({
     tagsOrdered: [],
@@ -28,18 +27,17 @@ var handleTags = function(info) {
 };
 
 export function fetchTags() {
-//    url: "https://prioritizershake.herokuapp.com/tasks.json"
   var rh = new RequestHelper();
-  return rh.get("http://localhost:5000/users/" + window.globalAppInfo.user_id + "/tags.json")
+  return rh.get(window.globalAppInfo.host + window.globalAppInfo.user_id + "/tags.json")
   .then(function(jsonData) {
     handleTags(jsonData);
   });
 }
 
+
 export function fetchTasks() {
-//    url: "https://prioritizershake.herokuapp.com/tasks.json"
   var rh = new RequestHelper();
-  return rh.get("http://localhost:5000/tasks.json")
+  return rh.get(window.globalAppInfo.host + "/tasks.json")
   .then(function(jsonData) {
     handleTasks(jsonData);
   });
@@ -51,7 +49,7 @@ export function deleteTask(taskId) {
     tasksOrdered: tasksOrdered.filter(task => task.id !== taskId)
   });
   var rh = new RequestHelper();
-  return rh.delete("http://localhost:5000/tasks/" + taskId + ".json")
+  return rh.delete(window.globalAppInfo.host + "/tasks/" + taskId + ".json")
   .then(function() {
     fetchTasks();
   });

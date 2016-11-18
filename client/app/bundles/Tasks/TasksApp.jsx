@@ -4,8 +4,8 @@ import ReactOnRails from 'react-on-rails';
 import TaskRoutes from './TaskRoutes';
 
 window.globalAppInfo = {
-testprop: "testval"
-
+host: "http://localhost:5000"
+//  host: "https://prioritizershake.herokuapp.com"
 };
 
 const TasksApp = (props) => (
