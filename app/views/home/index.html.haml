@@ -1,1 +1,3 @@
 %h1 Home#index
+- if current_user?
+  = react_component("TasksApp", props: {user_id: current_user.id})
