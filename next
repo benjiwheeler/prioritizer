@@ -1,5 +1,8 @@
 backend:
-2 confirm can actually make new tasks
+2 new task component displaying... start with just name, tag
+2 get sliders working
+2 new task wired in; submitting puts new one on server
+8 new form in react
 2 postponed works at least on server
 2 worked works at least on server
 8 endpoint that will return all lists of tags, for each tag
@@ -10,12 +13,12 @@ backend:
 4 postpone/worked also removes locally, NOT on server
 4 next has explicit, separate cur task; updating list doesn't change it
 4 next page: shows next after done, by getting 2nd before any local or server update
-2 new task component displaying... start with just name, tag
-2 get sliders working
-2 new task wired in; submitting puts new one on server
 8 get next formatting looking how i want
+8 wire up children in react new
+4 get react edit working for name, tag, sliders
+4 wire up children in react edit
 ___
-52, approx 7 days
+80, approx 20 days
 
 get keyboard shortcuts working
 request each

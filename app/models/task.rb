@@ -1,10 +1,15 @@
 require 'date'
 
+# a task with various settings input by user, and ability to produce a
+# score for itself
 class Task < ActiveRecord::Base
   belongs_to :user
   has_many :attempts, dependent: :destroy
-  belongs_to :parent, class_name: "Task", foreign_key: "parent_id", inverse_of: :children
-  has_many :children, -> { order(position: :asc) }, class_name: "Task", foreign_key: "parent_id", inverse_of: :parent
+  belongs_to :parent,  \
+             class_name: 'Task', foreign_key: 'parent_id', inverse_of: :children
+  has_many :children, \
+           -> { order(position: :asc) }, \
+           class_name: 'Task', foreign_key: 'parent_id', inverse_of: :parent
   accepts_nested_attributes_for :children
   acts_as_taggable
   acts_as_list
@@ -15,82 +20,96 @@ class Task < ActiveRecord::Base
   before_save :before_save_steps
   after_save :after_save_steps
 
-  def Task.NUM_SECONDS_UNTIL_RAND_EXPIRES
+  def self.NUM_SECONDS_UNTIL_RAND_EXPIRES
     60 * 60
   end
 
-  def Task.unit_scale_log_val(raw_val, expected_mean, halflife)
+  def self.unit_scale_log_val(raw_val, expected_mean, halflife)
     diff_from_mean = raw_val - expected_mean
     sign = diff_from_mean < 0 ? -1.0 : 1.0
-    return sign * (1.0 - halflife/(diff_from_mean.abs + halflife))
+    sign * (1.0 - halflife/(diff_from_mean.abs + halflife))
   end
 
   def to_s
-    "id #{self.id}: #{self.name}"
+    'id #{id}: #{name}'
   end
 
   def user_to_s
-    if self.user.present?
-      self.user.to_s
+    if user.present?
+      user.to_s
     else
-      "Missing User"
+      'Missing User'
     end
   end
 
-  def Task.attributes_influencing_order
-    ["done", "due", "time_of_day", "vital", "immediate", "heavy", "long", "exp_dur_mins", "min_dur_mins", "position"]
+  def self.attributes_influencing_order
+    ['done', 'due', 'time_of_day', 'vital', 'immediate', 'heavy', 'long', 'exp_dur_mins', 'min_dur_mins', 'position']
   end
 
-  def Task.postpone_size_s
+  def self.postpone_size_s
     60 * 60 * 24
   end
 
-  def Task.attempt_typical_extension
+  def self.attempt_typical_extension
     60 * 60 * 24
   end
 
-  def Task.default_imp
+  def self.default_imp
     0.25
   end
 
   def time_of_day_s
-    if self.time_of_day.present?
-      Time.at(self.time_of_day).utc.strftime("%I:%M %p")
+    if time_of_day.present?
+      Time.at(time_of_day).utc.strftime('%I:%M %p')
     else
-      ""
+      ''
     end
   end
 
-  def Task.time_param_to_num_secs(time_param)
-    if time_param.class == String
-      # DateTime.parse throws ArgumentError if it can't parse the string
-      if dt = DateTime.parse(time_param) rescue false
-        seconds = dt.hour * 3600 + dt.min * 60 #=> 37800
-      end
-      return seconds.to_i
-    elsif time_param.is_a? Numeric # if we got # hours, convert to seconds
-      if time_param > 0 && time_param <= 24
-        time_param *= 3600
-      end
+  def self.time_param_to_num_secs(time_param)
+    case time_param.class
+    when String
+      Task.time_string_param_to_num_secs(time_param)
+    when Integer, Numeric
+      Task.time_num_param_to_num_secs(time_param)
+    else
+      time_param
     end
-    return time_param
+  end
+
+  def self.time_string_param_to_num_secs(time_param)
+    # DateTime.parse throws ArgumentError if it can't parse the string
+    dt = DateTime.parse(time_param)
+    return time_param if dt.blank?
+    (dt.hour * 3600 + dt.min * 60).to_i
+  rescue # from parse
+    time_param
+  end
+
+  # if we got # hours, convert to seconds
+  def self.time_num_param_to_num_secs(time_param)
+    if time_param > 0 && time_param <= 24
+      time_param * 3600
+    else
+      time_param
+    end
   end
 
   def before_save_steps
-    if self.parent.present? && self.parent.user.present?
-      self.user = self.parent.user
-      Rails.logger.warn "Using parent user for task #{self.name}"
+    if parent.present? && parent.user.present?
+      self.user = parent.user
+      Rails.logger.warn "Using parent user for task #{name}"
     else
-      Rails.logger.warn "Can't useparent's user for task #{self.name} because user could not be gotten from parent"
+      Rails.logger.warn "Can't useparent's user for task #{name} because user could not be gotten from parent"
     end
-    self.set_default_imps!
+    set_default_imps!
     # if we have changed attributes that influence importance, clear importance cache
-    if (Task.attributes_influencing_order & self.changed).present?
+    if (Task.attributes_influencing_order & changed).present?
       # invalidate user's cached task importance listing
       TaskOrdering.expire_redis_tasks_keys!(user)
-      Rails.logger.warn "Before saving task, User #{self.user_to_s} tasks cache expired"
+      Rails.logger.warn "Before saving task, User #{user_to_s} tasks cache expired"
     else
-      Rails.logger.warn "Before saving task, User #{self.user_to_s} tasks cache not expired"
+      Rails.logger.warn "Before saving task, User #{user_to_s} tasks cache not expired"
     end
   end
 
@@ -98,40 +117,24 @@ class Task < ActiveRecord::Base
   end
 
   def set_default_imps!
-    if self.days_imp.nil?
-      self.days_imp = Task.default_imp
-    end
-    if self.weeks_imp.nil?
-      self.weeks_imp = Task.default_imp
-    end
-    if self.ever_imp.nil?
-      self.ever_imp = Task.default_imp
-    end
-    if self.vital.nil?
-      self.vital = Task.default_imp
-    end
-    if self.immediate.nil?
-      self.immediate = Task.default_imp
-    end
-    if self.heavy.nil?
-      self.heavy = Task.default_imp
-    end
-    if self.long.nil?
-      self.long = Task.default_imp
-    end
+    self.days_imp = Task.default_imp if days_imp.nil?
+    self.weeks_imp = Task.default_imp if weeks_imp.nil?
+    self.ever_imp = Task.default_imp if ever_imp.nil?
+    self.vital = Task.default_imp if vital.nil?
+    self.immediate = Task.default_imp if immediate.nil?
+    self.heavy = Task.default_imp if heavy.nil?
+    self.long = Task.default_imp if long.nil?
   end
 
   def attempts_report_done?
-    self.attempts.order(created_at: :desc).each do |att|
-      if att.completed == true
-        return true
-      end
+    attempts.order(created_at: :desc).each do |att|
+      true if att.completed == true
     end
-    return false
+    false
   end
 
   def attempts_report_done_amount
-    if self.attempts_report_done?
+    if attempts_report_done?
       -1.0
     else
       0.0
@@ -139,56 +142,53 @@ class Task < ActiveRecord::Base
   end
 
   def raw_position_amount
-    if self.position.present?
-      return 0
-# reenable when i fix position! now the positions are all over the place...
-#      return 0.1 - 0.1 * self.position
+    if position.present?
+      0
+      # reenable when i fix position! now the positions are all over the place...
+      #     return 0.1 - 0.1 * position
     else
-      return 0
+      0
     end
   end
-
 
   def position_amount
     my_raw_position_amount = raw_position_amount
     parent_position_amount = 0
-    if self.parent.present?
-      parent_position_amount = self.parent.position_amount
-    end
-    return my_raw_position_amount + parent_position_amount
+    parent_position_amount = parent.position_amount if parent.present?
+    my_raw_position_amount + parent_position_amount
   end
-
 
   def postponed_recently_amount
     has_not_postponed = 1.0
-    # we look at each addressed record, and exponentially decrease our sense that we
+    # we look at each addressed record, and exponentially
+    # decrease our sense that we
     # have not addressed this
-    self.attempts.order(created_at: :desc).each do |att|
-      if att.snoozed == true
-        age_in_s = Time.now - att.updated_at
-        # age_score is small for recent snoozes,
-        # large (thus insignificant) for old ones
-        age_score = Task.unit_scale_log_val(age_in_s, 0, Task.postpone_size_s)
-        has_not_postponed = has_not_postponed * age_score
-      end
+    attempts.order(created_at: :desc).each do |att|
+      next if att.snoozed == false
+      age_in_s = Time.now - att.updated_at
+      # age_score is small for recent snoozes,
+      # large (thus insignificant) for old ones
+      age_score = Task.unit_scale_log_val(age_in_s, 0, Task.postpone_size_s)
+      has_not_postponed *= age_score
     end
-    return has_not_postponed - 1.0
+    has_not_postponed - 1.0
   end
 
   def addressed_recently_amount
     has_not_addressed = 1.0
-    # we look at each addressed record, and exponentially decrease our sense that we
+    # we look at each addressed record, and exponentially
+    # decrease our sense that we
     # have not addressed this
-    self.attempts.order(created_at: :desc).each do |att|
-      if att.addressed == true
-        age_in_s = Time.now - att.updated_at
-        # age_score is small for recent attempts,
-        # large (thus insignificant) for old ones
-        age_score = Task.unit_scale_log_val(age_in_s, 0, Task.attempt_typical_extension)
-        has_not_addressed = has_not_addressed * age_score
-      end
+    attempts.order(created_at: :desc).each do |att|
+      next if att.addressed == false
+      age_in_s = Time.now - att.updated_at
+      # age_score is small for recent attempts,
+      # large (thus insignificant) for old ones
+      age_score = \
+        Task.unit_scale_log_val(age_in_s, 0, Task.attempt_typical_extension)
+      has_not_addressed *= age_score
     end
-    return has_not_addressed - 1.0
+    has_not_addressed - 1.0
   end
 
   ############################################################
@@ -198,31 +198,31 @@ class Task < ActiveRecord::Base
   def calc_overall_imp_alone
     imp = 0.25
     num_fields = 0
-    if !self.vital.nil?
-      imp += self.vital / 10.0
+    if !vital.nil?
+      imp += vital / 10.0
       num_fields = num_fields + 1.0
     end
-    if !self.immediate.nil?
-      imp += self.immediate / 10.0
+    if !immediate.nil?
+      imp += immediate / 10.0
       num_fields = num_fields + 1.0
     end
     if num_fields > 0
       imp = imp / (num_fields + 0.00001)
     end
-    imp += self.attempts_report_done_amount
-    imp += self.postponed_recently_amount
-    imp += self.addressed_recently_amount
-    imp += self.position_amount
-    return imp
+    imp += attempts_report_done_amount
+    imp += postponed_recently_amount
+    imp += addressed_recently_amount
+    imp += position_amount
+    imp
   end
 
   def generate_overall_imp_alone!
-    @overall_imp_alone = self.calc_overall_imp_alone
+    @overall_imp_alone = calc_overall_imp_alone
   end
 
   def get_overall_imp_alone!
     if @overall_imp_alone.nil?
-      self.generate_overall_imp_alone!
+      generate_overall_imp_alone!
     end
     @overall_imp_alone
   end
@@ -234,27 +234,27 @@ class Task < ActiveRecord::Base
   def calc_overall_ease
     ease = 0.25
     num_fields = 0
-    if !self.heavy.nil?
-      ease += 1.0 - (self.heavy / 10.0)
+    if !heavy.nil?
+      ease += 1.0 - (heavy / 10.0)
       num_fields = num_fields + 1.0
     end
-    if !self.long.nil?
-      ease += 1.0 - (self.long / 10.0)
+    if !long.nil?
+      ease += 1.0 - (long / 10.0)
       num_fields = num_fields + 1.0
     end
     if num_fields > 0
       ease = ease / (num_fields + 0.00001)
     end
-    return ease
+    ease
   end
 
   def generate_overall_ease!
-    @overall_ease = self.calc_overall_ease
+    @overall_ease = calc_overall_ease
   end
 
   def get_overall_ease!
     if @overall_ease.nil?
-      self.generate_overall_ease!
+      generate_overall_ease!
     end
     @overall_ease
   end
@@ -267,8 +267,8 @@ class Task < ActiveRecord::Base
     # seed rand with current time and this id
     nowSec = Time.now.to_i
     randSeed = (nowSec / (Task.NUM_SECONDS_UNTIL_RAND_EXPIRES + 0.0001)).truncate
-    if self.id.present?
-      randSeed += self.id.to_i
+    if id.present?
+      randSeed += id.to_i
     end
     srand randSeed
 
@@ -283,16 +283,16 @@ class Task < ActiveRecord::Base
     # 50th percentile: 0%
     # 75th percentile: 7%
     # max: 22%
-    return rand_float * rand_float * rand_float * 0.25 - 0.03
+    rand_float * rand_float * rand_float * 0.25 - 0.03
   end
 
   def generate_session_rand!
-    @session_rand = self.calc_session_rand
+    @session_rand = calc_session_rand
   end
 
   def get_session_rand!
     if @session_rand.nil?
-      self.generate_session_rand!
+      generate_session_rand!
     end
     @session_rand
   end
@@ -317,15 +317,15 @@ class Task < ActiveRecord::Base
 
 
   def oldest_ancestor
-    if self.parent.present?
-      self.parent.oldest_ancestor
+    if parent.present?
+      parent.oldest_ancestor
     else
       self
     end
   end
 
   def first_youngest_descendent(withAttributes = {})
-    # if there is an even "younger" (ie, deeper) descendent with right attributes,
+    # if there is an even 'younger' (ie, deeper) descendent with right attributes,
     # return that.
     # else, if i match, return me.
     # else return nil.
@@ -333,7 +333,7 @@ class Task < ActiveRecord::Base
     # return first such descendent we find.
     # NOTE: this should be redone to balance
     # postponed state, order, simplicity, etc.
-    self.children.each do |child|
+    children.each do |child|
       this_child_youngest_descendent_with_attributes = child.first_youngest_descendent(withAttributes)
       if this_child_youngest_descendent_with_attributes.present?
         return this_child_youngest_descendent_with_attributes
@@ -344,20 +344,20 @@ class Task < ActiveRecord::Base
     # check if this one matches withAttributes
     i_match_attributes = true
     withAttributes.each do |key, val|
-      if self.has_attribute?(key) && self[key] != val
+      if has_attribute?(key) && self[key] != val
         i_match_attributes = false
         break
       end
     end
     # now i_match_attributes is set right
     if i_match_attributes
-      return self
+      self
     else
-      return nil
+      nil
     end
   end
 
   def first_task_in_family_tree(withAttributes = {})
-    self.oldest_ancestor.first_youngest_descendent(withAttributes)
+    oldest_ancestor.first_youngest_descendent(withAttributes)
   end
 end

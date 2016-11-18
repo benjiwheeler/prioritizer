@@ -1,6 +1,5 @@
-          <form class="new_task" id="new_task" action="/tasks" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="wx92kvGwu8OS45dOV0nEje6qfjI/tFADEk6GIcvXzlvLwG6aHh0uMbrQn4grlbyntNdPtS2Q4f2QZQ9/D5+tfw==" />
-          <div class='field'>
-              <input class="initial-focus form-control" placeholder="Task title" type="text" name="task[name]" id="task_name" />
+          <form class="edit_task" id="edit_task_16" action="/tasks/16" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="_method" value="patch" /><input type="hidden" name="authenticity_token" value="cyG/0Ehu/s8oWv1qeM0DJNQeM0bqJZ3GZCu+ppnXbbZ7/qfYp8NrPQBp9awEEXsOjmMCwfgBLDjmADf4XZ8Okg==" />  <div class='field'>
+              <input class="initial-focus form-control" placeholder="Task title" type="text" value="quick and easy and vital" name="task[name]" id="task_name" />
             </div>
             <div class='field'>
               <input name="task[tag_list][]" type="hidden" value="" /><select class="tag_select" multiple="multiple" style="width: 100%" name="task[tag_list][]" id="task_tag_list"><option selected="selected" value="cool">cool</option>
@@ -25,7 +24,7 @@
                   <i class='icon-down-right-arrow' style='float: left; position: relative'></i>
                   <label for="task_vital">Vital</label>
                   <span id='vital_slider_amount_shown' style='border:0; color: #f6931f; font-weight:bold;'></span>
-                  <input id='vital_slider_amount_hidden' name='task[vital]' type='hidden' value='' />
+                  <input id='vital_slider_amount_hidden' name='task[vital]' type='hidden' value='9.0' />
                 </div>
               </div>
               <div class='field col-xs-9'>
@@ -38,7 +37,7 @@
                   <i class='icon-down-right-arrow' style='float: left; position: relative'></i>
                   <label for="task_immediate">Immediate</label>
                   <span id='immediate_slider_amount_shown' style='border:0; color: #f6931f; font-weight:bold;'></span>
-                  <input id='immediate_slider_amount_hidden' name='task[immediate]' type='hidden' value='' />
+                  <input id='immediate_slider_amount_hidden' name='task[immediate]' type='hidden' value='10.0' />
                 </div>
               </div>
               <div class='field col-xs-9'>
@@ -51,7 +50,7 @@
                   <i class='icon-down-right-arrow' style='float: left; position: relative'></i>
                   <label for="task_heavy">Heavy</label>
                   <span id='heavy_slider_amount_shown' style='border:0; color: #f6931f; font-weight:bold;'></span>
-                  <input id='heavy_slider_amount_hidden' name='task[heavy]' type='hidden' value='' />
+                  <input id='heavy_slider_amount_hidden' name='task[heavy]' type='hidden' value='1.0' />
                 </div>
               </div>
               <div class='field col-xs-9'>
@@ -64,12 +63,20 @@
                   <i class='icon-down-right-arrow' style='float: left; position: relative'></i>
                   <label for="task_long">Long</label>
                   <span id='long_slider_amount_shown' style='border:0; color: #f6931f; font-weight:bold;'></span>
-                  <input id='long_slider_amount_hidden' name='task[long]' type='hidden' value='' />
+                  <input id='long_slider_amount_hidden' name='task[long]' type='hidden' value='3.0' />
                 </div>
               </div>
               <div class='field col-xs-9'>
                 <div class='imp_slider' id='long_slider' style='margin-top: 3px'></div>
               </div>
+            </div>
+            <div class='field'>
+              <label for="task_exp_dur_mins">Exp dur mins</label>
+              <input type="text" name="task[exp_dur_mins]" id="task_exp_dur_mins" />
+            </div>
+            <div class='field'>
+              <label for="task_min_dur_mins">Min dur mins</label>
+              <input type="text" name="task[min_dur_mins]" id="task_min_dur_mins" />
             </div>
             <div class='col-xs-3'>Daily</div>
             <div class='field'>
@@ -78,13 +85,13 @@
             <div class='row' style='margin-top: 5px'>
               <div class='col-xs-3'>
                 <div id='form_notes_toggle_section'>
-                  <i class='fa fa-caret-right' id='form_notes_toggle_off' style='display: inline-block'></i>
-                  <i class='fa fa-caret-down' id='form_notes_toggle_on' style='display: none'></i>
+                  <i class='fa fa-caret-right' id='form_notes_toggle_off' style='display: none'></i>
+                  <i class='fa fa-caret-down' id='form_notes_toggle_on' style='display: inline-block'></i>
                   <label for="task_notes">Notes</label>
                 </div>
               </div>
               <div class='col-xs-9'>
-                <div id='form_notes' style='display: none'>
+                <div id='form_notes' style='display: inline-block'>
                   <textarea style="width: 100%" name="task[notes]" id="task_notes">
 </textarea>
                 </div>
@@ -93,13 +100,13 @@
             <div class='row' style='margin-top: 5px'>
               <div class='col-xs-3'>
                 <div id='form_due_toggle_section'>
-                  <i class='fa fa-caret-right' id='form_due_toggle_off' style='display: inline-block'></i>
-                  <i class='fa fa-caret-down' id='form_due_toggle_on' style='display: none'></i>
+                  <i class='fa fa-caret-right' id='form_due_toggle_off' style='display: none'></i>
+                  <i class='fa fa-caret-down' id='form_due_toggle_on' style='display: inline-block'></i>
                   <label for="task_due">Due</label>
                 </div>
               </div>
               <div class='col-xs-9'>
-                <div id='form_due' style='display: none'>
+                <div id='form_due' style='display: inline-block'>
                   <input id="due_date_input" class="form-control" type="text" name="task[due]" />
                 </div>
               </div>
@@ -107,34 +114,34 @@
             <div class='row' style='margin-top: 5px'>
               <div class='col-xs-3'>
                 <div id='form_time_of_day_toggle_section'>
-                  <i class='fa fa-caret-right' id='form_time_of_day_toggle_off' style='display: inline-block'></i>
-                  <i class='fa fa-caret-down' id='form_time_of_day_toggle_on' style='display: none'></i>
+                  <i class='fa fa-caret-right' id='form_time_of_day_toggle_off' style='display: none'></i>
+                  <i class='fa fa-caret-down' id='form_time_of_day_toggle_on' style='display: inline-block'></i>
                   <label for="task_time_of_day">Time of day</label>
                 </div>
               </div>
               <div class='col-xs-9'>
-                <div id='form_time_of_day' style='display: none'>
-                  <input id="time_of_day_input" class="form-control" value="09:00 AM" type="text" name="task[time_of_day]" />
+                <div id='form_time_of_day' style='display: inline-block'>
+                  <input id="time_of_day_input" class="form-control" value="05:00 AM" type="text" name="task[time_of_day]" />
                 </div>
               </div>
             </div>
             <div class='row' style='margin-top: 5px'>
               <div class='col-xs-3'>
                 <div id='form_children_toggle_section'>
-                  <i class='fa fa-caret-right' id='form_children_toggle_off' style='display: inline-block'></i>
-                  <i class='fa fa-caret-down' id='form_children_toggle_on' style='display: none'></i>
+                  <i class='fa fa-caret-right' id='form_children_toggle_off' style='display: none'></i>
+                  <i class='fa fa-caret-down' id='form_children_toggle_on' style='display: inline-block'></i>
                   <label for="task_children">Children</label>
                 </div>
               </div>
               <div class='col-xs-9'>
-                <div id='form_children' style='display: none'>
+                <div id='form_children' style='display: inline-block'>
                   <!-- **************************************** -->
                   <!-- DATA: NEW CHILD TASK FORM HTML -->
                   <!-- make fields_html and store in hidden input -->
                   <!-- **************************************** -->
                   <!-- data-new-child-fields-html is the html you'll need for each new child -->
                   <!-- data-new-child-object-id is just an arbitrary starting string to be the element id of the new elements, temporarily -->
-                  <span data-new-child-fields-html='&lt;li class="task handle" style="border: 1px solid #ccc; background-color: #f0f0fa; margin-top: 4px; padding: 6px" id="new_task"&gt;&lt;div class=&#x0027;form-group&#x0027;&gt;  &lt;div class=&#x0027;row&#x0027;&gt;    &lt;div class=&#x0027;col-xs-4&#x0027;&gt;      &lt;div class=&#x0027;float-left&#x0027; style=&#x0027;float: left&#x0027;&gt;        &lt;i class=&#x0027;icon-grid&#x0027; style=&#x0027;float: left; position: relative&#x0027;&gt;&lt;/i&gt;        &lt;input class="subtask_name form-control blend" style="width: 80%; float: left; position: relative" placeholder="Title" type="text" name="task[children_attributes][70352101904660][name]" id="task_children_attributes_70352101904660_name" /&gt;      &lt;/div&gt;    &lt;/div&gt;    &lt;div class=&#x0027;col-xs-4&#x0027;&gt;      &lt;input name="task[children_attributes][70352101904660][tag_list][]" type="hidden" value="" /&gt;&lt;select class="tag_select" multiple="multiple" style="width: 100%" name="task[children_attributes][70352101904660][tag_list][]" id="task_children_attributes_70352101904660_tag_list"&gt;&lt;option value="cool"&gt;cool&lt;/option&gt;      &lt;option value="new"&gt;new&lt;/option&gt;      &lt;option value="ben"&gt;ben&lt;/option&gt;      &lt;option value="romance"&gt;romance&lt;/option&gt;      &lt;option value="all"&gt;all&lt;/option&gt;&lt;/select&gt;    &lt;/div&gt;  &lt;/div&gt;&lt;/div&gt;&lt;/li&gt;' data-new-child-object-id='70352101904660' id='rails_data_holder' style='visibility: hidden'></span>
+                  <span data-new-child-fields-html='&lt;li class="task handle" style="border: 1px solid #ccc; background-color: #f0f0fa; margin-top: 4px; padding: 6px" id="new_task"&gt;&lt;div class=&#x0027;form-group&#x0027;&gt;  &lt;div class=&#x0027;row&#x0027;&gt;    &lt;div class=&#x0027;col-xs-4&#x0027;&gt;      &lt;div class=&#x0027;float-left&#x0027; style=&#x0027;float: left&#x0027;&gt;        &lt;i class=&#x0027;icon-grid&#x0027; style=&#x0027;float: left; position: relative&#x0027;&gt;&lt;/i&gt;        &lt;input class="subtask_name form-control blend" style="width: 80%; float: left; position: relative" placeholder="Title" type="text" name="task[children_attributes][70352097144420][name]" id="task_children_attributes_70352097144420_name" /&gt;      &lt;/div&gt;    &lt;/div&gt;    &lt;div class=&#x0027;col-xs-4&#x0027;&gt;      &lt;input name="task[children_attributes][70352097144420][tag_list][]" type="hidden" value="" /&gt;&lt;select class="tag_select" multiple="multiple" style="width: 100%" name="task[children_attributes][70352097144420][tag_list][]" id="task_children_attributes_70352097144420_tag_list"&gt;&lt;option selected="selected" value="cool"&gt;cool&lt;/option&gt;      &lt;option value="new"&gt;new&lt;/option&gt;      &lt;option value="ben"&gt;ben&lt;/option&gt;      &lt;option value="romance"&gt;romance&lt;/option&gt;      &lt;option value="all"&gt;all&lt;/option&gt;&lt;/select&gt;    &lt;/div&gt;  &lt;/div&gt;&lt;/div&gt;&lt;/li&gt;' data-new-child-object-id='70352097144420' id='rails_data_holder' style='visibility: hidden'></span>
                   <!-- **************************************** -->
                   <!-- #task_children_list_toggle -->
                   <!-- %i#task_children_list_toggle_off.fa.fa-caret-right{style: "display: #{show_children == true ? 'none' : 'inline-block'}"} -->

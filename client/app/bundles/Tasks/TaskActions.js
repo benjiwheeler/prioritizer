@@ -50,7 +50,8 @@ export function deleteTask(taskId) {
   });
   var rh = new RequestHelper();
   return rh.delete(window.globalAppInfo.host + "/tasks/" + taskId + ".json")
-  .then(function() {
+  .then(function(jsonData) {
+    debugger;
     fetchTasks();
   });
 }
@@ -62,7 +63,21 @@ export function finishTask(taskId) {
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/done.json")
-  .then(function() {
+  .then(function(jsonData) {
+    debugger;
+    fetchTasks();
+  });
+}
+
+export function submitNewTask(newTask) {
+  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
+  TaskStore.setState({
+    tasksOrdered: [...tasksOrdered, newTask]
+  });
+  var rh = new RequestHelper();
+  return rh.post(window.globalAppInfo.host + "/tasks.json")
+  .then(function(jsonData) {
+    debugger;
     fetchTasks();
   });
 }

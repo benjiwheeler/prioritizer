@@ -7,7 +7,9 @@ import {provideInitialState, requestToServer} from '../TaskActions';
 export class NextTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
-    this.state = TaskStore.getData(["tasksOrdered"]);
+    this.state = {
+      tasksOrdered: TaskStore.getData(["tasksOrdered"])
+    };
   }
 
   componentWillMount() { // called by React.Component
@@ -20,7 +22,7 @@ export class NextTask extends React.Component {
 
   render() {
     let taskId = null;
-    let { tasksOrdered } = this.state;
+    let tasksOrdered = this.state.tasksOrdered;
     if (tasksOrdered !== undefined && tasksOrdered !== null && tasksOrdered.length > 0) {
       taskId = tasksOrdered[0].id;
       return (
@@ -29,7 +31,7 @@ export class NextTask extends React.Component {
     } else {
       return (
         <div>
-          Missing task
+          --
         </div>
       );
     }

@@ -22,6 +22,7 @@ export default class routes extends Component {
           <Route path='tasks'>
             <IndexRoute component={TaskList} />
             <Route path='next' component={NextTask} />
+            <Route path='new' component={NewTask} />
             <Route path=':taskId' component={TaskFocus} />
           </Route>
         </Route>
