@@ -139,6 +139,30 @@ TaskListable.propTypes = {
 };
 
 
+export class TaskListMasterControls extends React.Component {
+  constructor(props) { // list of objects
+    super(props);
+    this.state = {
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        <Link to={/tasks/next} class="action-link"><div class='action-logo'>
+<i class="fa fa-play-circle"></i>
+</div>
+<div class='shortcut-link'>Start</div>
+</a><a id="new_link" class="action-link" href="/tasks/new"><div class='action-logo'>
+<i class="fa fa-lightbulb-o"></i>
+</div>
+<div class='shortcut-link'>New Task</div>
+</a><!-- %p all tasks: -->
+  </div>
+    );
+  }
+}
+
 export class TaskList extends React.Component {
 
   constructor(props) { // list of objects
@@ -166,6 +190,7 @@ export class TaskList extends React.Component {
 
     return (
       <div>
+        <TaskListMasterControls />
         <table className="table" style={{marginTop: '6rem'}}>
           <thead>
             <tr>
