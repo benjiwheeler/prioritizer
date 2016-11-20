@@ -8,8 +8,9 @@ export class NextTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      tasksOrdered: TaskStore.getData(["tasksOrdered"])
+      ...TaskStore.getData(["tasksOrdered"])
     };
+    console.log("NextTask mounted");
   }
 
   componentWillMount() { // called by React.Component

@@ -149,16 +149,19 @@ export class TaskListMasterControls extends React.Component {
   render() {
     return (
       <div>
-        <Link to={/tasks/next} class="action-link"><div class='action-logo'>
-<i class="fa fa-play-circle"></i>
-</div>
-<div class='shortcut-link'>Start</div>
-</a><a id="new_link" class="action-link" href="/tasks/new"><div class='action-logo'>
-<i class="fa fa-lightbulb-o"></i>
-</div>
-<div class='shortcut-link'>New Task</div>
-</a><!-- %p all tasks: -->
-  </div>
+        <Link to={'/tasks/next'} className='action-link'>
+          <div className='action-logo'>
+            <i className="fa fa-play-circle"></i>
+          </div>
+          <div className='shortcut-link'>Start</div>
+        </Link>
+        <Link to={'/tasks/new'} className='action-link'>
+          <div className='action-logo'>
+            <i className="fa fa-lightbulb-o"></i>
+          </div>
+          <div className='shortcut-link'>New Task</div>
+        </Link>
+      </div>
     );
   }
 }

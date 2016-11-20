@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
 import {provideInitialState, requestToServer, finishTask, deleteTask} from '../TaskActions';
+import { IconShortcutLink } from './Main';
 
 export class TaskFocus extends React.Component {
   constructor(props) { // list of objects
@@ -18,14 +19,16 @@ export class TaskFocus extends React.Component {
         (props.params !== undefined && props.params !== null)) {
       taskId = props.params.taskId;
     }
-    return taskId
+    return taskId;
   }
 
   componentWillReceiveProps(newProps) {
-    this.setState({
-      taskId: this.getTaskIdFromProps(newProps),
-      rowClass: "doFadeIn"
-    });
+    if (this.state.taskId !== this.getTaskIdFromProps(newProps)) {
+      this.setState({
+        taskId: this.getTaskIdFromProps(newProps),
+        rowClass: "doFadeIn"
+      });
+    }
   }
 
   componentWillMount() { // called by React.Component
@@ -72,12 +75,9 @@ export class TaskFocus extends React.Component {
           <div className='row'>
             <div className='col-xs-3'>Actions:</div>
             <div className='col-xs-9'>
-              <a id="finished_link" className="action-link" rel="nofollow" data-method="post" href="" onClick={this.markFinished.bind(this, task.id)}>
-                <div className='action-logo'>
-                  <i className="fa fa-check"></i>
-                </div>
-                <div className='shortcut-link'>Finished</div>
-              </a>
+              <IconShortcutLink text='Finished' id='finished_link'
+              onClick={this.markFinished.bind(this, task.id)}
+              faIconClass='fa-check'/>
               <a id="worked_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/worked">
                 <div className='action-logo'>
                   <i className="fa fa-gavel"></i>
@@ -108,12 +108,9 @@ export class TaskFocus extends React.Component {
                 </div>
                 <div className='shortcut-link'>Edit</div>
               </a>
-              <a id="postpone_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/postpone">
-                <div className='action-logo'>
-                  <i className="fa fa-clock-o"></i>
-                </div>
-                <div className='shortcut-link'>New Task</div>
-              </a>
+              <IconShortcutLink text='New Task' id='new_task_link'
+              to='tasks/new'
+              faIconClass='fa-lightbulb-o'/>
             </div>
           </div>
         </div>

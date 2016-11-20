@@ -1,11 +1,3 @@
-console.log('OVER HERE TEST 0');
-// var $ = require('jquery');
-// //var jQuery = require('jquery');
-//var jQuery = require('jquery/dist/jquery.min.js');
-console.log('OVER HERE TEST 1');
-console.log($('body'));
-console.log(jQuery('body'));
-console.log('OVER HERE TEST 2');
 require('bootstrap/dist/js/bootstrap.js');
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 require('jquery-ui');
@@ -30,11 +22,7 @@ require("imports?$=jquery!../../../lib/color.js")
 
 // require('lettering');
 
-console.log('OVER HERE TEST 3');
-
 $(document).ready(function () {
-
-  console.log("4: " + jQuery('div').first());
 
   // ***********************
   //        SLIDER
@@ -90,18 +78,18 @@ $(document).ready(function () {
   };
   // $(selector).attr('data-name','value')
   var slide = function(element, delay) {
-    console.log("in slide...");
-    console.log("is dragging not true?");
-    console.log($(element).attr("data-mousedragging") !== "true");
-    console.log("is animating?");
-    console.log($(element).attr("data-slideanimating") === "true");
-    console.log("is slideable?");
-    console.log($(element).attr("data-mousedragging") !== "true"
-      && $(element).attr("data-slideanimating") === "true");
+    //console.log("in slide...");
+    //console.log("is dragging not true?");
+    //console.log($(element).attr("data-mousedragging") !== "true");
+    //console.log("is animating?");
+    //console.log($(element).attr("data-slideanimating") === "true");
+    //console.log("is slideable?");
+    //console.log($(element).attr("data-mousedragging") !== "true"
+    //  && $(element).attr("data-slideanimating") === "true");
 
     if ($(element).attr("data-mousedragging") !== "true"
       && $(element).attr("data-slideanimating") === "true") {
-      console.log("sliding!");
+      //console.log("sliding!");
       var curVal = $(element).slider("value");
       var stepSize = .1;//$(element).slider("option", "step");
       var maxVal = $(element).slider("option", "max");
@@ -144,15 +132,15 @@ $(document).ready(function () {
     }
   };
   var startSlidingIfAppropriate = function(element) {
-    console.log("is appropriate?");
+    //console.log("is appropriate?");
     if ($(element).attr("data-mousedragging") !== "true"
       && $(element).attr("data-slideanimating") !== "true") {
-      console.log("yes appropriate.");
+      //console.log("yes appropriate.");
       setTimeout(function() {
         startSliding(element);
       }, delayBeforeSliding);
     } else {
-      console.log("not appropriate.");
+      //console.log("not appropriate.");
     }
   };
   var startSliding = function(element) {
@@ -160,7 +148,7 @@ $(document).ready(function () {
       && $(element).attr("data-slideanimating") !== "true") {
       $(element).attr("data-speedphase", "speedingUp");
       $(element).attr("data-slideanimating", "true");
-      console.log("calling slide...");
+      //console.log("calling slide...");
       slide(element, startSlideDelay);
     }
   };
@@ -218,7 +206,6 @@ $('input#due_date_input').datepicker({
     daysOfWeekHighlighted: "0,6",
     autoclose: true
   });
-console.log("5: " + jQuery('div').first());
 $('input#time_of_day_input').timepicker({
     timeFormat: 'h:mm p',
     interval: 30,

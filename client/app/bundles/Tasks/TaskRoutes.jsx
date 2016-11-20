@@ -17,7 +17,7 @@ export default class routes extends Component {
 
   render() {
     return (
-      <div>APP HERE
+      <div>
       <Router history={hashHistory}>
         <Route path='/' component={Main}>
           <Route path='tasks'>

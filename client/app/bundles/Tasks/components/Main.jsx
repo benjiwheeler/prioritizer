@@ -3,6 +3,20 @@ import TaskStore from '../store/TaskStore.js';
 import {provideInitialState, fetchTags, fetchTasks} from '../TaskActions';
 import { Link } from 'react-router';
 
+export class IconShortcutLink extends React.Component {
+  render() {
+    return(
+      <Link to={this.props.to} id={this.props.id} className="action-link" rel="nofollow"
+      data-method="post" href="" onClick={this.props.onClick}>
+        <div className='action-logo'>
+          <i className={'fa ' + this.props.faIconClass}></i>
+        </div>
+        <div className='shortcut-link'>{this.props.text}</div>
+      </Link>
+    );
+  }
+}
+
 export class NavBar extends React.Component {
   constructor(props) { // list of objects
     super(props);
@@ -62,7 +76,6 @@ export class Main extends React.Component {
   render() {
     return (
       <div>
-        MAIN
         <NavBar tagName={this.props.params.tagName} />
         {this.props.children}
       </div>

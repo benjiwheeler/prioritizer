@@ -1,5 +1,4 @@
 backend:
-2 new task component displaying... start with just name, tag
 2 get sliders working
 2 new task wired in; submitting puts new one on server
 8 new form in react
