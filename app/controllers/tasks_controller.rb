@@ -59,7 +59,10 @@ class TasksController < ApplicationController
       if @task.save
         TaskOrdering.expire_redis_tasks_keys!(current_user)
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was postponed.' }
-        format.json { render :show, status: :created, location: @task }
+        format.json do
+          @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
+          render :index, status: :ok
+        end
       else
         format.html { render :new }
         format.json { render json: @task.errors, status: :unprocessable_entity }
@@ -76,7 +79,11 @@ class TasksController < ApplicationController
       if @task.save
         TaskOrdering.expire_redis_tasks_keys!(current_user)
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was worked on.' }
-        format.json { render :show, status: :created, location: @task }
+        format.json do
+          @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
+          render :index, status: :ok
+        end
+#        format.json { render :show, status: :created, location: @task }
       else
         format.html { render :next, notice: "Couldn't update task to record work :(" }
         format.json { render json: @task.errors, status: :unprocessable_entity }

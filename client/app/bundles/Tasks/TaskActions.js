@@ -69,6 +69,42 @@ export function finishTask(taskId) {
   });
 }
 
+export function postponeTask(taskId) {
+  // move this task to the rear
+  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
+  const task = tasksOrdered.find(task => task.id === taskId);
+  if (task !== undefined) {
+    TaskStore.setState({
+      tasksOrdered: [...tasksOrdered.filter(task => task.id !== taskId), task]
+    });
+  }
+
+  var rh = new RequestHelper();
+  return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/postpone.json")
+  .then(function(jsonData) {
+    // debugger;
+    fetchTasks();
+  });
+}
+
+export function workedTask(taskId) {
+  // move this task to the rear
+  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
+  const task = tasksOrdered.find(task => task.id === taskId);
+  if (task !== undefined) {
+    TaskStore.setState({
+      tasksOrdered: [...tasksOrdered.filter(task => task.id !== taskId), task]
+    });
+  }
+
+  var rh = new RequestHelper();
+  return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/worked.json")
+  .then(function(jsonData) {
+    // debugger;
+    fetchTasks();
+  });
+}
+
 export function submitNewTask(newTask) {
   const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
   TaskStore.setState({

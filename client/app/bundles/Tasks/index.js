@@ -158,7 +158,7 @@ $(document).ready(function () {
   };
 
   // individual sliders
-  $( ".imp_slider" ).slider({
+  $( ".imp_slider_DISABLED" ).slider({
     min: 1, max: 10, step: .1,
     create: function( event, ui ) { // set initial value
       setSliderVal(this, null);

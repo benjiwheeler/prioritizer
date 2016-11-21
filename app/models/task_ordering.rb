@@ -83,13 +83,15 @@ class TaskOrdering
       taskA.get_overall_imp_alone! + taskA.get_session_rand! + taskA.session_bonus_with_default
     end
     Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
+    # first, clear the key
+    $redis.del(TaskOrdering.redis_user_tag_tasks_key(user, tag_str));
     sorted_tasks.each do |task|
       Rails.logger.warn("redis adding task #{task.id} to #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
       $redis.rpush(TaskOrdering.redis_user_tag_tasks_key(user, tag_str), task.id);
     end
     # expire this ordering in an hour even if no significant changes to the tasks have been made
     $redis.expire TaskOrdering.redis_user_tag_tasks_key(user, tag_str), TaskOrdering.USER_TASKS_REDIS_VALID_SECS
-    return sorted_tasks
+    return sorted_tasks.map{|task| task.id}
   end
 
   def TaskOrdering.n_ordered_tasks!(user, tag_str = nil, n = :all)

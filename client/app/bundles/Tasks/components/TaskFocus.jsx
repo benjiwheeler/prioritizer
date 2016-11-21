@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
-import {provideInitialState, requestToServer, finishTask, deleteTask} from '../TaskActions';
+import {provideInitialState, requestToServer, finishTask, deleteTask, postponeTask, workedTask} from '../TaskActions';
 import { IconShortcutLink } from './Main';
 
 export class TaskFocus extends React.Component {
@@ -39,13 +39,43 @@ export class TaskFocus extends React.Component {
     TaskStore.removeListener(this);
   }
 
-  markFinished(taskId, e) {
+  handleFinish(taskId, e) {
     e.preventDefault();
     this.setState({
       rowClass: "doComplete"
     });
     setTimeout(function() {
       finishTask(taskId);
+    }.bind(this), 1000);
+  }
+
+  handleWorked(taskId, e) {
+    e.preventDefault();
+    this.setState({
+      rowClass: "doComplete"
+    });
+    setTimeout(function() {
+      workedTask(taskId);
+    }.bind(this), 1000);
+  }
+  handlePostpone(taskId, e) {
+    e.preventDefault();
+    this.setState({
+      rowClass: "doDelete"
+    });
+    setTimeout(function() {
+      postponeTask(taskId);
+    }.bind(this), 1000);
+
+  }
+
+  handleDestroy(taskId, e) {
+    e.preventDefault();
+    this.setState({
+      rowClass: "doDelete"
+    });
+    setTimeout(function() {
+      deleteTask(taskId);
     }.bind(this), 1000);
 
   }
@@ -76,38 +106,23 @@ export class TaskFocus extends React.Component {
             <div className='col-xs-3'>Actions:</div>
             <div className='col-xs-9'>
               <IconShortcutLink text='Finished' id='finished_link'
-              onClick={this.markFinished.bind(this, task.id)}
+              onClick={this.handleFinish.bind(this, task.id)}
               faIconClass='fa-check'/>
-              <a id="worked_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/worked">
-                <div className='action-logo'>
-                  <i className="fa fa-gavel"></i>
-                </div>
-                <div className='shortcut-link'>Worked on it</div>
-              </a>
-              <a id="postpone_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/postpone">
-                <div className='action-logo'>
-                  <i className="fa fa-clock-o"></i>
-                </div>
-                <div className='shortcut-link'>Postpone</div>
-              </a>
-              <a id="postpone_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/postpone">
-                <div className='action-logo'>
-                  <i className="fa fa-clock-o"></i>
-                </div>
-                <div className='shortcut-link'>Split</div>
-              </a>
-              <a id="postpone_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/postpone">
-                <div className='action-logo'>
-                  <i className="fa fa-check"></i>
-                </div>
-                <div className='shortcut-link'>Destroy</div>
-              </a>
-              <a id="postpone_link" className="action-link" rel="nofollow" data-method="post" href="/tasks/{task.id}/postpone">
-                <div className='action-logo'>
-                  <i className="fa fa-clock-o"></i>
-                </div>
-                <div className='shortcut-link'>Edit</div>
-              </a>
+              <IconShortcutLink text='Worked on it' id='worked_link'
+              onClick={this.handleWorked.bind(this, task.id)}
+              faIconClass='fa-gavel'/>
+              <IconShortcutLink text='Postpone' id='postpone_link'
+              onClick={this.handlePostpone.bind(this, task.id)}
+              faIconClass='fa-clock-o'/>
+              <IconShortcutLink text='Split' id='split_link'
+              to={'tasks/' + task.id + 'split'}
+              faIconClass='fa-strikethrough'/>
+              <IconShortcutLink text='Destroy' id='destroy_link'
+              onClick={this.handleDestroy.bind(this, task.id)}
+              faIconClass='fa-times'/>
+              <IconShortcutLink text='Edit' id='edit_link'
+              to={'tasks/' + task.id + 'edit'}
+              faIconClass='fa-strikethrough'/>
               <IconShortcutLink text='New Task' id='new_task_link'
               to='tasks/new'
               faIconClass='fa-lightbulb-o'/>

@@ -1,6 +1,4 @@
 backend:
-2 postponed works at least on server
-2 worked works at least on server
 8 endpoint that will return all lists of tags, for each tag
 4 request and store all these in main
 4 router has tag in routes

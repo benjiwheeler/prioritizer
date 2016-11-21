@@ -2,51 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
 import {submitNewTask, fetchTags} from '../TaskActions';
 import Select, { Creatable } from 'react-select';
-
-export class Slider extends React.Component {
-  constructor(props) { // list of objects
-    super(props);
-    this.state = {
-      value: props.sliderValue
-    };
-  }
-
-  onSliderChange(sliderValInput, e) {
-    this.setState({
-      value: sliderValInput.value
-    });
-    this.props.onSliderChange(this.props.kind, sliderValInput.value);
-  }
-
-  // note that onChange won't work for the hidden field because it's set by
-  // jquery, whose val() function doesn't trigger onChange.
-  // Instead, we keep a ref to that element, and grab its val onBlur.
-  render() {
-    return (
-      <div className='row' style={{marginTop: '5px'}}>
-        <div className='col-xs-3'>
-          <div style={{paddingLeft: '5px'}}>
-            <i className='icon-down-right-arrow'
-            style={{float: 'left', position: 'relative'}}></i>
-            <label htmlFor={'task_' + this.props.kind}>{this.props.text}</label>
-            &nbsp;<span id={this.props.kind + '_slider_amount_shown'}
-            style={{border: 0, color: '#f6931f', fontWeight: 'bold'}}></span>
-            <input id={this.props.kind + '_slider_amount_hidden'}
-            name={this.props.kind}
-            type='hidden' value={this.state.value}
-            ref={(sliderValInput) => { this.sliderValInput = sliderValInput; }}
-            />
-          </div>
-        </div>
-        <div className='field col-xs-9'>
-          <div className='imp_slider' id={this.props.kind + '_slider'}
-          style={{marginTop: '3px'}}
-          onBlur={this.onSliderChange.bind(this, this.sliderValInput)} ></div>
-        </div>
-      </div>
-    );
-  }
-}
+import { Slider } from './Slider';
 
 export class NewTask extends React.Component {
   constructor(props) { // list of objects
