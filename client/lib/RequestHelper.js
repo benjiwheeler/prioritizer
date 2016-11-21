@@ -30,8 +30,9 @@ export default class RequestHelper {
       headers: this.defaultHeaders(),
       timeout: 20000,
       method: 'post',
+      dataType: 'json',
       responseType: 'json',
-      body: JSON.stringify(props),
+      data: props,
       ...this.defaultParams
     }).then(function(response) {
       return response;
@@ -44,8 +45,9 @@ export default class RequestHelper {
       headers: this.defaultHeaders(),
       timeout: 20000,
       method: 'put',
+      dataType: 'json',
       responseType: 'json',
-      body: JSON.stringify(props),
+      data: props,
       ...this.defaultParams
     }).then(function(response) {
       return response;

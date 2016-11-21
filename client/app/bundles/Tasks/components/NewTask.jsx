@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
 import {submitNewTask} from '../TaskActions';
+import Select, { Creatable } from 'react-select';
 
 export class Slider extends React.Component {
   constructor(props) { // list of objects
@@ -98,8 +99,19 @@ export class NewTask extends React.Component {
     // }
   }
 
+  mapReactTags() {
+    var newTask = this.state.task;
+    newTask.tag_list = this.state.react_select_tag_list.map(function(reactSelectTag) {
+      return reactSelectTag.value;
+    }).join(",");
+    this.setState({
+      task: newTask
+    });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
+    this.mapReactTags();
     debugger;
     submitNewTask(this.state.task);
   }
@@ -112,12 +124,21 @@ export class NewTask extends React.Component {
     });
   }
 
-  setValue(field, event) {
-    debugger;
+  setEventValue(field, event) {
+    this.setFieldValue(field, event.target.value);
+  }
+
+  setFieldValue(field, value) {
     var newTask = this.state.task;
-    newTask[field] = event.target.value;
+    newTask[field] = value;
     this.setState({
       task: newTask
+    });
+  }
+
+  setTagsValue(value) {
+    this.setState({
+      react_select_tag_list: value
     });
   }
 
@@ -131,10 +152,6 @@ export class NewTask extends React.Component {
       <option value="all">all</option>
 
 */}
-    let tagOptions = (
-      <option value="cool">cool</option>
-    );
-
     return (
       <div>
       <form className="new_task" id="new_task" acceptCharset="UTF-8"
@@ -151,22 +168,38 @@ export class NewTask extends React.Component {
           name="name"
           id="task_name"
           value={this.state.task.name}
-          onChange={this.setValue.bind(this, "name")}
+          onChange={this.setEventValue.bind(this, "name")}
           />
+        </div>
+        <div className='field'>
+<Creatable
+    name="form-field-name"
+    value="one"
+    multi={true}
+    value={this.state.react_select_tag_list}
+    options={['cool', 'test', 'home'].map(function(tagStr) {
+      return { value: tagStr, label: tagStr };
+    })}
+    onChange={this.setTagsValue.bind(this)}
+    />
         </div>
         <div className='field'>
           {/* gets filled by select2 */}
           <input
           name="task[tag_list][]"
-          type="hidden"
-          value=""
+          type="text"
+          value=''
           />
           <select
           className="tag_select" multiple="multiple" style={{width: '100%'}}
           name="tag_list[]" id="task_tag_list"
-          value={[]}
-          onChange={this.setValue.bind(this, 'tag_list')}>
-            {tagOptions}
+          value={this.state.task.tag_list}
+          ref={(tagSelect) => { this.tagSelect = tagSelect; }}
+          >
+            {['cool', 'test', 'home'].map(function(tagStr, key) {
+              return <option key={key} value={tagStr}>{tagStr}</option>;
+            })
+            }
           </select>
         </div>
 

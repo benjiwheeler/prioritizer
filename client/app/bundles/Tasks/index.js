@@ -6,19 +6,20 @@ require('jquery-ui/ui/widgets/slider');
 require('jquery-ui/ui/widgets/sortable');
 require('select2');
 require('select2/dist/css/select2.css');
-require('font-awesome/css/font-awesome.css')
+require('react-select/dist/react-select.css');
+require('font-awesome/css/font-awesome.css');
 require('mousetrap');
 require('hammerjs');
 //require('letterify');
 require('bootstrap-datepicker');
 require('bootstrap-datepicker/dist/css/bootstrap-datepicker.css');
 require('jquery-timepicker/jquery.timepicker.css');
-require("imports?$=jquery!jquery-timepicker/jquery.timepicker")
+require("imports?$=jquery!jquery-timepicker/jquery.timepicker");
 // require('jquery-timepicker/jquery.timepicker');
 // var letterify = require('letterify');
 // require('letteringjs');
-require("imports?$=jquery!letteringjs/jquery.lettering.js")
-require("imports?$=jquery!../../../lib/color.js")
+require("imports?$=jquery!letteringjs/jquery.lettering.js");
+require("imports?$=jquery!../../../lib/color.js");
 
 // require('lettering');
 
