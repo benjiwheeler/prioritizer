@@ -60,7 +60,7 @@ $(document).ready(function () {
           sliderNumVal = hiddenVal;
         }
       }
-      // since newVal is not present, best we can do with Num position is set it to
+       // since newVal is not present, best we can do with Num position is set it to
       sliderPosVal = sliderNumVal;
     }
     if (sliderNumVal >= 6.0) {
@@ -96,7 +96,7 @@ $(document).ready(function () {
       var minVal = $(element).slider("option", "min");
       var curDir = $(element).attr("data-curdir");
       if (typeof curDir == 'undefined') {
-        curDir = 1
+        curDir = 1;
       }
       curVal += curDir * stepSize
       if (curVal > maxVal) {
@@ -158,7 +158,7 @@ $(document).ready(function () {
 
   // individual sliders
   $( ".imp_slider" ).slider({
-    value:3, min: 1, max: 10, step: .1,
+    min: 1, max: 10, step: .1,
     create: function( event, ui ) { // set initial value
       setSliderVal(this, null);
     },

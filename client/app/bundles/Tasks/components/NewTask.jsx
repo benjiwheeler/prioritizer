@@ -6,10 +6,20 @@ export class Slider extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      kind: props.kind
+      value: props.sliderValue
     };
   }
 
+  onSliderChange(sliderValInput, e) {
+    this.setState({
+      value: sliderValInput.value
+    });
+    this.props.onSliderChange(this.props.kind, sliderValInput.value);
+  }
+
+  // note that onChange won't work for the hidden field because it's set by
+  // jquery, whose val() function doesn't trigger onChange.
+  // Instead, we keep a ref to that element, and grab its val onBlur.
   render() {
     return (
       <div className='row' style={{marginTop: '5px'}}>
@@ -18,15 +28,19 @@ export class Slider extends React.Component {
             <i className='icon-down-right-arrow'
             style={{float: 'left', position: 'relative'}}></i>
             <label htmlFor={'task_' + this.props.kind}>{this.props.text}</label>
-            <span id={this.props.kind + '_slider_amount_shown'}
+            &nbsp;<span id={this.props.kind + '_slider_amount_shown'}
             style={{border: 0, color: '#f6931f', fontWeight: 'bold'}}></span>
-            <input id='vital_slider_amount_hidden' name='task[vital]'
-            type='hidden' value='' onChange={this.props.onSliderChange}/>
+            <input id={this.props.kind + '_slider_amount_hidden'}
+            name={this.props.kind}
+            type='hidden' value={this.state.value}
+            ref={(sliderValInput) => { this.sliderValInput = sliderValInput; }}
+            />
           </div>
         </div>
         <div className='field col-xs-9'>
-          <div className='imp_slider' id='vital_slider'
-          style={{marginTop: '3px'}}></div>
+          <div className='imp_slider' id={this.props.kind + '_slider'}
+          style={{marginTop: '3px'}}
+          onBlur={this.onSliderChange.bind(this, this.sliderValInput)} ></div>
         </div>
       </div>
     );
@@ -38,8 +52,33 @@ export class NewTask extends React.Component {
     super(props);
     this.state = {
       tagsOrdered: TaskStore.getData(["tagsOrdered"]),
-      newTask: {}
+      task: {
+        name: '',
+        vital: 3,
+        immediate: 3,
+        heavy: 3,
+        long: 3
+      }
     };
+        // "task[name]": '',
+        // "task[id]": '',
+        // "task[notes]": '',
+        // "task[due]": '',
+        // "task[time_of_day]": '',
+        // "task[parent_id]": '',
+        // "task[vital]": '',
+        // "task[immediate]": '',
+        // "task[heavy]": '',
+        // "task[long]": '',
+        // "task[position]": '',
+        // "task[exp_dur_mins]": '',
+        // "task[min_dur_mins]": '',
+        // "task[is_daily]": '',
+        // "task[tag_list]": [],
+        // "task[children_attributes]": {}
+        // [:id, :name, :notes, :due, :time_of_day, :parent_id,
+        // :vital, :immediate, :heavy, :long, :position, :exp_dur_mins,
+        // :min_dur_mins, tag_list: []])
   }
 
   componentWillMount() { // called by React.Component
@@ -61,23 +100,24 @@ export class NewTask extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    submitNewTask(this.state.newTask);
+    debugger;
+    submitNewTask(this.state.task);
   }
 
-  handleSliderChange(kind, e) {
-    debugger; // what does tag field show???
-    const newTask = this.state.newTask;
-    newTask['kind'] = e.target.value;
+  handleSliderChange(kind, value) {
+    var newTask = this.state.task;
+    newTask[kind] = value;
     this.setState({
-      newTask: newTask
+      task: newTask
     });
   }
 
   setValue(field, event) {
-    var newTask = this.state.newTask;
+    debugger;
+    var newTask = this.state.task;
     newTask[field] = event.target.value;
     this.setState({
-      newTask: newTask
+      task: newTask
     });
   }
 
@@ -108,10 +148,10 @@ export class NewTask extends React.Component {
           className="initial-focus form-control"
           placeholder="Task title"
           type="text"
-          name="task[name]"
+          name="name"
           id="task_name"
-          value={this.state.newTask["task[name]"]}
-          onChange={this.setValue.bind(this, "task[name]")}
+          value={this.state.task.name}
+          onChange={this.setValue.bind(this, "name")}
           />
         </div>
         <div className='field'>
@@ -123,15 +163,17 @@ export class NewTask extends React.Component {
           />
           <select
           className="tag_select" multiple="multiple" style={{width: '100%'}}
-          name="task[tag_list][]" id="task_tag_list"
+          name="tag_list[]" id="task_tag_list"
           value={[]}
-          onChange={this.setValue.bind(this, "task[tag_list][]")}>
+          onChange={this.setValue.bind(this, 'tag_list')}>
             {tagOptions}
           </select>
         </div>
 
-        <Slider kind="vital" text="Vital" onSliderChange={this.handleSliderChange.bind(this, 'vital')} />
-        <Slider kind="immediate" text="Immediate" />
+        <Slider kind="vital" text="Vital" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+        <Slider kind="immediate" text="Immediate" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+        <Slider kind="heavy" text="Heavy" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+        <Slider kind="long" text="Long" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
 
         <div className='actions'>
           <input type="submit" name="commit" value="Save"/>

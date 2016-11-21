@@ -75,7 +75,7 @@ export function submitNewTask(newTask) {
     tasksOrdered: [...tasksOrdered, newTask]
   });
   var rh = new RequestHelper();
-  return rh.post(window.globalAppInfo.host + "/tasks.json")
+  return rh.post(window.globalAppInfo.host + "/tasks.json", newTask)
   .then(function(jsonData) {
     debugger;
     fetchTasks();

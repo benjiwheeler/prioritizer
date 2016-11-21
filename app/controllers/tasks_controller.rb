@@ -127,6 +127,7 @@ class TasksController < ApplicationController
   # POST /tasks
   # POST /tasks.json
   def create
+    binding.pry
     @task = Task.new(task_params)
     @task.user = current_user
 
@@ -196,7 +197,7 @@ private
     good_params = params.require(:task).permit(:id, :name, :notes, :due, :time_of_day, \
       :parent_id, :vital, :immediate, :heavy, :long, :position, :exp_dur_mins, :min_dur_mins, \
       :is_daily, tag_list: [], \
-     :children_attributes => [:id, :name, :notes, :due, :time_of_day, :parent_id, \
+      :children_attributes => [:id, :name, :notes, :due, :time_of_day, :parent_id, \
       :vital, :immediate, :heavy, :long, :position, :exp_dur_mins, :min_dur_mins, tag_list: []])
 
     # need to convert tome_of_day from string to num seconds
