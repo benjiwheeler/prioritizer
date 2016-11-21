@@ -51,7 +51,7 @@ export function deleteTask(taskId) {
   var rh = new RequestHelper();
   return rh.delete(window.globalAppInfo.host + "/tasks/" + taskId + ".json")
   .then(function(jsonData) {
-    debugger;
+    // debugger;
     fetchTasks();
   });
 }
@@ -64,7 +64,7 @@ export function finishTask(taskId) {
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/done.json")
   .then(function(jsonData) {
-    debugger;
+    // debugger;
     fetchTasks();
   });
 }
@@ -75,9 +75,9 @@ export function submitNewTask(newTask) {
     tasksOrdered: [...tasksOrdered, newTask]
   });
   var rh = new RequestHelper();
-  return rh.post(window.globalAppInfo.host + "/tasks.json", newTask)
+  return rh.post(window.globalAppInfo.host + "/tasks.json", {task: newTask})
   .then(function(jsonData) {
-    debugger;
+    // debugger;
     fetchTasks();
   });
 }

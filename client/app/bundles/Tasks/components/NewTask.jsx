@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
-import {submitNewTask} from '../TaskActions';
+import {submitNewTask, fetchTags} from '../TaskActions';
 import Select, { Creatable } from 'react-select';
 
 export class Slider extends React.Component {
@@ -51,8 +51,9 @@ export class Slider extends React.Component {
 export class NewTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
+    fetchTags();
     this.state = {
-      tagsOrdered: TaskStore.getData(["tagsOrdered"]),
+      ...TaskStore.getData(["tagsOrdered"]),
       task: {
         name: '',
         vital: 3,
@@ -103,7 +104,7 @@ export class NewTask extends React.Component {
     var newTask = this.state.task;
     newTask.tag_list = this.state.react_select_tag_list.map(function(reactSelectTag) {
       return reactSelectTag.value;
-    }).join(",");
+    });
     this.setState({
       task: newTask
     });
@@ -112,7 +113,6 @@ export class NewTask extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.mapReactTags();
-    debugger;
     submitNewTask(this.state.task);
   }
 
@@ -143,15 +143,6 @@ export class NewTask extends React.Component {
   }
 
   render() {
-    let tagsOrdered = this.state.tagsOrdered;
-    // NOTE: make this dynamic, using selected in select tag?? or input tag??
-{/*
-      <option value="new">new</option>
-      <option value="ben">ben</option>
-      <option value="romance">romance</option>
-      <option value="all">all</option>
-
-*/}
     return (
       <div>
       <form className="new_task" id="new_task" acceptCharset="UTF-8"
@@ -172,35 +163,14 @@ export class NewTask extends React.Component {
           />
         </div>
         <div className='field'>
-<Creatable
-    name="form-field-name"
-    value="one"
-    multi={true}
-    value={this.state.react_select_tag_list}
-    options={['cool', 'test', 'home'].map(function(tagStr) {
-      return { value: tagStr, label: tagStr };
-    })}
-    onChange={this.setTagsValue.bind(this)}
-    />
-        </div>
-        <div className='field'>
-          {/* gets filled by select2 */}
-          <input
-          name="task[tag_list][]"
-          type="text"
-          value=''
+        <Creatable
+          name="form-field-name" value="one" multi={true}
+          value={this.state.react_select_tag_list}
+          options={this.state.tagsOrdered.map(function(tagObj) {
+            return { value: tagObj.name, label: tagObj.name };
+          })}
+          onChange={this.setTagsValue.bind(this)}
           />
-          <select
-          className="tag_select" multiple="multiple" style={{width: '100%'}}
-          name="tag_list[]" id="task_tag_list"
-          value={this.state.task.tag_list}
-          ref={(tagSelect) => { this.tagSelect = tagSelect; }}
-          >
-            {['cool', 'test', 'home'].map(function(tagStr, key) {
-              return <option key={key} value={tagStr}>{tagStr}</option>;
-            })
-            }
-          </select>
         </div>
 
         <Slider kind="vital" text="Vital" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />

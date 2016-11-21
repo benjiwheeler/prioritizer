@@ -1,7 +1,4 @@
 backend:
-2 new task wired in; submitting puts new one on server
-2 split new task into object and params
-2 new task object inserting without post
 2 postponed works at least on server
 2 worked works at least on server
 8 endpoint that will return all lists of tags, for each tag
@@ -17,13 +14,12 @@ backend:
 4 get react edit working for name, tag, sliders
 4 wire up children in react edit
 ___
-70, approx 14 days
+60, approx 12 days
 
 get keyboard shortcuts working
 request each
 
 
-get link from next to all working (_A_)
 
 
 
