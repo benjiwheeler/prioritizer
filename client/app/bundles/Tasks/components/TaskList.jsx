@@ -144,13 +144,23 @@ export class TaskListMasterControls extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
+      tagName: props.tagName
     };
   }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.tagName !== undefined && newProps.tagName !== null) {
+      this.setState({
+        tagName: window.globalAppInfo.tagNameOrAll(newProps.tagName)
+      });
+    }
+  }
+
 
   render() {
     return (
       <div>
-        <Link to={'/tasks/next'} className='action-link'>
+        <Link to={{pathname: '/tasks/next', query: {tagName: this.state.tagName}}} className='action-link'>
           <div className='action-logo'>
             <i className="fa fa-play-circle"></i>
           </div>
@@ -186,12 +196,9 @@ export class TaskList extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-        debugger;
-    if (this.state.taskId !== this.getTaskIdFromProps(newProps)) {
-      this.setState({
-        tagName: window.globalAppInfo.tagNameOrAll(newProps.tagName)
-      });
-    }
+    this.setState({
+      tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName)
+    });
   }
 
   render() {
@@ -208,7 +215,7 @@ export class TaskList extends React.Component {
     return (
       <div>
         <NavBar tagName={this.props.params.tagName} to='/tasks' showBack={false}/>
-        <TaskListMasterControls />
+        <TaskListMasterControls tagName={this.props.params.tagName} />
         <table className="table" style={{marginTop: '6rem'}}>
           <thead>
             <tr>
