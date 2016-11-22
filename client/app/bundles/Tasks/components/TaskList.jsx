@@ -92,7 +92,7 @@ export class TaskListable extends React.Component {
       <tr className={this.state.rowClass}>
         <td className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
           <Link to={{pathname: `/tasks/${this.props.task.id}`, query: {tagName: this.props.tagName}}}>
-            { this.props.task.name } { this.state.rowClass }
+            { this.props.task.name }
           </Link>
         </td>
         <CircleCell size={Number(this.props.task.vital)} color="#09bc36" />
@@ -214,8 +214,8 @@ export class TaskList extends React.Component {
 
     return (
       <div>
-        <NavBar tagName={this.props.params.tagName} to='/tasks' showBack={false}/>
-        <TaskListMasterControls tagName={this.props.params.tagName} />
+        <NavBar tagName={this.state.tagName} to='/tasks' showBack={false}/>
+        <TaskListMasterControls tagName={this.state.tagName} />
         <table className="table" style={{marginTop: '6rem'}}>
           <thead>
             <tr>

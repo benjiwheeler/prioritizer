@@ -1,8 +1,5 @@
 backend:
-8 endpoint that will return all lists of tags, for each tag
-4 request and store all these in main
-4 router has tag in routes
-4 deleting/finishing removes from ALL lists
+4 deleting/finishing removes from ALL lists?
 4 postpone/worked reports to server, tag list by tag list, for all changed lists
 4 postpone/worked also removes locally, NOT on server
 4 next has explicit, separate cur task; updating list doesn't change it
@@ -12,7 +9,7 @@ backend:
 4 get react edit working for name, tag, sliders
 4 wire up children in react edit
 ___
-60, approx 12 days
+44, approx 9 days
 
 get keyboard shortcuts working
 request each
