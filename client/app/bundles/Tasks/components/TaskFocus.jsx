@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
 import {provideInitialState, requestToServer, finishTask, deleteTask, postponeTask, workedTask} from '../TaskActions';
 import { IconShortcutLink } from './Main';
+import { NavBar } from './NavBar.jsx';
 
 export class TaskFocus extends React.Component {
   constructor(props) { // list of objects
@@ -85,47 +86,56 @@ export class TaskFocus extends React.Component {
     if (this.state.taskId !== undefined && this.state.taskId !== null) {
       task = this.state.tasksById[this.state.taskId];
     }
+    let navBarIfNesc = null;
+    if (this.props.showNavBar !== false) {
+      navBarIfNesc = (
+         <NavBar tagName={this.props.params.tagName} to='/tasks' />
+      );
+    }
 
     if (task !== undefined && task !== null) {
       return (
-        <div className={this.state.rowClass}>
-          <div className='row'>
-            <div className='col-xs-8'>
-              <div className='h3'>
-                {task.name}
+        <div>
+          {navBarIfNesc}
+          <div className={this.state.rowClass}>
+            <div className='row'>
+              <div className='col-xs-8'>
+                <div className='h3'>
+                  {task.name}
+                </div>
+              </div>
+              <div className='col-xs-4'>
+                <div id='countdown'></div>
+                <a id='moreTimeButton'>More time</a>
+                <a id='playButton'>Play</a>
+                <a id='pauseButton'>Pause</a>
               </div>
             </div>
-            <div className='col-xs-4'>
-              <div id='countdown'></div>
-              <a id='moreTimeButton'>More time</a>
-              <a id='playButton'>Play</a>
-              <a id='pauseButton'>Pause</a>
-            </div>
-          </div>
-          <div className='row'>
-            <div className='col-xs-3'>Actions:</div>
-            <div className='col-xs-9'>
-              <IconShortcutLink text='Finished' id='finished_link'
-              onClick={this.handleFinish.bind(this, task.id)}
-              faIconClass='fa-check'/>
-              <IconShortcutLink text='Worked on it' id='worked_link'
-              onClick={this.handleWorked.bind(this, task.id)}
-              faIconClass='fa-gavel'/>
-              <IconShortcutLink text='Postpone' id='postpone_link'
-              onClick={this.handlePostpone.bind(this, task.id)}
-              faIconClass='fa-clock-o'/>
-              <IconShortcutLink text='Split' id='split_link'
-              to={'tasks/' + task.id + 'split'}
-              faIconClass='fa-strikethrough'/>
-              <IconShortcutLink text='Destroy' id='destroy_link'
-              onClick={this.handleDestroy.bind(this, task.id)}
-              faIconClass='fa-times'/>
-              <IconShortcutLink text='Edit' id='edit_link'
-              to={'tasks/' + task.id + 'edit'}
-              faIconClass='fa-strikethrough'/>
-              <IconShortcutLink text='New Task' id='new_task_link'
-              to='tasks/new'
-              faIconClass='fa-lightbulb-o'/>
+            <div className='row'>
+              <div className='col-xs-3'>Actions:</div>
+              <div className='col-xs-9'>
+                <IconShortcutLink text='Finished' id='finished_link'
+                onClick={this.handleFinish.bind(this, task.id)}
+                faIconClass='fa-check'/>
+                <IconShortcutLink text='Worked on it' id='worked_link'
+                onClick={this.handleWorked.bind(this, task.id)}
+                faIconClass='fa-gavel'/>
+                <IconShortcutLink text='Postpone' id='postpone_link'
+                onClick={this.handlePostpone.bind(this, task.id)}
+                faIconClass='fa-clock-o'/>
+                <IconShortcutLink text='Split' id='split_link'
+                to={'tasks/' + task.id + 'split'}
+                faIconClass='fa-strikethrough'/>
+                <IconShortcutLink text='Destroy' id='destroy_link'
+                onClick={this.handleDestroy.bind(this, task.id)}
+                faIconClass='fa-times'/>
+                <IconShortcutLink text='Edit' id='edit_link'
+                to={'tasks/' + task.id + 'edit'}
+                faIconClass='fa-strikethrough'/>
+                <IconShortcutLink text='New Task' id='new_task_link'
+                to='tasks/new'
+                faIconClass='fa-lightbulb-o'/>
+              </div>
             </div>
           </div>
         </div>

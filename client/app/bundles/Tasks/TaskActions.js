@@ -11,11 +11,14 @@ export function provideInitialState() {
 
 var handleTasks = function(info) {
   var tasksById = {};
-  info.data.tasks.forEach((task) => {
-    tasksById[task.id] = task;
-  });
+  for (let tagName in info.data.tags) {
+    let tasksArr = info.data.tags[tagName];
+    tasksArr.forEach((task) => {
+      tasksById[task.id] = task;
+    });
+  }
   TaskStore.setState({
-    tasksOrdered: info.data.tasks,
+    tasksByTagOrdered: info.data.tags, // includes "all" tag
     tasksById: tasksById
   });
 };
@@ -34,11 +37,13 @@ export function fetchTags() {
   });
 }
 
-
-export function fetchTasks() {
+// get info on all list of tasks by tag
+export function fetchTaskLists() {
   var rh = new RequestHelper();
-  return rh.get(window.globalAppInfo.host + "/tasks.json")
+  return rh.get(window.globalAppInfo.host + "/tasks/lists.json")
   .then(function(jsonData) {
+    // structure like:
+    // info.data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
     handleTasks(jsonData);
   });
 }
@@ -52,7 +57,7 @@ export function deleteTask(taskId) {
   return rh.delete(window.globalAppInfo.host + "/tasks/" + taskId + ".json")
   .then(function(jsonData) {
     // debugger;
-    fetchTasks();
+    fetchTaskLists();
   });
 }
 
@@ -65,7 +70,7 @@ export function finishTask(taskId) {
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/done.json")
   .then(function(jsonData) {
     // debugger;
-    fetchTasks();
+    fetchTaskLists();
   });
 }
 
@@ -83,7 +88,7 @@ export function postponeTask(taskId) {
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/postpone.json")
   .then(function(jsonData) {
     // debugger;
-    fetchTasks();
+    fetchTaskLists();
   });
 }
 
@@ -101,7 +106,7 @@ export function workedTask(taskId) {
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/worked.json")
   .then(function(jsonData) {
     // debugger;
-    fetchTasks();
+    fetchTaskLists();
   });
 }
 
@@ -114,6 +119,6 @@ export function submitNewTask(newTask) {
   return rh.post(window.globalAppInfo.host + "/tasks.json", {task: newTask})
   .then(function(jsonData) {
     // debugger;
-    fetchTasks();
+    fetchTaskLists();
   });
 }

@@ -2,19 +2,21 @@ import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
 import { TaskFocus } from './TaskFocus';
 import {provideInitialState, requestToServer} from '../TaskActions';
+import { NavBar } from './NavBar.jsx';
 
 
 export class NextTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      ...TaskStore.getData(["tasksOrdered"])
+      ...TaskStore.getData(["tasksByTagOrdered"]),
+      tagName: window.globalAppInfo.tagNameOrAll(props.params.tagName)
     };
     console.log("NextTask mounted");
   }
 
   componentWillMount() { // called by React.Component
-    TaskStore.attachListener(this, ["tasksOrdered"]);
+    TaskStore.attachListener(this, ["tasksByTagOrdered"]);
   }
 
   componentWillUnmount() {
@@ -23,11 +25,17 @@ export class NextTask extends React.Component {
 
   render() {
     let taskId = null;
-    let tasksOrdered = this.state.tasksOrdered;
-    if (tasksOrdered !== undefined && tasksOrdered !== null && tasksOrdered.length > 0) {
-      taskId = tasksOrdered[0].id;
+    let tasksByTagOrdered = this.state.tasksByTagOrdered;
+    let tagName = this.state.tagName;
+    if (tasksByTagOrdered !== undefined && tasksByTagOrdered !== null &&
+      tasksByTagOrdered[tagName] !== undefined && tasksByTagOrdered[tagName] !== null &&
+      tasksByTagOrdered[tagName].length > 0) {
+      taskId = tasksByTagOrdered[tagName][0].id;
       return (
-        <TaskFocus taskId={taskId} />
+        <div>
+          <NavBar tagName={this.props.params.tagName} to='/tasks/next' />
+          <TaskFocus taskId={taskId} showNavBar={false}/>
+        </div>
       );
     } else {
       return (

@@ -3,6 +3,7 @@ import TaskStore from '../store/TaskStore.js';
 import {submitNewTask, fetchTags} from '../TaskActions';
 import Select, { Creatable } from 'react-select';
 import { Slider } from './Slider';
+import { NavBar } from './NavBar.jsx';
 
 export class NewTask extends React.Component {
   constructor(props) { // list of objects
@@ -101,43 +102,44 @@ export class NewTask extends React.Component {
   render() {
     return (
       <div>
-      <form className="new_task" id="new_task" acceptCharset="UTF-8"
-      onSubmit={this.handleSubmit.bind(this)}>
-        {/* Force Internet Explorer to accept correct character encoding...
-         unclear if necessary in react */}
-        <input name="utf8" type="hidden" value="&#x2713;" />
+        <NavBar tagName={this.props.params.tagName} to='/tasks' />
+        <form className="new_task" id="new_task" acceptCharset="UTF-8"
+        onSubmit={this.handleSubmit.bind(this)}>
+          {/* Force Internet Explorer to accept correct character encoding...
+           unclear if necessary in react */}
+          <input name="utf8" type="hidden" value="&#x2713;" />
 
-        <div className='field'>
-          <input
-          className="initial-focus form-control"
-          placeholder="Task title"
-          type="text"
-          name="name"
-          id="task_name"
-          value={this.state.task.name}
-          onChange={this.setEventValue.bind(this, "name")}
-          />
-        </div>
-        <div className='field'>
-        <Creatable
-          name="form-field-name" value="one" multi={true}
-          value={this.state.react_select_tag_list}
-          options={this.state.tagsOrdered.map(function(tagObj) {
-            return { value: tagObj.name, label: tagObj.name };
-          })}
-          onChange={this.setTagsValue.bind(this)}
-          />
-        </div>
+          <div className='field'>
+            <input
+            className="initial-focus form-control"
+            placeholder="Task title"
+            type="text"
+            name="name"
+            id="task_name"
+            value={this.state.task.name}
+            onChange={this.setEventValue.bind(this, "name")}
+            />
+          </div>
+          <div className='field'>
+          <Creatable
+            name="form-field-name" value="one" multi={true}
+            value={this.state.react_select_tag_list}
+            options={this.state.tagsOrdered.map(function(tagObj) {
+              return { value: tagObj.name, label: tagObj.name };
+            })}
+            onChange={this.setTagsValue.bind(this)}
+            />
+          </div>
 
-        <Slider kind="vital" text="Vital" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
-        <Slider kind="immediate" text="Immediate" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
-        <Slider kind="heavy" text="Heavy" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
-        <Slider kind="long" text="Long" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+          <Slider kind="vital" text="Vital" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+          <Slider kind="immediate" text="Immediate" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+          <Slider kind="heavy" text="Heavy" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+          <Slider kind="long" text="Long" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
 
-        <div className='actions'>
-          <input type="submit" name="commit" value="Save"/>
-        </div>
-      </form>
+          <div className='actions'>
+            <input type="submit" name="commit" value="Save"/>
+          </div>
+        </form>
       </div>
     );
   }

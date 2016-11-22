@@ -3,6 +3,7 @@ import Component from 'react';
 import TaskStore from '../store/TaskStore.js';
 import {deleteTask, finishTask} from '../TaskActions';
 import { Link } from 'react-router';
+import { NavBar } from './NavBar.jsx';
 
 export class CircleCell extends React.Component {
   constructor(props) { // list of objects
@@ -171,28 +172,42 @@ export class TaskList extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      ...TaskStore.getData(["tasksOrdered"])
+      ...TaskStore.getData(["tasksByTagOrdered"]),
+      tagName: window.globalAppInfo.tagNameOrAll(props.params.tagName)
     };
   }
 
   componentWillMount() { // called by React.Component
-    TaskStore.attachListener(this, ["tasksOrdered"]);
+    TaskStore.attachListener(this, ["tasksByTagOrdered"]);
   }
 
   componentWillUnmount() {
     TaskStore.removeListener(this);
   }
 
+  componentWillReceiveProps(newProps) {
+        debugger;
+    if (this.state.taskId !== this.getTaskIdFromProps(newProps)) {
+      this.setState({
+        tagName: window.globalAppInfo.tagNameOrAll(newProps.tagName)
+      });
+    }
+  }
+
   render() {
+    let tasksByTagOrdered = this.state.tasksByTagOrdered;
+    let tagName = this.state.tagName;
     let allTasksJsx = (<tr></tr>);
-    if (this.state.tasksOrdered !== undefined && this.state.tasksOrdered !== null) {
-      allTasksJsx = this.state.tasksOrdered.map((task) => (
-        <TaskListable key={task.id} task={task} tagName={this.props.params.tagName}/>
+    if (tasksByTagOrdered !== undefined && tasksByTagOrdered !== null &&
+      tasksByTagOrdered[tagName] !== undefined && tasksByTagOrdered[tagName] !== null) {
+      allTasksJsx = tasksByTagOrdered[tagName].map((task) => (
+        <TaskListable key={task.id} task={task} tagName={tagName}/>
       ));
     }
 
     return (
       <div>
+        <NavBar tagName={this.props.params.tagName} to='/tasks' showBack={false}/>
         <TaskListMasterControls />
         <table className="table" style={{marginTop: '6rem'}}>
           <thead>
@@ -218,4 +233,7 @@ export class TaskList extends React.Component {
 }
 TaskList.propTypes = {
   tagName: React.PropTypes.string
+};
+TaskList.contextTypes = { // if you want to use this.context, you must define contextTypes
+  router: React.PropTypes.object
 };

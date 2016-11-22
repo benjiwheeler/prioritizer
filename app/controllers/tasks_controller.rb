@@ -105,6 +105,21 @@ class TasksController < ApplicationController
     end
   end
 
+  # GET /task_lists
+  # GET /task_lists.json
+  def lists
+    @task_lists = {}
+    if current_user?
+      current_user.tags.each do |tag|
+        @task_lists[tag] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+      end
+      # add entry for "all" tags
+      @task_lists[:all] = TaskOrdering.n_ordered_tasks!(current_user, nil)
+      #@task = Task.new # for task form
+      Rails.logger.debug("current_user: #{current_user}; task_lists: #{@task_lists}")
+    end
+  end
+
   # GET /tasks/1
   # GET /tasks/1.json
   def show
