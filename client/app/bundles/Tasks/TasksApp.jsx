@@ -5,7 +5,7 @@ import TaskRoutes from './TaskRoutes';
 
 window.globalAppInfo = {
 //  host: "http://localhost:5000",
-  host: "https://prioritizershake.herokuapp.com"
+  host: "https://prioritizershake.herokuapp.com",
   tagNameOrAll: function(tagNameParam) {
     let tagName = tagNameParam;
     if (tagName === undefined || tagName === null) {
