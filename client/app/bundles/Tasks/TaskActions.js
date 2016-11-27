@@ -4,7 +4,7 @@ import RequestHelper from '../../../lib/RequestHelper';
 export function provideInitialState() {
   TaskStore.setState({
     tagsOrdered: [],
-    tasksOrdered: [],
+    tasksByTagOrdered: {},
     tasksById: {}
   });
 }
@@ -48,10 +48,40 @@ export function fetchTaskLists() {
   });
 }
 
+var tasksWithTaskAdded = function(newTask) {
+  let { tasksByTagOrdered } = TaskStore.getData(["tasksByTagOrdered"]);
+  newTask.tag_list.forEach(function (tagName) {
+    if (tagName in tasksByTagOrdered) {
+      tasksByTagOrdered[tagName] = [...tasksByTagOrdered[tagName], newTask];
+    } else {
+      tasksByTagOrdered[tagName] = [newTask];
+    }
+  });
+  return tasksByTagOrdered;
+};
+
+var tasksWithTaskRemoved = function(taskId) {
+  let { tasksByTagOrdered } = TaskStore.getData(["tasksByTagOrdered"]);
+  Object.keys(tasksByTagOrdered).forEach(function (tagName) {
+    tasksByTagOrdered[tagName] =
+      tasksByTagOrdered[tagName].filter(task => task.id !== taskId);
+  });
+  return tasksByTagOrdered;
+};
+
+var tasksWithTaskMovedToEnd = function(taskId) {
+  let { tasksByTagOrdered } = TaskStore.getData(["tasksByTagOrdered"]);
+  Object.keys(tasksByTagOrdered).forEach(function (tagName) {
+    const task = tasksByTagOrdered[tagName].find(task => task.id === taskId);
+    tasksByTagOrdered[tagName] =
+      [...tasksByTagOrdered[tagName].filter(task => task.id !== taskId), task];
+  });
+  return tasksByTagOrdered;
+};
+
 export function deleteTask(taskId) {
-  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
   TaskStore.setState({
-    tasksOrdered: tasksOrdered.filter(task => task.id !== taskId)
+    tasksByTagOrdered: tasksWithTaskRemoved(taskId)
   });
   var rh = new RequestHelper();
   return rh.delete(window.globalAppInfo.host + "/tasks/" + taskId + ".json")
@@ -62,9 +92,8 @@ export function deleteTask(taskId) {
 }
 
 export function finishTask(taskId) {
-  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
   TaskStore.setState({
-    tasksOrdered: tasksOrdered.filter(task => task.id !== taskId)
+    tasksByTagOrdered: tasksWithTaskRemoved(taskId)
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/done.json")
@@ -75,15 +104,9 @@ export function finishTask(taskId) {
 }
 
 export function postponeTask(taskId) {
-  // move this task to the rear
-  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
-  const task = tasksOrdered.find(task => task.id === taskId);
-  if (task !== undefined) {
-    TaskStore.setState({
-      tasksOrdered: [...tasksOrdered.filter(task => task.id !== taskId), task]
-    });
-  }
-
+  TaskStore.setState({
+    tasksByTagOrdered: tasksWithTaskMovedToEnd(taskId)
+  });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/postpone.json")
   .then(function(jsonData) {
@@ -93,15 +116,9 @@ export function postponeTask(taskId) {
 }
 
 export function workedTask(taskId) {
-  // move this task to the rear
-  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
-  const task = tasksOrdered.find(task => task.id === taskId);
-  if (task !== undefined) {
-    TaskStore.setState({
-      tasksOrdered: [...tasksOrdered.filter(task => task.id !== taskId), task]
-    });
-  }
-
+  TaskStore.setState({
+    tasksByTagOrdered: tasksWithTaskMovedToEnd(taskId)
+  });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/worked.json")
   .then(function(jsonData) {
@@ -111,9 +128,8 @@ export function workedTask(taskId) {
 }
 
 export function submitNewTask(newTask) {
-  const { tasksOrdered } = TaskStore.getData(["tasksOrdered"]);
   TaskStore.setState({
-    tasksOrdered: [...tasksOrdered, newTask]
+    tasksByTagOrdered: tasksWithTaskAdded(newTask)
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks.json", {task: newTask})

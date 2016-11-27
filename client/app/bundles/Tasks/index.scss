@@ -422,6 +422,14 @@ input.blend {
 }
 
 
+/* *********************************
+react-select
+********************************* */
+
+/* per https://github.com/JedWatson/react-select/issues/1085 */
+.Select-menu-outer {
+  z-index: 999 !important;
+}
 
 /* *********************************
 edit-in-place hacks
@@ -470,9 +478,9 @@ List removal intimation
 ********************************* */
 
 .doComplete {
-  -webkit-animation: completeAnim 1s;
+  -webkit-animation: completeAnim 0.5s;
   -webkit-animation-fill-mode: forwards;
-  animation: completeAnim 1s;
+  animation: completeAnim 0.5s;
   animation-fill-mode: forwards;
 }
 
@@ -505,9 +513,9 @@ List removal intimation
 
 
 .doDelete {
-  -webkit-animation: deleteAnim 1s;
+  -webkit-animation: deleteAnim 0.5s;
   -webkit-animation-fill-mode: forwards;
-  animation: deleteAnim 1s;
+  animation: deleteAnim 0.5s;
   animation-fill-mode: forwards;
 }
 
@@ -540,8 +548,8 @@ List removal intimation
 
 
 .doFadeIn {
-  -webkit-animation: fadein 1s linear forwards;
-  animation: fadein 1s linear forwards;
+  -webkit-animation: fadein 0.25s linear forwards;
+  animation: fadein 0.25s linear forwards;
 }
 
 @-webkit-keyframes fadein {

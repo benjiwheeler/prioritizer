@@ -5,7 +5,13 @@ import { Link } from 'react-router';
 export class NavBar extends React.Component {
   constructor(props) { // list of objects
     super(props);
-    this.state = TaskStore.getData(["tagsOrdered"]);
+    this.state = {
+      ...TaskStore.getData(["tagsOrdered"]),
+      backQuery: null,
+      backText: "Back",
+      backPath: '/tasks'
+    };
+
   }
 
   componentWillMount() { // called by React.Component
@@ -14,6 +20,16 @@ export class NavBar extends React.Component {
 
   componentWillUnmount() {
     TaskStore.removeListener(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.backPage !== undefined && newProps.backPage !== null) {
+      this.setState({
+        backQuery: newProps.backPage.query,
+        backText: newProps.backPage.text,
+        backPath: newProps.backPage.pathname
+      });
+    }
   }
 
   render() {
@@ -34,8 +50,8 @@ export class NavBar extends React.Component {
     return (
       <div>
         {this.props.showBack !== false &&
-          <Link to={{pathname: '/tasks', query: {tagName: this.props.tagName}}}>
-            &lt;Task List
+          <Link to={{pathname: this.state.backPath, query: this.state.backQuery}}>
+            &lt;&nbsp;{this.state.backText}
           </Link>
         }
         <div className='dropdown'>

@@ -4,6 +4,9 @@ import {submitNewTask, fetchTags} from '../TaskActions';
 import Select, { Creatable } from 'react-select';
 import { Slider } from './Slider';
 import { NavBar } from './NavBar.jsx';
+import { browserHistory, transitionTo } from 'react-router';
+import { ReactDOM } from 'react-dom';
+
 
 export class NewTask extends React.Component {
   constructor(props) { // list of objects
@@ -17,8 +20,17 @@ export class NewTask extends React.Component {
         immediate: 3,
         heavy: 3,
         long: 3
-      }
+      },
+      tagName: window.globalAppInfo.tagNameOrAll(props.location.query.tagName),
+      nextPage: this.getNextPageFromPropsAndParams(props, props.location.query)
     };
+    // match the format react-select will provide
+    if (props.location.query.tagName !== undefined && props.location.query.tagName !== null) {
+      this.state.react_select_tag_list = [
+        {label: props.location.query.tagName,
+        value: props.location.query.tagName}
+      ];
+    }
         // "task[name]": '',
         // "task[id]": '',
         // "task[notes]": '',
@@ -49,16 +61,37 @@ export class NewTask extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    // if (this.state.taskId !== this.getTaskIdFromProps(newProps)) {
-    //   this.setState({
-    //     taskId: this.getTaskIdFromProps(newProps),
-    //     rowClass: "doFadeIn"
-    //   });
-    // }
+    this.setState({
+      tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName)
+    });
+  }
+
+  componentDidMount() {
+    this.nameInput.focus();
+  }
+
+  getNextPageFromPropsAndParams(props, params) {
+    if (props.nextPage !== undefined && props.nextPage !== null) {
+      return props.nextPage;
+    } else if (params.nextPagePath !== undefined && params.nextPagePath !== null) {
+      let nextPage = {};
+      nextPage.pathname = params.nextPagePath;
+      if (params.nextPageText !== undefined && params.nextPageText !== null) {
+        nextPage.text = params.nextPageText;
+      }
+      if (params.tagName !== undefined && params.tagName !== null) {
+        nextPage.query = {tagName: params.tagName};
+      }
+      return nextPage;
+    }
+    return null;
   }
 
   mapReactTags() {
     var newTask = this.state.task;
+    if (this.state.react_select_tag_list === undefined || this.state.react_select_tag_list === null) {
+      return;
+    }
     newTask.tag_list = this.state.react_select_tag_list.map(function(reactSelectTag) {
       return reactSelectTag.value;
     });
@@ -67,10 +100,21 @@ export class NewTask extends React.Component {
     });
   }
 
+  goToNextPage() {
+    if (this.props.nextPage === undefined || this.props.nextPage === null) {
+      browserHistory.goBack();
+    } else {
+      transitionTo(this.props.nextPage.path, {query: this.props.nextPage.query});
+    }
+  }
+
+
   handleSubmit(e) {
     e.preventDefault();
     this.mapReactTags();
+    debugger;
     submitNewTask(this.state.task);
+    this.goToNextPage();
   }
 
   handleSliderChange(kind, value) {
@@ -100,9 +144,10 @@ export class NewTask extends React.Component {
   }
 
   render() {
+    let tagName = this.state.tagName;
     return (
       <div>
-        <NavBar tagName={this.props.params.tagName} to='/tasks' />
+        <NavBar tagName={tagName} to='/tasks' backPage={this.state.nextPage} />
         <form className="new_task" id="new_task" acceptCharset="UTF-8"
         onSubmit={this.handleSubmit.bind(this)}>
           {/* Force Internet Explorer to accept correct character encoding...
@@ -115,6 +160,7 @@ export class NewTask extends React.Component {
             placeholder="Task title"
             type="text"
             name="name"
+            ref={(input) => { this.nameInput = input; }}
             id="task_name"
             value={this.state.task.name}
             onChange={this.setEventValue.bind(this, "name")}
@@ -128,6 +174,8 @@ export class NewTask extends React.Component {
               return { value: tagObj.name, label: tagObj.name };
             })}
             onChange={this.setTagsValue.bind(this)}
+            value={this.state.react_select_tag_list}
+            tabSelectsValue={false}
             />
           </div>
 

@@ -10,7 +10,7 @@ export class NextTask extends React.Component {
     super(props);
     this.state = {
       ...TaskStore.getData(["tasksByTagOrdered"]),
-      tagName: window.globalAppInfo.tagNameOrAll(props.params.tagName)
+      tagName: window.globalAppInfo.tagNameOrAll(props.location.query.tagName)
     };
     console.log("NextTask mounted");
   }
@@ -23,6 +23,13 @@ export class NextTask extends React.Component {
     TaskStore.removeListener(this);
   }
 
+  componentWillReceiveProps(newProps) {
+    //alert("NextTask receiving newProps");
+    this.setState({
+      tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName)
+    });
+  }
+
   render() {
     let taskId = null;
     let tasksByTagOrdered = this.state.tasksByTagOrdered;
@@ -33,8 +40,8 @@ export class NextTask extends React.Component {
       taskId = tasksByTagOrdered[tagName][0].id;
       return (
         <div>
-          <NavBar tagName={this.props.params.tagName} to='/tasks/next' />
-          <TaskFocus taskId={taskId} showNavBar={false}/>
+          <NavBar tagName={tagName} to='/tasks/next' />
+          <TaskFocus taskId={taskId} showNavBar={false} tagName={tagName} />
         </div>
       );
     } else {

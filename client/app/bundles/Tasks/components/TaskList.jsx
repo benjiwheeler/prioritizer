@@ -4,6 +4,7 @@ import TaskStore from '../store/TaskStore.js';
 import {deleteTask, finishTask} from '../TaskActions';
 import { Link } from 'react-router';
 import { NavBar } from './NavBar.jsx';
+import { IconShortcutLink } from './Main';
 
 export class CircleCell extends React.Component {
   constructor(props) { // list of objects
@@ -160,18 +161,12 @@ export class TaskListMasterControls extends React.Component {
   render() {
     return (
       <div>
-        <Link to={{pathname: '/tasks/next', query: {tagName: this.state.tagName}}} className='action-link'>
-          <div className='action-logo'>
-            <i className="fa fa-play-circle"></i>
-          </div>
-          <div className='shortcut-link'>Start</div>
-        </Link>
-        <Link to={'/tasks/new'} className='action-link'>
-          <div className='action-logo'>
-            <i className="fa fa-lightbulb-o"></i>
-          </div>
-          <div className='shortcut-link'>New Task</div>
-        </Link>
+        <IconShortcutLink text='Start'
+        to={{pathname: '/tasks/next', query: {tagName: this.state.tagName}}}
+        faIconClass='fa-play-circle' />
+        <IconShortcutLink text='New Task'
+        to={{pathname: '/tasks/new', query: {tagName: this.state.tagName, nextPagePath: '/tasks', nextPageText: 'Task List'}}}
+        faIconClass='fa-lightbulb-o' />
       </div>
     );
   }
@@ -183,7 +178,7 @@ export class TaskList extends React.Component {
     super(props);
     this.state = {
       ...TaskStore.getData(["tasksByTagOrdered"]),
-      tagName: window.globalAppInfo.tagNameOrAll(props.params.tagName)
+      tagName: window.globalAppInfo.tagNameOrAll(props.location.query.tagName)
     };
   }
 
@@ -240,7 +235,4 @@ export class TaskList extends React.Component {
 }
 TaskList.propTypes = {
   tagName: React.PropTypes.string
-};
-TaskList.contextTypes = { // if you want to use this.context, you must define contextTypes
-  router: React.PropTypes.object
 };

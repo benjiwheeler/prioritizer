@@ -10,6 +10,7 @@ export class TaskFocus extends React.Component {
     this.state = {
       ...TaskStore.getData(["tasksById"]),
       taskId: this.getTaskIdFromProps(props),
+      tagName: props.tagName,
       rowClass: ""
     };
   }
@@ -27,6 +28,7 @@ export class TaskFocus extends React.Component {
     if (this.state.taskId !== this.getTaskIdFromProps(newProps)) {
       this.setState({
         taskId: this.getTaskIdFromProps(newProps),
+        tagName: newProps.tagName,
         rowClass: "doFadeIn"
       });
     }
@@ -47,7 +49,7 @@ export class TaskFocus extends React.Component {
     });
     setTimeout(function() {
       finishTask(taskId);
-    }.bind(this), 1000);
+    }.bind(this), 0);
   }
 
   handleWorked(taskId, e) {
@@ -57,7 +59,7 @@ export class TaskFocus extends React.Component {
     });
     setTimeout(function() {
       workedTask(taskId);
-    }.bind(this), 1000);
+    }.bind(this), 0);
   }
   handlePostpone(taskId, e) {
     e.preventDefault();
@@ -66,7 +68,7 @@ export class TaskFocus extends React.Component {
     });
     setTimeout(function() {
       postponeTask(taskId);
-    }.bind(this), 1000);
+    }.bind(this), 0);
 
   }
 
@@ -77,7 +79,7 @@ export class TaskFocus extends React.Component {
     });
     setTimeout(function() {
       deleteTask(taskId);
-    }.bind(this), 1000);
+    }.bind(this), 0);
 
   }
 
@@ -133,7 +135,7 @@ export class TaskFocus extends React.Component {
                 to={'tasks/' + task.id + 'edit'}
                 faIconClass='fa-strikethrough'/>
                 <IconShortcutLink text='New Task' id='new_task_link'
-                to='tasks/new'
+                to={{pathname: 'tasks/new', query: {tagName: this.state.tagName}}}
                 faIconClass='fa-lightbulb-o'/>
               </div>
             </div>
