@@ -178,23 +178,23 @@ $(document).ready(function () {
   //        TAGS
   // ***********************
 
-  // apply select2 to any tag_select form elements
-  $("select.tag_select").select2({
-    tags: true, // able to create new tags by typing them
-    placeholder: "Tags",
-    tokenSeparators: [',', ' '] // respond to these keystrokes
-  });
+  // // apply select2 to any tag_select form elements
+  // $("select.tag_select").select2({
+  //   tags: true, // able to create new tags by typing them
+  //   placeholder: "Tags",
+  //   tokenSeparators: [',', ' '] // respond to these keystrokes
+  // });
 
-  // attempt to fix tag reordering issue; seehttps://github.com/angular-ui/angular-ui-OLDREPO/issues/406
-  // note that this does NOT work with tokenSeparator keystrokes... only return/mouseclicks
-  // maybe this doesn't do anything at all?
-  $("select.tag_select").on("select2:select", function (event) {
-    var element = event.params.data.element;
-    var $element = $(element);
-    $element.detach();
-    $(this).append($element);
-    $(this).trigger("change");
-  });
+  // // attempt to fix tag reordering issue; seehttps://github.com/angular-ui/angular-ui-OLDREPO/issues/406
+  // // note that this does NOT work with tokenSeparator keystrokes... only return/mouseclicks
+  // // maybe this doesn't do anything at all?
+  // $("select.tag_select").on("select2:select", function (event) {
+  //   var element = event.params.data.element;
+  //   var $element = $(element);
+  //   $element.detach();
+  //   $(this).append($element);
+  //   $(this).trigger("change");
+  // });
 
   // ***********************
   //     DATE PICKER
@@ -314,6 +314,9 @@ $('input#time_of_day_input').timepicker({
   // ***********************
 
   // mousetrap shortcuts
+  Mousetrap.bind('b', function() {
+    $("a#begin_link")[0].click();
+  });
   Mousetrap.bind('s', function() {
     $("a#split_link")[0].click();
   });
@@ -333,7 +336,8 @@ $('input#time_of_day_input').timepicker({
     $("a#destroy_link")[0].click();
   });
   Mousetrap.bind('n', function() {
-    $("a#new_link")[0].click();
+    $("a#new_task_link")[0].click();
+    return false; // stop 'n' from being passed elsewhere
   });
 
   // ***********************

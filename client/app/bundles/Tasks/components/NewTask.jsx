@@ -68,6 +68,7 @@ export class NewTask extends React.Component {
 
   componentDidMount() {
     this.nameInput.focus();
+    this.nameInput.value = "";
   }
 
   getNextPageFromPropsAndParams(props, params) {

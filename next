@@ -1,7 +1,4 @@
 backend:
-4 deleting/finishing removes from ALL lists?
-4 postpone/worked reports to server, tag list by tag list, for all changed lists
-4 postpone/worked also removes locally, NOT on server
 4 next has explicit, separate cur task; updating list doesn't change it
 4 next page: shows next after done, by getting 2nd before any local or server update
 8 get next formatting looking how i want
@@ -9,13 +6,16 @@ backend:
 4 get react edit working for name, tag, sliders
 4 wire up children in react edit
 ___
-44, approx 9 days
+32, approx 6 days
 
 get keyboard shortcuts working
 request each
 
 
 
+issue: doesn't finishing an early task just re-introduce an intro task again?
+"regular" items don't get cued up on their own; go into a menu? eg when kids leave, etc.
+call them "cues"? or just use a context, with daily?
 
 
 make overall algo text document

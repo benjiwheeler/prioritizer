@@ -18,8 +18,8 @@ export class TaskFocus extends React.Component {
   getTaskIdFromProps(props) {
     let taskId = props.taskId;
     if ((taskId === undefined || taskId === null) &&
-        (props.params !== undefined && props.params !== null)) {
-      taskId = props.params.taskId;
+        (props.location.query.taskId !== undefined && props.location.query.taskId !== null)) {
+      taskId = props.location.query.taskId;
     }
     return taskId;
   }
@@ -91,7 +91,7 @@ export class TaskFocus extends React.Component {
     let navBarIfNesc = null;
     if (this.props.showNavBar !== false) {
       navBarIfNesc = (
-         <NavBar tagName={this.props.params.tagName} to='/tasks' />
+         <NavBar tagName={this.state.tagName} to='/tasks' />
       );
     }
 
