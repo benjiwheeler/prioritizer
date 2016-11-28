@@ -133,7 +133,7 @@ export class TaskFocus extends React.Component {
                 faIconClass='fa-times'/>
                 <IconShortcutLink text='Edit' id='edit_link'
                 to={'tasks/' + task.id + 'edit'}
-                faIconClass='fa-strikethrough'/>
+                faIconClass='fa-pencil'/>
                 <IconShortcutLink text='New Task' id='new_task_link'
                 to={{pathname: 'tasks/new', query: {tagName: this.state.tagName}}}
                 faIconClass='fa-lightbulb-o'/>

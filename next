@@ -1,12 +1,15 @@
 backend:
+4 creating doesn't seem to save values
+2 clicking item doesn't work
+8 get react edit working for name, tag, sliders
+4 lifecycle works from list to next
 4 next has explicit, separate cur task; updating list doesn't change it
 4 next page: shows next after done, by getting 2nd before any local or server update
 8 get next formatting looking how i want
 8 wire up children in react new
-4 get react edit working for name, tag, sliders
 4 wire up children in react edit
 ___
-32, approx 6 days
+38, approx 6 days
 
 get keyboard shortcuts working
 request each

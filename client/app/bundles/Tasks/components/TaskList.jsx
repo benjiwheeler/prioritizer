@@ -117,7 +117,7 @@ export class TaskListable extends React.Component {
         <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link">
             <div className="list-action-logo">
-              <i className="fa fa-check"></i>
+              <i className="fa fa-pencil"></i>
             </div>
           </a>
         </td>
