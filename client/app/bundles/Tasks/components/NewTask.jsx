@@ -25,7 +25,8 @@ export class NewTask extends React.Component {
       nextPage: this.getNextPageFromPropsAndParams(props, props.location.query)
     };
     // match the format react-select will provide
-    if (props.location.query.tagName !== undefined && props.location.query.tagName !== null) {
+    if (props.location.query.tagName !== undefined && props.location.query.tagName !== null
+      && props.location.query.tagName !== "all") {
       this.state.react_select_tag_list = [
         {label: props.location.query.tagName,
         value: props.location.query.tagName}
@@ -113,7 +114,6 @@ export class NewTask extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.mapReactTags();
-    debugger;
     submitNewTask(this.state.task);
     this.goToNextPage();
   }
@@ -181,9 +181,9 @@ export class NewTask extends React.Component {
           </div>
 
           <Slider kind="vital" text="Vital" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
-          <Slider kind="immediate" text="Immediate" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
-          <Slider kind="heavy" text="Heavy" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
-          <Slider kind="long" text="Long" sliderValue={this.state.task.vital} onSliderChange={this.handleSliderChange.bind(this)} />
+          <Slider kind="immediate" text="Immediate" sliderValue={this.state.task.immediate} onSliderChange={this.handleSliderChange.bind(this)} />
+          <Slider kind="heavy" text="Heavy" sliderValue={this.state.task.heavy} onSliderChange={this.handleSliderChange.bind(this)} />
+          <Slider kind="long" text="Long" sliderValue={this.state.task.long} onSliderChange={this.handleSliderChange.bind(this)} />
 
           <div className='actions'>
             <input type="submit" name="commit" value="Save"/>

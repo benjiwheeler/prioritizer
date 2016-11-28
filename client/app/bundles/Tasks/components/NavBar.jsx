@@ -37,7 +37,7 @@ export class NavBar extends React.Component {
     let allTagsJsx = (<li></li>);
     if (tagsOrdered !== undefined && tagsOrdered !== null) {
       allTagsJsx = tagsOrdered.map((tag) => (
-        <li key={tag.id}>
+        <li key={tag.id + "menu"}>
           {tag.name}
           <Link to={{pathname: this.props.to, query: {tagName: tag.name}}}>
             <span style={{color: "green"}}>
@@ -50,13 +50,16 @@ export class NavBar extends React.Component {
     return (
       <div>
         {this.props.showBack !== false &&
-          <Link to={{pathname: this.state.backPath, query: this.state.backQuery}}>
-            &lt;&nbsp;{this.state.backText}
+          <Link to={{pathname: this.state.backPath, query: this.state.backQuery}} id="back_link">
+            <div className="shortcut-link">←&nbsp;{this.state.backText}</div>
           </Link>
         }
         <div className='dropdown'>
-          <a aria-expanded='false' aria-haspopup='true' className='dropdown-toggle' data-toggle='dropdown' href='#' role='button'>
-            Where
+          <a id='tag_menu_link' aria-expanded='false' aria-haspopup='true' className='action-link dropdown-toggle' rel="nofollow" data-toggle='dropdown' href='#' role='button'>
+            <div className='action-logo'>
+              <i className='fa fa-binoculars'></i>
+            </div>
+            <div className='shortcut-link'>Lens</div>
             <span className='caret'></span>
           </a>
           <ul className='dropdown-menu'>

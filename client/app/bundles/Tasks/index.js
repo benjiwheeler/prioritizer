@@ -317,27 +317,33 @@ $('input#time_of_day_input').timepicker({
   Mousetrap.bind('b', function() {
     $("a#begin_link")[0].click();
   });
-  Mousetrap.bind('s', function() {
-    $("a#split_link")[0].click();
+  Mousetrap.bind('d', function() {
+    $("a#destroy_link")[0].click();
   });
   Mousetrap.bind('e', function() {
     $("a#edit_link")[0].click();
   });
-  Mousetrap.bind('p', function() {
-    $("a#postpone_link")[0].click();
-  });
   Mousetrap.bind('f', function() {
     $("a#finished_link")[0].click();
   });
-  Mousetrap.bind('w', function() {
-    $("a#worked_link")[0].click();
+  Mousetrap.bind('l', function() {
+    $("a#tag_menu_link")[0].click();
   });
-  Mousetrap.bind('d', function() {
-    $("a#destroy_link")[0].click();
+  Mousetrap.bind('left', function() {
+    $("a#back_link")[0].click();
   });
   Mousetrap.bind('n', function() {
     $("a#new_task_link")[0].click();
     return false; // stop 'n' from being passed elsewhere
+  });
+  Mousetrap.bind('p', function() {
+    $("a#postpone_link")[0].click();
+  });
+  Mousetrap.bind('s', function() {
+    $("a#split_link")[0].click();
+  });
+  Mousetrap.bind('w', function() {
+    $("a#worked_link")[0].click();
   });
 
   // ***********************

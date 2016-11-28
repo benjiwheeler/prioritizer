@@ -15,11 +15,19 @@ export class TaskFocus extends React.Component {
     };
   }
 
+  // Three ways to get task ID:
+  // 1.  provided directly from another jsx tag
+  // 2.  provided via URL like /tasks/24 , via props.params
+  // 3.  provided via query string like... i don't know, this is just in case
   getTaskIdFromProps(props) {
     let taskId = props.taskId;
-    if ((taskId === undefined || taskId === null) &&
-        (props.location.query.taskId !== undefined && props.location.query.taskId !== null)) {
-      taskId = props.location.query.taskId;
+    if (taskId === undefined || taskId === null) {
+      if (props.location.query.taskId !== undefined && props.location.query.taskId !== null) {
+        taskId = props.location.query.taskId;
+      }
+      if (props.params.taskId !== undefined && props.params.taskId !== null) {
+        taskId = props.params.taskId;
+      }
     }
     return taskId;
   }

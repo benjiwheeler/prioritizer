@@ -111,10 +111,10 @@ class TasksController < ApplicationController
     @task_lists = {}
     if current_user?
       current_user.tags.each do |tag|
-        @task_lists[tag] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+        @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
       end
       # add entry for "all" tags
-      @task_lists[:all] = TaskOrdering.n_ordered_tasks!(current_user, nil)
+      @task_lists["all"] = TaskOrdering.n_ordered_tasks!(current_user, nil)
       #@task = Task.new # for task form
       Rails.logger.debug("current_user: #{current_user}; task_lists: #{@task_lists}")
     end

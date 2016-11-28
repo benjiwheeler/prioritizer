@@ -1,67 +1,19 @@
 import React, { PropTypes } from 'react';
 import Component from 'react';
+import FlipMove from 'react-flip-move';
 import TaskStore from '../store/TaskStore.js';
-import {deleteTask, finishTask} from '../TaskActions';
+import {deleteTask, finishTask, updateTask} from '../TaskActions';
 import { Link } from 'react-router';
 import { NavBar } from './NavBar.jsx';
 import { IconShortcutLink } from './Main';
-
-export class CircleCell extends React.Component {
-  constructor(props) { // list of objects
-    super(props);
-    this.state = {
-      color: props.color,
-      ...this.calcSize(props.size)
-    };
-  }
-
-
-  calcSize(size) {
-    var smallest_size = 3;
-    var scale_factor = 1.5;
-    if (size === undefined || size === null) {
-      size = 1;
-    }
-    size = scale_factor * (size + smallest_size)/(10.0 + smallest_size);
-    var spacer_size = scale_factor * smallest_size/(10.0 + smallest_size);
-    spacer_size -= size / 2.0;
-    spacer_size += 0.2; // extra spacing
-    return {
-      size: size,
-      spacer_size: spacer_size
-    };
-  }
-
-  setSize(size) {
-    this.setState({
-      ...this.calcSize(size)
-    });
-  }
-
-  toggleResize(e) {
-    e.preventDefault();
-    this.setSize(5);
-  }
-
-  render() {
-    return (
-      <td onClick={this.toggleResize.bind(this)} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
-        <div className="circle" style={{backgroundColor: this.state.color, width: this.state.size + 'em', height: this.state.size + 'em', marginLeft: this.state.spacer_size + 'em', marginTop: (this.state.spacer_size + 0.5) + 'em'}}></div>
-      </td>
-    );
-  }
-}
-CircleCell.propTypes = {
-  size: React.PropTypes.number,
-  color: React.PropTypes.string
-};
-
+import { CircleCell } from './CircleCell';
 
 export class TaskListable extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
       rowClass: "",
+      task: props.task
     };
   }
 
@@ -73,7 +25,7 @@ export class TaskListable extends React.Component {
         rowClass: "doDelete"
       });
       setTimeout(function() {
-        deleteTask(this.props.task.id);
+        deleteTask(this.state.task.id);
       }.bind(this), 1000);
     }
   }
@@ -84,51 +36,75 @@ export class TaskListable extends React.Component {
       rowClass: "doComplete"
     });
     setTimeout(function() {
-      finishTask(this.props.task.id);
+      finishTask(this.state.task.id);
     }.bind(this), 1000);
+  }
+
+  handleCircleChange(kind, newVal) {
+    if (kind in this.state.task) {
+      var task = this.state.task;
+      newVal = Math.round(newVal * 10) / 10;
+      task[kind] = newVal;
+      updateTask(task);
+      this.setState({
+        task: task
+      });
+    }
   }
 
   render() {
     return (
-      <tr className={this.state.rowClass}>
-        <td className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
-          <Link to={{pathname: `/tasks/${this.props.task.id}`, query: {tagName: this.props.tagName}}}>
-            { this.props.task.name }
-          </Link>
-        </td>
-        <CircleCell size={Number(this.props.task.vital)} color="#09bc36" />
-        <CircleCell size={Number(this.props.task.immediate)} color="#f9d507" />
-        <CircleCell size={Number(this.props.task.heavy)} color="#ed1409" />
-        <CircleCell size={Number(this.props.task.long)} color="#1061e5" />
-        <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+      <div className={this.state.rowClass}>
+      <div className="row">
+        <div style={{width: '40%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+          <div className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
+            <Link to={{pathname: `/tasks/${this.state.task.id}`, query: {tagName: this.props.tagName}}}>
+              { this.state.task.name }
+            </Link>
+          </div>
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+          <CircleCell size={Number(this.state.task.vital)} onChange={this.handleCircleChange.bind(this, "vital")} color="#09bc36" />
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+          <CircleCell size={Number(this.state.task.immediate)} onChange={this.handleCircleChange.bind(this, "immediate")} color="#f9d507" />
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+          <CircleCell size={Number(this.state.task.heavy)} onChange={this.handleCircleChange.bind(this, "heavy")} color="#ed1409" />
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+          <CircleCell size={Number(this.state.task.long)} onChange={this.handleCircleChange.bind(this, "long")} color="#1061e5" />
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link">
             <div className="list-action-logo">
               <i className="fa fa-play-circle"></i>
             </div>
           </a>
-        </td>
-        <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link" onClick={this.attemptDelete.bind(this)}>
             <div className="list-action-logo">
               <i className="fa fa-times"></i>
             </div>
           </a>
-        </td>
-        <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link">
             <div className="list-action-logo">
               <i className="fa fa-pencil"></i>
             </div>
           </a>
-        </td>
-        <td style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        </div>
+        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
           <a href="" className="list-action-link" onClick={this.markFinished.bind(this)}>
             <div className="list-action-logo">
               <i className="fa fa-check"></i>
             </div>
           </a>
-        </td>
-      </tr>
+        </div>
+      </div>
+      </div>
     );
   }
 }
@@ -202,8 +178,10 @@ export class TaskList extends React.Component {
     let allTasksJsx = (<tr></tr>);
     if (tasksByTagOrdered !== undefined && tasksByTagOrdered !== null &&
       tasksByTagOrdered[tagName] !== undefined && tasksByTagOrdered[tagName] !== null) {
+    //   console.log("tasksByTagOrdered[" + tagName + "]");
+    // console.log(tasksByTagOrdered[tagName]);
       allTasksJsx = tasksByTagOrdered[tagName].map((task) => (
-        <TaskListable key={task.id} task={task} tagName={tagName}/>
+        <TaskListable key={task.id + "hello1"} task={task} tagName={tagName}/>
       ));
     }
 
@@ -214,21 +192,24 @@ export class TaskList extends React.Component {
         <table className="table" style={{marginTop: '6rem'}}>
           <thead>
             <tr>
-              <th className="col-xs-4 col-md-4 list-header-text">Task</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Vital</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Imm.</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Heavy</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Long</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Start</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Del.</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Edit</th>
-              <th className="col-xs-1 col-md-1 list-header-text">Done</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Task</th>
+              <th style={{border: 'none', width: '33%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}></th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Vital</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Imm.</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Heavy</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Long</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Start</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Del.</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Edit</th>
+              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Done</th>
             </tr>
           </thead>
-          <tbody>
-            { allTasksJsx }
-          </tbody>
         </table>
+
+        <FlipMove easing="cubic-bezier(0, 0.7, 0.8, 0.1)">
+          { allTasksJsx }
+        </FlipMove>
+
       </div>
     );
   }

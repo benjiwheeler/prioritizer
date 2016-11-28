@@ -52,6 +52,9 @@ export class Slider extends React.Component {
         posValue: newPosVal,
         dispValue: sliderNumVal
       });
+      if (this.props.onSliderChange !== undefined) {
+        this.props.onSliderChange(this.props.kind, sliderNumVal);
+      }
     }
   }
 

@@ -1,6 +1,4 @@
 backend:
-4 creating doesn't seem to save values
-2 clicking item doesn't work
 8 get react edit working for name, tag, sliders
 4 lifecycle works from list to next
 4 next has explicit, separate cur task; updating list doesn't change it
@@ -11,7 +9,6 @@ backend:
 ___
 38, approx 6 days
 
-get keyboard shortcuts working
 request each
 
 
@@ -20,8 +17,6 @@ issue: doesn't finishing an early task just re-introduce an intro task again?
 "regular" items don't get cued up on their own; go into a menu? eg when kids leave, etc.
 call them "cues"? or just use a context, with daily?
 
-
-make overall algo text document
 how handle specific due date vs implied?
 
 daily tasks:

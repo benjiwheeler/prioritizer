@@ -79,6 +79,15 @@ var tasksWithTaskMovedToEnd = function(taskId) {
   return tasksByTagOrdered;
 };
 
+var tasksWithTaskUpdated = function(taskToUpdate) {
+  let { tasksByTagOrdered } = TaskStore.getData(["tasksByTagOrdered"]);
+  Object.keys(tasksByTagOrdered).forEach(function (tagName) {
+    const existingTaskIndex = tasksByTagOrdered[tagName].findIndex(task => task.id === taskToUpdate.id);
+    tasksByTagOrdered[tagName][existingTaskIndex] = taskToUpdate;
+  });
+  return tasksByTagOrdered;
+};
+
 export function deleteTask(taskId) {
   TaskStore.setState({
     tasksByTagOrdered: tasksWithTaskRemoved(taskId)
@@ -97,6 +106,19 @@ export function finishTask(taskId) {
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/done.json")
+  .then(function(jsonData) {
+    // debugger;
+    fetchTaskLists();
+  });
+}
+
+export function updateTask(taskToUpdate) {
+  TaskStore.setState({
+    tasksByTagOrdered: tasksWithTaskUpdated(taskToUpdate)
+  });
+  var rh = new RequestHelper();
+  return rh.put(window.globalAppInfo.host + "/tasks/" + taskToUpdate.id + ".json",
+    {task: taskToUpdate})
   .then(function(jsonData) {
     // debugger;
     fetchTaskLists();
