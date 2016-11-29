@@ -33,12 +33,12 @@ export class NavBar extends React.Component {
   }
 
   render() {
-    let { tagsOrdered } = this.state;
+    let tagsOrdered = this.state.tagsOrdered;
     let allTagsJsx = (<li></li>);
     if (tagsOrdered !== undefined && tagsOrdered !== null) {
-      allTagsJsx = tagsOrdered.map((tag) => (
+      let tagsWithAll = [{id: "all", name: "all"}, ...tagsOrdered];
+      allTagsJsx = tagsWithAll.map((tag) => (
         <li key={tag.id + "menu"}>
-          {tag.name}
           <Link to={{pathname: this.props.to, query: {tagName: tag.name}}}>
             <span style={{color: "green"}}>
               {tag.name}
