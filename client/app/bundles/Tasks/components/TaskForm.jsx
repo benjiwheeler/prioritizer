@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import TaskStore from '../store/TaskStore.js';
-import {submitNewTask, fetchTags} from '../TaskActions';
+import { fetchTags} from '../TaskActions';
 import Select, { Creatable } from 'react-select';
 import { Slider } from './Slider';
 import { NavBar } from './NavBar.jsx';
@@ -12,6 +12,7 @@ export class TaskForm extends React.Component {
   constructor(props) { // list of objects
     super(props);
     fetchTags();
+    this.onSubmit = props.onSubmit;
     this.state = {
       ...TaskStore.getData(["tagsOrdered"]),
       task: props.task,
@@ -56,6 +57,9 @@ export class TaskForm extends React.Component {
       this.setState({
         tagName: newProps.tagName
       });
+    }
+    if (newProps.onSubmit !== undefined || newProps.onSubmit !== null) {
+      this.onSubmit = newProps.onSubmit;
     }
   }
 
@@ -114,7 +118,6 @@ export class TaskForm extends React.Component {
       newValue = true;
     }
     this.setFieldValue(field, newValue);
-    debugger;
   }
 
   setFieldValue(field, value) {

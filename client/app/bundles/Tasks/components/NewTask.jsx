@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { TaskForm } from './TaskForm.jsx';
+import {submitNewTask} from '../TaskActions';
 import { ReactDOM } from 'react-dom';
 
 
@@ -56,7 +57,7 @@ export class NewTask extends React.Component {
     this.setState({
       tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName),
       nextPage: this.getNextPageFromPropsAndParams(newProps, newProps.location.query)
-    })
+    });
   }
 
   componentDidMount() {
