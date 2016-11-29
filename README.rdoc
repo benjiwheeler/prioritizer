@@ -1,8 +1,15 @@
 == Focus
 
-=== Tags/Lenses
+=== Tags/Lenses/Prompts/Contexts
 
-"All", aka "Any", points to logic that picks all tasks.
+Idea is that you have many of these, attached to prompts in your day.
+
+Your main duties:
+* when your situation changes -- you come back from lunch, you put your kids
+to bed, etc. -- open that prompt.
+* add items to lenses as you think of them
+
+"All", aka "Any", points to logic that picks all tasks; it's not a real tag.
 
 Tasks *must* have a discrete number (usually one) of tags.
 A task *cannot* be tagged directly with "all" or "any".

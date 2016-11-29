@@ -55,48 +55,48 @@ export class TaskListable extends React.Component {
   render() {
     return (
       <div className={this.state.rowClass}>
-      <div className="row">
-        <div style={{width: '40%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+      <div className="rowWithoutIndent">
+        <div className="taskTableCellText">
           <div className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
             <Link to={{pathname: `/tasks/${this.state.task.id}`, query: {tagName: this.props.tagName}}}>
               { this.state.task.name }
             </Link>
           </div>
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+        <div className="taskTableCellSmall">
           <CircleCell size={Number(this.state.task.vital)} onChange={this.handleCircleChange.bind(this, "vital")} color="#09bc36" />
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+        <div className="taskTableCellSmall">
           <CircleCell size={Number(this.state.task.immediate)} onChange={this.handleCircleChange.bind(this, "immediate")} color="#f9d507" />
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+        <div className="taskTableCellSmall">
           <CircleCell size={Number(this.state.task.heavy)} onChange={this.handleCircleChange.bind(this, "heavy")} color="#ed1409" />
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingRight: '.1rem', paddingLeft: '.1rem'}}>
+        <div className="taskTableCellSmall">
           <CircleCell size={Number(this.state.task.long)} onChange={this.handleCircleChange.bind(this, "long")} color="#1061e5" />
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        <div className="taskTableCellSmall">
           <a href="" className="list-action-link">
             <div className="list-action-logo">
               <i className="fa fa-play-circle"></i>
             </div>
           </a>
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        <div className="taskTableCellSmall">
           <a href="" className="list-action-link" onClick={this.attemptDelete.bind(this)}>
             <div className="list-action-logo">
               <i className="fa fa-times"></i>
             </div>
           </a>
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        <div className="taskTableCellSmall">
           <a href="" className="list-action-link">
             <div className="list-action-logo">
               <i className="fa fa-pencil"></i>
             </div>
           </a>
         </div>
-        <div style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        <div className="taskTableCellSmall">
           <a href="" className="list-action-link" onClick={this.markFinished.bind(this)}>
             <div className="list-action-logo">
               <i className="fa fa-check"></i>
@@ -175,7 +175,7 @@ export class TaskList extends React.Component {
   render() {
     let tasksByTagOrdered = this.state.tasksByTagOrdered;
     let tagName = this.state.tagName;
-    let allTasksJsx = (<tr></tr>);
+    let allTasksJsx = (<div></div>);
     if (tasksByTagOrdered !== undefined && tasksByTagOrdered !== null &&
       tasksByTagOrdered[tagName] !== undefined && tasksByTagOrdered[tagName] !== null) {
     //   console.log("tasksByTagOrdered[" + tagName + "]");
@@ -192,21 +192,25 @@ export class TaskList extends React.Component {
         <table className="table" style={{marginTop: '6rem'}}>
           <thead>
             <tr>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Task</th>
-              <th style={{border: 'none', width: '33%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}></th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Vital</th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Imm.</th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Heavy</th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Long</th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Start</th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Del.</th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Edit</th>
-              <th className="list-header-text" style={{width: '7%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Done</th>
+              <th className="list-header-text" style={{width: '5%', minWidth: '20px', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Task</th>
+              <th style={{border: 'none', width: '43%', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}></th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Vital</th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Imm.</th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Heavy</th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Long</th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Start</th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Del.</th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Edit</th>
+              <th className="list-header-text taskTableCellSmall" style={{paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Done</th>
             </tr>
           </thead>
         </table>
 
-        <FlipMove easing="cubic-bezier(0, 0.7, 0.8, 0.1)">
+        <FlipMove
+         easing="cubic-bezier(0.7, 0.0, 0.4, 1.0)"
+         staggerDurationBy="100"
+         enterAnimation="fade"
+         maintainContainerHeight={true}>
           { allTasksJsx }
         </FlipMove>
 

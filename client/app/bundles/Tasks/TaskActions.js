@@ -122,6 +122,7 @@ export function updateTask(taskToUpdate) {
   .then(function(jsonData) {
     // debugger;
     fetchTaskLists();
+    fetchTags(); // might have added or deleted a tag!
   });
 }
 
@@ -158,5 +159,6 @@ export function submitNewTask(newTask) {
   .then(function(jsonData) {
     // debugger;
     fetchTaskLists();
+    fetchTags(); // might have added a tag!
   });
 }

@@ -4,6 +4,7 @@ import { TaskFocus } from './components/TaskFocus';
 import { Main } from './components/Main';
 import { NextTask } from './components/NextTask';
 import { NewTask } from './components/NewTask';
+import { EditTask } from './components/EditTask';
 import { TaskList } from './components/TaskList';
 
 export default class routes extends Component {
@@ -24,7 +25,10 @@ export default class routes extends Component {
             <IndexRoute component={TaskList} />
             <Route path='next' component={NextTask} />
             <Route path='new' component={NewTask} />
-            <Route path=':taskId' component={TaskFocus} />
+            <Route path=':taskId'>
+              <IndexRoute component={TaskFocus} />
+              <Route path='edit' component={EditTask} />
+            </Route>
           </Route>
           <IndexRedirect to="tasks" />
         </Route>

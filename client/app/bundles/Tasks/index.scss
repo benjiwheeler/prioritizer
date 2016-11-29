@@ -260,6 +260,13 @@ padding-right: 0.5rem;
   border: none;
 }
 
+.rowWithoutIndent {
+  width: 100%;
+  display: table;
+  content: " ";
+  clear: both;
+}
+
 /* *********************************
 navbar title blur
 ********************************* */
@@ -421,16 +428,6 @@ input.blend {
     border: none;
 }
 
-
-/* *********************************
-react-select
-********************************* */
-
-/* per https://github.com/JedWatson/react-select/issues/1085 */
-.Select-menu-outer {
-  z-index: 999 !important;
-}
-
 /* *********************************
 edit-in-place hacks
 ********************************* */
@@ -471,6 +468,31 @@ edit-in-place hacks
             hyphens: auto;
 
     width: 100%;
+}
+
+/* *********************************
+Task List
+********************************* */
+
+.taskTableCellText {
+  width: 50%;
+  min-width: 100px;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: .1rem;
+  padding-left: .1rem;
+}
+
+.taskTableCellSmall {
+  width: 5%;
+  max-width: 100px;
+  min-width: 20px;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: .1rem;
+  padding-left: .1rem;
 }
 
 /* *********************************

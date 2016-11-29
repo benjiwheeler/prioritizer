@@ -15,16 +15,12 @@ export class TaskFocus extends React.Component {
     };
   }
 
-  // Three ways to get task ID:
+  // Two ways to get task ID:
   // 1.  provided directly from another jsx tag
   // 2.  provided via URL like /tasks/24 , via props.params
-  // 3.  provided via query string like... i don't know, this is just in case
   getTaskIdFromProps(props) {
     let taskId = props.taskId;
     if (taskId === undefined || taskId === null) {
-      if (props.location.query.taskId !== undefined && props.location.query.taskId !== null) {
-        taskId = props.location.query.taskId;
-      }
       if (props.params.taskId !== undefined && props.params.taskId !== null) {
         taskId = props.params.taskId;
       }
@@ -134,13 +130,13 @@ export class TaskFocus extends React.Component {
                 onClick={this.handlePostpone.bind(this, task.id)}
                 faIconClass='fa-clock-o'/>
                 <IconShortcutLink text='Split' id='split_link'
-                to={'tasks/' + task.id + 'split'}
+                to={'tasks/' + task.id + '/split'}
                 faIconClass='fa-strikethrough'/>
                 <IconShortcutLink text='Destroy' id='destroy_link'
                 onClick={this.handleDestroy.bind(this, task.id)}
                 faIconClass='fa-times'/>
                 <IconShortcutLink text='Edit' id='edit_link'
-                to={'tasks/' + task.id + 'edit'}
+                to={'tasks/' + task.id + '/edit'}
                 faIconClass='fa-pencil'/>
                 <IconShortcutLink text='New Task' id='new_task_link'
                 to={{pathname: 'tasks/new', query: {tagName: this.state.tagName}}}
