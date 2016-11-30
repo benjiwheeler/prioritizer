@@ -13,7 +13,7 @@ export class NewTask extends React.Component {
     var tags = [];
     if (props.tagName !== undefined && props.tagName !== null
       && props.tagName !== "all") {
-       tags = [{name: props.tagName}];
+      tags = [{name: props.tagName}];
     }
     this.state = {
       task: {
@@ -65,19 +65,6 @@ export class NewTask extends React.Component {
   componentDidMount() {
   }
 
-  goToNextPage() {
-    if (this.state.nextPage === undefined || this.state.nextPage === null) {
-      browserHistory.goBack();
-    } else {
-      transitionTo(this.state.nextPage.path, {query: this.state.nextPage.query});
-    }
-  }
-
-  handleSubmit(task) {
-    submitNewTask(task);
-    this.goToNextPage();
-  }
-
   getNextPageFromPropsAndParams(props, params) {
     if (props.nextPage !== undefined && props.nextPage !== null) {
       return props.nextPage;
@@ -95,6 +82,34 @@ export class NewTask extends React.Component {
     return null;
   }
 
+  goToNextPage() {
+    if (this.state.nextPage === undefined || this.state.nextPage === null) {
+      browserHistory.goBack();
+    } else {
+      this.props.router.transitionTo(this.state.nextPage.path, {query: this.state.nextPage.query});
+    }
+  }
+
+  handleSubmit(task) {
+    let reactThis = this;
+    submitNewTask(task).then(function(success) {
+      if (window.globalAppInfo.alertComponent !== undefined &&
+          window.globalAppInfo.alertComponent !== null) {
+        if (success) {
+          window.globalAppInfo.alertComponent.show({
+            level: "success",
+            text: "Created Task"
+          });
+          reactThis.goToNextPage();
+        } else {
+          window.globalAppInfo.alertComponent.show({
+            level: "danger",
+            text: "Failed to create Task"
+          });
+        }
+      }
+    });
+  }
 
   render() {
     return (
@@ -106,5 +121,8 @@ export class NewTask extends React.Component {
     );
   }
 }
+NewTask.contextTypes = { // if you want to use this.context, you must define contextTypes
+  router: React.PropTypes.object
+};
 
 
