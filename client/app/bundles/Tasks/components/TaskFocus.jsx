@@ -11,6 +11,7 @@ export class TaskFocus extends React.Component {
       ...TaskStore.getData(["tasksById"]),
       taskId: this.getTaskIdFromProps(props),
       tagName: window.globalAppInfo.tagNameOrAll(props.location.query.tagName),
+      nextPage: this.getNextPageFromPropsAndParams(props, props.location.query),
       rowClass: ""
     };
   }
@@ -33,8 +34,29 @@ export class TaskFocus extends React.Component {
       this.setState({
         taskId: this.getTaskIdFromProps(newProps),
         tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName),
+        nextPage: this.getNextPageFromPropsAndParams(newProps, newProps.location.query),
         rowClass: "doFadeIn"
       });
+    }
+  }
+
+  getNextPageFromPropsAndParams(props, params) {
+    if (props.nextPage !== undefined && props.nextPage !== null) {
+      return props.nextPage;
+    } else {
+      // issue here is basically that i'm hacking nextPage, and should make it an obj
+      // from the start.
+      let nextPage = {};
+      if (params.nextPagePath !== undefined && params.nextPagePath !== null) {
+        nextPage.pathname = params.nextPagePath;
+      }
+      if (params.nextPageText !== undefined && params.nextPageText !== null) {
+        nextPage.text = params.nextPageText;
+      }
+      if (params.tagName !== undefined && params.tagName !== null) {
+        nextPage.query = {tagName: params.tagName};
+      }
+      return nextPage;
     }
   }
 
@@ -95,7 +117,7 @@ export class TaskFocus extends React.Component {
     let navBarIfNesc = null;
     if (this.props.showNavBar !== false) {
       navBarIfNesc = (
-         <NavBar tagName={this.state.tagName} to='/tasks' />
+         <NavBar tagName={this.state.tagName} backPage={this.state.nextPage} />
       );
     }
 

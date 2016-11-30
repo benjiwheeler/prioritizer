@@ -58,7 +58,7 @@ export class TaskListable extends React.Component {
       <div className="rowWithoutIndent">
         <div className="taskTableCellText">
           <div className="break-text" style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.5rem', paddingBottom: '.6rem', verticalAlign: 'middle', lineHeight: '1em', width: '100%'}}>
-            <Link to={{pathname: `/tasks/${this.state.task.id}`, query: {tagName: this.props.tagName}}}>
+            <Link to={{pathname: `/tasks/${this.state.task.id}`, query: {tagName: this.props.tagName, nextPagePath: '/tasks', nextPageText: 'Task list'}}}>
               { this.state.task.name }
             </Link>
           </div>

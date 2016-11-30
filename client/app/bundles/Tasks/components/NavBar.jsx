@@ -39,6 +39,9 @@ export class NavBar extends React.Component {
     try {
       backPath = newProps.backPage.pathname;
     } catch(error) {}
+    if (backQuery == null && newProps.tagName !== undefined && newProps.tagName !== null) {
+      backQuery = {tagName: newProps.tagName};
+    }
     this.setState({
       showBack: showBack,
       backQuery: backQuery,
