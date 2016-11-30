@@ -91,7 +91,7 @@ export class TaskListable extends React.Component {
           </a>
         </div>
         <div className="taskTableCellSmall">
-          <Link to={{pathname: `/tasks/${this.state.task.id}/edit`, query: {tagName: this.props.tagName}}}
+          <Link to={{pathname: `/tasks/${this.state.task.id}/edit`, query: {tagName: this.props.tagName,  nextPagePath: '/tasks', nextPageText: 'Task list'}}}
           className="list-action-link">
             <div className="list-action-logo">
               <i className="fa fa-pencil"></i>
@@ -143,7 +143,7 @@ export class TaskListMasterControls extends React.Component {
         to={{pathname: '/tasks/next', query: {tagName: this.state.tagName}}}
         faIconClass='fa-play-circle' />
         <IconShortcutLink text='New Task' id="new_task_link"
-        to={{pathname: '/tasks/new', query: {tagName: this.state.tagName, nextPagePath: '/tasks', nextPageText: 'Task List'}}}
+        to={{pathname: '/tasks/new', query: {tagName: this.state.tagName, nextPagePath: '/tasks', nextPageText: 'Task list'}}}
         faIconClass='fa-lightbulb-o' />
       </div>
     );

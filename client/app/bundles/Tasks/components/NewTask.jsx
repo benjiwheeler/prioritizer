@@ -3,10 +3,10 @@ import { TaskForm } from './TaskForm.jsx';
 import {submitNewTask} from '../TaskActions';
 import { ReactDOM } from 'react-dom';
 import { NavBar } from './NavBar.jsx';
-import { browserHistory, transitionTo } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 
 
-export class NewTask extends React.Component {
+class NewTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
 
@@ -86,12 +86,11 @@ export class NewTask extends React.Component {
     if (this.state.nextPage === undefined || this.state.nextPage === null) {
       browserHistory.goBack();
     } else {
-      this.props.router.transitionTo(this.state.nextPage.path, {query: this.state.nextPage.query});
+      this.props.router.push({pathname: this.state.nextPage.pathname, query: this.state.nextPage.query});
     }
   }
 
   handleSubmit(task) {
-    let reactThis = this;
     submitNewTask(task).then(function(success) {
       if (window.globalAppInfo.alertComponent !== undefined &&
           window.globalAppInfo.alertComponent !== null) {
@@ -100,7 +99,7 @@ export class NewTask extends React.Component {
             level: "success",
             text: "Created Task"
           });
-          reactThis.goToNextPage();
+          this.goToNextPage();
         } else {
           window.globalAppInfo.alertComponent.show({
             level: "danger",
@@ -108,21 +107,18 @@ export class NewTask extends React.Component {
           });
         }
       }
-    });
+    }.bind(this));
   }
 
   render() {
     return (
       <div>
-        <NavBar tagName={this.state.tagName} to='/tasks' backPage={this.state.nextPage} />
+        <NavBar tagName={this.state.tagName} backPage={this.state.nextPage} />
         <TaskForm task={this.state.task} tagName={this.state.tagName}
         nextPage={this.state.nextPage} onSubmit={this.handleSubmit.bind(this)} />
       </div>
     );
   }
 }
-NewTask.contextTypes = { // if you want to use this.context, you must define contextTypes
-  router: React.PropTypes.object
-};
-
-
+withRouter(NewTask);
+export { NewTask };

@@ -10,7 +10,7 @@ export class TaskFocus extends React.Component {
     this.state = {
       ...TaskStore.getData(["tasksById"]),
       taskId: this.getTaskIdFromProps(props),
-      tagName: props.tagName,
+      tagName: window.globalAppInfo.tagNameOrAll(props.location.query.tagName),
       rowClass: ""
     };
   }
@@ -32,7 +32,7 @@ export class TaskFocus extends React.Component {
     if (this.state.taskId !== this.getTaskIdFromProps(newProps)) {
       this.setState({
         taskId: this.getTaskIdFromProps(newProps),
-        tagName: newProps.tagName,
+        tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName),
         rowClass: "doFadeIn"
       });
     }
@@ -136,7 +136,7 @@ export class TaskFocus extends React.Component {
                 onClick={this.handleDestroy.bind(this, task.id)}
                 faIconClass='fa-times'/>
                 <IconShortcutLink text='Edit' id='edit_link'
-                to={'tasks/' + task.id + '/edit'}
+                to={{pathname: 'tasks/' + task.id + '/edit', query: {tagName: this.state.tagName, nextPagePath: ('tasks/' + task.id), nextPageText: 'This task'}}}
                 faIconClass='fa-pencil'/>
                 <IconShortcutLink text='New Task' id='new_task_link'
                 to={{pathname: 'tasks/new', query: {tagName: this.state.tagName}}}

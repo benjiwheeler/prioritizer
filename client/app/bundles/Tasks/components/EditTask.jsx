@@ -4,10 +4,10 @@ import TaskStore from '../store/TaskStore.js';
 import {updateTask} from '../TaskActions';
 import { ReactDOM } from 'react-dom';
 import { NavBar } from './NavBar.jsx';
-import { browserHistory, transitionTo } from 'react-router';
+import { browserHistory, withRouter } from 'react-router';
 
 
-export class EditTask extends React.Component {
+class EditTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
@@ -92,12 +92,11 @@ export class EditTask extends React.Component {
     if (this.state.nextPage === undefined || this.state.nextPage === null) {
       browserHistory.goBack();
     } else {
-      transitionTo(this.state.nextPage.path, {query: this.state.nextPage.query});
+      this.props.router.push({pathname: this.state.nextPage.pathname, query: this.state.nextPage.query});
     }
   }
 
   handleSubmit(task) {
-    let reactThis = this;
     updateTask(task).then(function(success) {
       if (window.globalAppInfo.alertComponent !== undefined &&
           window.globalAppInfo.alertComponent !== null) {
@@ -106,7 +105,7 @@ export class EditTask extends React.Component {
             level: "success",
             text: "Updated Task"
           });
-          reactThis.goToNextPage();
+          this.goToNextPage();
         } else {
           window.globalAppInfo.alertComponent.show({
             level: "danger",
@@ -114,7 +113,7 @@ export class EditTask extends React.Component {
           });
         }
       }
-    });
+    }.bind(this));
   }
 
   render() {
@@ -129,7 +128,7 @@ export class EditTask extends React.Component {
     } else {
       return (
         <div>
-          <NavBar tagName={this.state.tagName} to='/tasks' backPage={this.state.nextPage} />
+          <NavBar tagName={this.state.tagName} backPage={this.state.nextPage} />
           <TaskForm task={task} tagName={this.state.tagName}
           nextPage={this.state.nextPage} onSubmit={this.handleSubmit.bind(this)} />
         </div>
@@ -137,4 +136,6 @@ export class EditTask extends React.Component {
     }
   }
 }
+withRouter(EditTask);
+export { EditTask };
 

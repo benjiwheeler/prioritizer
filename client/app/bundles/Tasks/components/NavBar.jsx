@@ -6,12 +6,8 @@ export class NavBar extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      ...TaskStore.getData(["tagsOrdered"]),
-      backQuery: null,
-      backText: "Back",
-      backPath: '/tasks'
+      ...TaskStore.getData(["tagsOrdered"])
     };
-
   }
 
   componentWillMount() { // called by React.Component
@@ -22,14 +18,33 @@ export class NavBar extends React.Component {
     TaskStore.removeListener(this);
   }
 
+  componentDidMount() {
+    this.componentWillReceiveProps(this.props); // my hack
+  }
+
   componentWillReceiveProps(newProps) {
-    if (newProps.backPage !== undefined && newProps.backPage !== null) {
-      this.setState({
-        backQuery: newProps.backPage.query,
-        backText: newProps.backPage.text,
-        backPath: newProps.backPage.pathname
-      });
-    }
+    let showBack = true;
+    let backQuery = null;
+    let backText = 'Back';
+    let backPath = '/tasks';
+    try {
+      showBack = newProps.showBack;
+    } catch(error) {}
+    try {
+      backQuery = newProps.backPage.query;
+    } catch(error) {}
+    try {
+      backText = newProps.backPage.text;
+    } catch(error) {}
+    try {
+      backPath = newProps.backPage.pathname;
+    } catch(error) {}
+    this.setState({
+      showBack: showBack,
+      backQuery: backQuery,
+      backText: backText,
+      backPath: backPath
+    });
   }
 
   render() {
@@ -49,7 +64,7 @@ export class NavBar extends React.Component {
     }
     return (
       <div>
-        {this.props.showBack !== false &&
+        {this.state.showBack !== false &&
           <Link to={{pathname: this.state.backPath, query: this.state.backQuery}}
           id="back_link" className='action-link' style={{float: 'left'}}>
             <div className='action-logo'>
