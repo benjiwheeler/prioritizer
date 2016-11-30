@@ -1,16 +1,13 @@
 backend:
-8 get react edit working for name, tag, sliders
-4 lifecycle works from list to next
 4 next has explicit, separate cur task; updating list doesn't change it
 4 next page: shows next after done, by getting 2nd before any local or server update
 8 get next formatting looking how i want
 8 wire up children in react new
 4 wire up children in react edit
 8 daily done get brought back as undone somehow
-2 back link keeps tag
 4 menu has all at top
 ___
-38, approx 6 days
+40, approx 8 days
 
 request each
 

@@ -82,7 +82,9 @@ export class NavBar extends React.Component {
             </div>
             <div className='shortcut-link'>Lens<span className='caret'></span></div>
           </a>
-          <ul className='dropdown-menu'>
+          {/* because of position change above, i had to override bootstrap top for dropdown, otherwise top is 100%
+          and menu appears at bottom of page */}
+          <ul className='dropdown-menu' style={{top: 'initial'}}>
             {allTagsJsx}
           </ul>
         </div>
