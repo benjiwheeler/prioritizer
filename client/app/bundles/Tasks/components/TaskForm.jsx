@@ -3,8 +3,6 @@ import TaskStore from '../store/TaskStore.js';
 import { fetchTags} from '../TaskActions';
 import Select, { Creatable } from 'react-select';
 import { Slider } from './Slider';
-import { NavBar } from './NavBar.jsx';
-import { browserHistory, transitionTo } from 'react-router';
 import { ReactDOM } from 'react-dom';
 
 
@@ -16,8 +14,7 @@ export class TaskForm extends React.Component {
     this.state = {
       ...TaskStore.getData(["tagsOrdered"]),
       task: props.task,
-      tagName: props.tagName,
-      nextPage: props.nextPage
+      tagName: props.tagName
     };
     // match the format react-select will provide
     this.state.react_select_tag_list = props.task.tags.map(function(tag) {
@@ -81,20 +78,10 @@ export class TaskForm extends React.Component {
     });
   }
 
-  goToNextPage() {
-    if (this.props.nextPage === undefined || this.props.nextPage === null) {
-      browserHistory.goBack();
-    } else {
-      transitionTo(this.props.nextPage.path, {query: this.props.nextPage.query});
-    }
-  }
-
-
   handleSubmit(e) {
     e.preventDefault();
     this.mapReactTags();
     this.onSubmit(this.state.task);
-    this.goToNextPage();
   }
 
   handleSliderChange(kind, value) {
@@ -135,10 +122,8 @@ export class TaskForm extends React.Component {
   }
 
   render() {
-    let tagName = this.state.tagName;
     return (
       <div>
-        <NavBar tagName={tagName} to='/tasks' backPage={this.state.nextPage} />
         <form className="new_task" id="new_task" acceptCharset="UTF-8"
         onSubmit={this.handleSubmit.bind(this)}>
           {/* Force Internet Explorer to accept correct character encoding...

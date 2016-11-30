@@ -76,11 +76,12 @@ export class TaskListable extends React.Component {
           <CircleCell size={Number(this.state.task.long)} onChange={this.handleCircleChange.bind(this, "long")} color="#1061e5" />
         </div>
         <div className="taskTableCellSmall">
-          <a href="" className="list-action-link">
+          <Link to={{pathname: `/tasks/${this.state.task.id}`, query: {tagName: this.props.tagName}}}
+          className="list-action-link">
             <div className="list-action-logo">
               <i className="fa fa-play-circle"></i>
             </div>
-          </a>
+          </Link>
         </div>
         <div className="taskTableCellSmall">
           <a href="" className="list-action-link" onClick={this.attemptDelete.bind(this)}>
@@ -90,11 +91,12 @@ export class TaskListable extends React.Component {
           </a>
         </div>
         <div className="taskTableCellSmall">
-          <a href="" className="list-action-link">
+          <Link to={{pathname: `/tasks/${this.state.task.id}/edit`, query: {tagName: this.props.tagName}}}
+          className="list-action-link">
             <div className="list-action-logo">
               <i className="fa fa-pencil"></i>
             </div>
-          </a>
+          </Link>
         </div>
         <div className="taskTableCellSmall">
           <a href="" className="list-action-link" onClick={this.markFinished.bind(this)}>

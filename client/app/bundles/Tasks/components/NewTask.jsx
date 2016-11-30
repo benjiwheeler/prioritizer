@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { TaskForm } from './TaskForm.jsx';
 import {submitNewTask} from '../TaskActions';
 import { ReactDOM } from 'react-dom';
+import { NavBar } from './NavBar.jsx';
+import { browserHistory, transitionTo } from 'react-router';
 
 
 export class NewTask extends React.Component {
@@ -63,8 +65,17 @@ export class NewTask extends React.Component {
   componentDidMount() {
   }
 
+  goToNextPage() {
+    if (this.state.nextPage === undefined || this.state.nextPage === null) {
+      browserHistory.goBack();
+    } else {
+      transitionTo(this.state.nextPage.path, {query: this.state.nextPage.query});
+    }
+  }
+
   handleSubmit(task) {
     submitNewTask(task);
+    this.goToNextPage();
   }
 
   getNextPageFromPropsAndParams(props, params) {
@@ -87,8 +98,11 @@ export class NewTask extends React.Component {
 
   render() {
     return (
-      <TaskForm task={this.state.task} tagName={this.state.tagName}
-      nextPage={this.state.nextPage} onSubmit={this.handleSubmit.bind(this)} />
+      <div>
+        <NavBar tagName={this.state.tagName} to='/tasks' backPage={this.state.nextPage} />
+        <TaskForm task={this.state.task} tagName={this.state.tagName}
+        nextPage={this.state.nextPage} onSubmit={this.handleSubmit.bind(this)} />
+      </div>
     );
   }
 }

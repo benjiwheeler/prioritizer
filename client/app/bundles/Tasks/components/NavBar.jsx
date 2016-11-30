@@ -50,17 +50,22 @@ export class NavBar extends React.Component {
     return (
       <div>
         {this.props.showBack !== false &&
-          <Link to={{pathname: this.state.backPath, query: this.state.backQuery}} id="back_link">
+          <Link to={{pathname: this.state.backPath, query: this.state.backQuery}}
+          id="back_link" className='action-link' style={{float: 'left'}}>
+            <div className='action-logo'>
+              <i className='fa fa-arrow-left'></i>
+            </div>
             <div className="shortcut-link">←&nbsp;{this.state.backText}</div>
           </Link>
         }
-        <div className='dropdown'>
+      {/* had to override bootstrap position for dropdown, otherwise squashing
+      nearby links */}
+        <div className='dropdown' style={{position: 'inherit'}}>
           <a id='tag_menu_link' aria-expanded='false' aria-haspopup='true' className='action-link dropdown-toggle' rel="nofollow" data-toggle='dropdown' href='#' role='button'>
             <div className='action-logo'>
               <i className='fa fa-binoculars'></i>
             </div>
-            <div className='shortcut-link'>Lens</div>
-            <span className='caret'></span>
+            <div className='shortcut-link'>Lens<span className='caret'></span></div>
           </a>
           <ul className='dropdown-menu'>
             {allTagsJsx}

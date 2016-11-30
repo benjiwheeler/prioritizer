@@ -12,20 +12,26 @@ export default class RequestHelper {
     return ReactOnRails.authenticityHeaders();
   }
 
+  sendRequest(axiosRequest) {
+    return axios(axiosRequest).then(function(response) {
+      return {success: true, response};
+    }).catch(function(error) {
+      return {success: false, error};
+    });
+  }
+
   get(url) {
-    return axios({
+    return this.sendRequest({
       url: url,
       timeout: 20000,
       method: 'get',
       responseType: 'json',
       ...this.defaultParams
-    }).then(function(response) {
-      return response;
     });
   }
 
   post(url, props) {
-    return axios({
+    return this.sendRequest({
       url: url,
       headers: this.defaultHeaders(),
       timeout: 20000,
@@ -34,13 +40,11 @@ export default class RequestHelper {
       responseType: 'json',
       data: props,
       ...this.defaultParams
-    }).then(function(response) {
-      return response;
     });
   }
 
   put(url, props) {
-    return axios({
+    return this.sendRequest({
       url: url,
       headers: this.defaultHeaders(),
       timeout: 20000,
@@ -49,21 +53,17 @@ export default class RequestHelper {
       responseType: 'json',
       data: props,
       ...this.defaultParams
-    }).then(function(response) {
-      return response;
     });
   }
 
   delete(url) {
-    return axios({
+    return this.sendRequest({
       url: url,
       headers: this.defaultHeaders(),
       timeout: 20000,
       method: 'delete',
       responseType: 'json',
       ...this.defaultParams
-    }).then(function(response) {
-      return response;
     });
   }
 }

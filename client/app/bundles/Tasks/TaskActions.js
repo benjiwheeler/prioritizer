@@ -32,8 +32,10 @@ var handleTags = function(info) {
 export function fetchTags() {
   var rh = new RequestHelper();
   return rh.get(window.globalAppInfo.host + "/users/" + window.globalAppInfo.user_id + "/tags.json")
-  .then(function(jsonData) {
-    handleTags(jsonData);
+  .then(function(obj) {
+    if (obj.success) {
+      handleTags(obj.response);
+    }
   });
 }
 
@@ -41,10 +43,12 @@ export function fetchTags() {
 export function fetchTaskLists() {
   var rh = new RequestHelper();
   return rh.get(window.globalAppInfo.host + "/tasks/lists.json")
-  .then(function(jsonData) {
+  .then(function(obj) {
     // structure like:
     // info.data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
-    handleTasks(jsonData);
+    if (obj.success) {
+      handleTasks(obj.response);
+    }
   });
 }
 
@@ -94,9 +98,10 @@ export function deleteTask(taskId) {
   });
   var rh = new RequestHelper();
   return rh.delete(window.globalAppInfo.host + "/tasks/" + taskId + ".json")
-  .then(function(jsonData) {
+  .then(function(obj) {
     // debugger;
     fetchTaskLists();
+    return (obj.success && obj.response.status < 400);
   });
 }
 
@@ -106,9 +111,10 @@ export function finishTask(taskId) {
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/done.json")
-  .then(function(jsonData) {
+  .then(function(obj) {
     // debugger;
     fetchTaskLists();
+    return (obj.success && obj.response.status < 400);
   });
 }
 
@@ -119,10 +125,10 @@ export function updateTask(taskToUpdate) {
   var rh = new RequestHelper();
   return rh.put(window.globalAppInfo.host + "/tasks/" + taskToUpdate.id + ".json",
     {task: taskToUpdate})
-  .then(function(jsonData) {
-    // debugger;
+  .then(function(obj) {
     fetchTaskLists();
     fetchTags(); // might have added or deleted a tag!
+    return (obj.success && obj.response.status < 400);
   });
 }
 
@@ -132,9 +138,10 @@ export function postponeTask(taskId) {
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/postpone.json")
-  .then(function(jsonData) {
+  .then(function(obj) {
     // debugger;
     fetchTaskLists();
+    return (obj.success && obj.response.status < 400);
   });
 }
 
@@ -144,9 +151,10 @@ export function workedTask(taskId) {
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks/" + taskId + "/worked.json")
-  .then(function(jsonData) {
+  .then(function(obj) {
     // debugger;
     fetchTaskLists();
+    return (obj.success && obj.response.status < 400);
   });
 }
 
@@ -156,9 +164,10 @@ export function submitNewTask(newTask) {
   });
   var rh = new RequestHelper();
   return rh.post(window.globalAppInfo.host + "/tasks.json", {task: newTask})
-  .then(function(jsonData) {
+  .then(function(obj) {
     // debugger;
     fetchTaskLists();
     fetchTags(); // might have added a tag!
+    return (obj.success && obj.response.status < 400);
   });
 }

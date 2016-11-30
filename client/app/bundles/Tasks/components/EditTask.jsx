@@ -1,7 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { TaskForm } from './TaskForm.jsx';
 import TaskStore from '../store/TaskStore.js';
+import {updateTask} from '../TaskActions';
 import { ReactDOM } from 'react-dom';
+import { NavBar } from './NavBar.jsx';
+import { browserHistory, transitionTo } from 'react-router';
 
 
 export class EditTask extends React.Component {
@@ -85,8 +88,33 @@ export class EditTask extends React.Component {
   }
 
 
+  goToNextPage() {
+    if (this.state.nextPage === undefined || this.state.nextPage === null) {
+      browserHistory.goBack();
+    } else {
+      transitionTo(this.state.nextPage.path, {query: this.state.nextPage.query});
+    }
+  }
+
   handleSubmit(task) {
-    submitNewTask(task);
+    let reactThis = this;
+    updateTask(task).then(function(success) {
+      if (window.globalAppInfo.alertComponent !== undefined &&
+          window.globalAppInfo.alertComponent !== null) {
+        if (success) {
+          window.globalAppInfo.alertComponent.show({
+            level: "success",
+            text: "Updated Task"
+          });
+          reactThis.goToNextPage();
+        } else {
+          window.globalAppInfo.alertComponent.show({
+            level: "danger",
+            text: "Failed to update Task"
+          });
+        }
+      }
+    });
   }
 
   render() {
@@ -100,8 +128,11 @@ export class EditTask extends React.Component {
       );
     } else {
       return (
-        <TaskForm task={task} tagName={this.state.tagName}
-        nextPage={this.state.nextPage} onSubmit={this.handleSubmit.bind(this)} />
+        <div>
+          <NavBar tagName={this.state.tagName} to='/tasks' backPage={this.state.nextPage} />
+          <TaskForm task={task} tagName={this.state.tagName}
+          nextPage={this.state.nextPage} onSubmit={this.handleSubmit.bind(this)} />
+        </div>
       );
     }
   }
