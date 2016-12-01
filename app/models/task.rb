@@ -95,7 +95,17 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def ensure_at_least_one_tag
+    if tag_list.count < 1
+      errors.add(:tags, "Must have at least one tag")
+      false
+    else
+      true
+    end
+  end
+
   def before_save_steps
+    return false if !ensure_at_least_one_tag
     if parent.present? && parent.user.present?
       self.user = parent.user
       Rails.logger.warn "Using parent user for task #{name}"

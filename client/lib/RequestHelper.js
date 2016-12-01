@@ -12,11 +12,29 @@ export default class RequestHelper {
     return ReactOnRails.authenticityHeaders();
   }
 
+  // returns object with consistent structure, whether success or failure:
+  // {
+  // success: bool
+  // status: int
+  // message [if !success]: string
+  // ...other response fields
+  // [error object as well, if error, fyi]
+  // }
   sendRequest(axiosRequest) {
     return axios(axiosRequest).then(function(response) {
-      return {success: true, response};
+      return {...response, success: true, message: "Success"};
     }).catch(function(error) {
-      return {success: false, error};
+      // get rails errors from response object, put into nice string
+      let betterMessage = "";
+      try {
+        betterMessage = Object.keys(error.response.data).map(function(error_attr) {
+          return error.response.data[error_attr].join(",");
+        }).join(",");
+      } catch(e) {}
+      if (betterMessage.length < 1) {
+        betterMessage = error.message;
+      }
+      return {...error.response, success: false, message: betterMessage, error};
     });
   }
 

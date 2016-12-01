@@ -91,10 +91,10 @@ class NewTask extends React.Component {
   }
 
   handleSubmit(task) {
-    submitNewTask(task).then(function(success) {
+    submitNewTask(task).then(function(response) {
       if (window.globalAppInfo.alertComponent !== undefined &&
           window.globalAppInfo.alertComponent !== null) {
-        if (success) {
+        if (response.success) {
           window.globalAppInfo.alertComponent.show({
             level: "success",
             text: "Created Task"
@@ -103,7 +103,7 @@ class NewTask extends React.Component {
         } else {
           window.globalAppInfo.alertComponent.show({
             level: "danger",
-            text: "Failed to create Task"
+            text: "Failed to create Task: " + response.message
           });
         }
       }
