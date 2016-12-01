@@ -11,6 +11,15 @@ ___
 
 request each
 
+to generalize:
+* should take pattern from NavBar and spread:
+  componentDidMount() {
+    this.componentWillReceiveProps(this.props); // my hack
+  }
+* many components have properties that should be settable by query string
+OR passed props OR direct routed params!
+with pref for passed of course; eg TFocus; then routed params; then qs; then default
+
 
 
 issue: doesn't finishing an early task just re-introduce an intro task again?

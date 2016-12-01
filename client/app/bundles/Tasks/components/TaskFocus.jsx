@@ -3,15 +3,23 @@ import TaskStore from '../store/TaskStore.js';
 import {provideInitialState, requestToServer, finishTask, deleteTask, postponeTask, workedTask} from '../TaskActions';
 import { IconShortcutLink } from './Main';
 import { NavBar } from './NavBar.jsx';
+import { withRouter } from 'react-router';
 
-export class TaskFocus extends React.Component {
+class TaskFocus extends React.Component {
   constructor(props) { // list of objects
     super(props);
+    let tagName = "";
+    if (props.tagName !== undefined && props.tagName !== null) {
+      tagName = props.tagName;
+    } else if (props.location !== undefined && props.location.query.tagName !== undefined) {
+      tagName = props.location.query.tagName;
+    }
+    tagName = window.globalAppInfo.tagNameOrAll(tagName);
     this.state = {
       ...TaskStore.getData(["tasksById"]),
       taskId: this.getTaskIdFromProps(props),
-      tagName: window.globalAppInfo.tagNameOrAll(props.location.query.tagName),
-      nextPage: this.getNextPageFromPropsAndParams(props, props.location.query),
+      tagName: tagName,
+      nextPage: this.getNextPageFromPropsAndParams(props, props.location ? props.location.query : {}),
       rowClass: ""
     };
   }
@@ -19,6 +27,7 @@ export class TaskFocus extends React.Component {
   // Two ways to get task ID:
   // 1.  provided directly from another jsx tag
   // 2.  provided via URL like /tasks/24 , via props.params
+  // NOTE: should generalize this
   getTaskIdFromProps(props) {
     let taskId = props.taskId;
     if (taskId === undefined || taskId === null) {
@@ -177,4 +186,5 @@ export class TaskFocus extends React.Component {
     }
   }
 }
-
+withRouter(TaskFocus);
+export { TaskFocus };

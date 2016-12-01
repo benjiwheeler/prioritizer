@@ -97,10 +97,10 @@ class EditTask extends React.Component {
   }
 
   handleSubmit(task) {
-    updateTask(task).then(function(success) {
+    updateTask(task).then(function(response) {
       if (window.globalAppInfo.alertComponent !== undefined &&
           window.globalAppInfo.alertComponent !== null) {
-        if (success) {
+        if (response.success) {
           window.globalAppInfo.alertComponent.show({
             level: "success",
             text: "Updated Task"
@@ -109,7 +109,7 @@ class EditTask extends React.Component {
         } else {
           window.globalAppInfo.alertComponent.show({
             level: "danger",
-            text: "Failed to update Task"
+            text: "Failed to update Task: " + response.message
           });
         }
       }

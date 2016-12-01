@@ -140,7 +140,7 @@ export class TaskListMasterControls extends React.Component {
     return (
       <div>
         <IconShortcutLink text='Begin' id="begin_link"
-        to={{pathname: '/tasks/next', query: {tagName: this.state.tagName}}}
+        to={{pathname: '/tasks/next', query: {tagName: this.state.tagName, nextPagePath: '/tasks', nextPageText: 'Task list'}}}
         faIconClass='fa-play-circle' />
         <IconShortcutLink text='New Task' id="new_task_link"
         to={{pathname: '/tasks/new', query: {tagName: this.state.tagName, nextPagePath: '/tasks', nextPageText: 'Task list'}}}
