@@ -10,10 +10,10 @@ class NewTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
 
-    var tags = [];
-    if (props.tagName !== undefined && props.tagName !== null
-      && props.tagName !== "all") {
-      tags = [{name: props.tagName}];
+    let tags = [];
+    let tagName = window.globalAppInfo.tagNameOrAll(props.location.query.tagName);
+    if (tagName !== undefined && tagName !== null && tagName !== "all") {
+      tags = [{name: tagName}];
     }
     this.state = {
       task: {
@@ -25,7 +25,7 @@ class NewTask extends React.Component {
         is_daily: false,
         tags: tags
       },
-      tagName: window.globalAppInfo.tagNameOrAll(props.location.query.tagName),
+      tagName: tagName,
       nextPage: this.getNextPageFromPropsAndParams(props, props.location.query)
     };
         // "task[name]": '',

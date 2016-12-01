@@ -43,7 +43,7 @@ class Task < ActiveRecord::Base
   end
 
   def self.attributes_influencing_order
-    ['done', 'due', 'time_of_day', 'vital', 'immediate', 'heavy', 'long', 'exp_dur_mins', 'min_dur_mins', 'position']
+    ['done', 'due', 'time_of_day', 'vital', 'immediate', 'heavy', 'long', 'exp_dur_mins', 'min_dur_mins', 'position', 'tag_list']
   end
 
   def self.postpone_size_s

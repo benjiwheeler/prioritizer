@@ -21,9 +21,9 @@ export class TaskListable extends React.Component {
     e.preventDefault();
     var retVal = confirm("Sure?");
     if (retVal === true) {
-      this.setState({
-        rowClass: "doDelete"
-      });
+      // this.setState({
+      //   rowClass: "doDelete"
+      // });
       setTimeout(function() {
         deleteTask(this.state.task.id);
       }.bind(this), 1000);
@@ -32,9 +32,9 @@ export class TaskListable extends React.Component {
 
   markFinished(e) {
     e.preventDefault();
-    this.setState({
-      rowClass: "doComplete"
-    });
+    // this.setState({
+    //   rowClass: "doComplete"
+    // });
     setTimeout(function() {
       finishTask(this.state.task.id);
     }.bind(this), 1000);

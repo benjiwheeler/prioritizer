@@ -83,11 +83,25 @@ var tasksWithTaskMovedToEnd = function(taskId) {
   return tasksByTagOrdered;
 };
 
+// must square this task's (possibly) new content AND tags with which tags
+// this task is stored under, and what's stored there!
 var tasksWithTaskUpdated = function(taskToUpdate) {
   let { tasksByTagOrdered } = TaskStore.getData(["tasksByTagOrdered"]);
   Object.keys(tasksByTagOrdered).forEach(function (tagName) {
+    const taskHasThisTag = taskToUpdate.tags.some(tag => tag.name === tagName);
     const existingTaskIndex = tasksByTagOrdered[tagName].findIndex(task => task.id === taskToUpdate.id);
-    tasksByTagOrdered[tagName][existingTaskIndex] = taskToUpdate;
+    if (taskHasThisTag) {
+      if (existingTaskIndex >= 0) { // it's here and belongs here
+        tasksByTagOrdered[tagName][existingTaskIndex] = taskToUpdate;
+      } else { // should be here, but it's not
+        tasksByTagOrdered[tagName].push(taskToUpdate);
+      }
+    } else { // task doens't belong here
+      if (existingTaskIndex >= 0) { // but it is here, so remove it
+        tasksByTagOrdered[tagName] =
+          [...tasksByTagOrdered[tagName].filter(task => task.id !== taskToUpdate.id)];
+      } // else it's not here, so we're good
+    }
   });
   return tasksByTagOrdered;
 };
