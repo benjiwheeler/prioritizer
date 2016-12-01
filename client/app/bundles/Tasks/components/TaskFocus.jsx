@@ -4,77 +4,65 @@ import {provideInitialState, requestToServer, finishTask, deleteTask, postponeTa
 import { IconShortcutLink } from './Main';
 import { NavBar } from './NavBar.jsx';
 import { withRouter } from 'react-router';
+import { findProp } from '../../../../lib/CompUtil';
+import { fetchTags} from '../TaskActions';
 
 class TaskFocus extends React.Component {
   constructor(props) { // list of objects
     super(props);
-    let tagName = "";
-    if (props.tagName !== undefined && props.tagName !== null) {
-      tagName = props.tagName;
-    } else if (props.location !== undefined && props.location.query.tagName !== undefined) {
-      tagName = props.location.query.tagName;
-    }
-    tagName = window.globalAppInfo.tagNameOrAll(tagName);
+
     this.state = {
       ...TaskStore.getData(["tasksById"]),
-      taskId: this.getTaskIdFromProps(props),
-      tagName: tagName,
-      nextPage: this.getNextPageFromPropsAndParams(props, props.location ? props.location.query : {}),
       rowClass: ""
     };
   }
 
-  // Two ways to get task ID:
-  // 1.  provided directly from another jsx tag
-  // 2.  provided via URL like /tasks/24 , via props.params
-  // NOTE: should generalize this
-  getTaskIdFromProps(props) {
-    let taskId = props.taskId;
-    if (taskId === undefined || taskId === null) {
-      if (props.params.taskId !== undefined && props.params.taskId !== null) {
-        taskId = props.params.taskId;
-      }
-    }
-    return taskId;
+  processProps(newProps) {
+    this.setState({
+      taskId: findProp("taskId", newProps),
+      tagName: window.globalAppInfo.tagNameOrAll(findProp("tagName", newProps)),
+      nextPage: this.getNextPage(newProps),
+      rowClass: "doFadeIn"
+    });
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.state.taskId !== this.getTaskIdFromProps(newProps)) {
+    if (this.state.taskId !== findProp("taskId", newProps)) {
       this.setState({
-        taskId: this.getTaskIdFromProps(newProps),
-        tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName),
-        nextPage: this.getNextPageFromPropsAndParams(newProps, newProps.location.query),
         rowClass: "doFadeIn"
       });
     }
+    this.processProps(newProps);
   }
 
-  getNextPageFromPropsAndParams(props, params) {
-    if (props.nextPage !== undefined && props.nextPage !== null) {
-      return props.nextPage;
-    } else {
-      // issue here is basically that i'm hacking nextPage, and should make it an obj
-      // from the start.
-      let nextPage = {};
-      if (params.nextPagePath !== undefined && params.nextPagePath !== null) {
-        nextPage.pathname = params.nextPagePath;
-      }
-      if (params.nextPageText !== undefined && params.nextPageText !== null) {
-        nextPage.text = params.nextPageText;
-      }
-      if (params.tagName !== undefined && params.tagName !== null) {
-        nextPage.query = {tagName: params.tagName};
-      }
+  getNextPage(props) {
+    let nextPage = findProp("nextPage", props);
+    if (nextPage !== undefined && props.nextPage !== null) {
       return nextPage;
     }
+
+    // issue here is basically that i'm hacking nextPage, and should make it an obj
+    // from the start.
+    nextPage = {};
+    nextPage.pathname = findProp("nextPagePath", props);
+    nextPage.text = findProp("nextPageText", props);
+    let tagName = findProp("tagName", props);
+    if (tagName !== undefined && tagName !== null) {
+      nextPage.query = {tagName: tagName};
+    }
+    return nextPage;
   }
 
   componentWillMount() { // called by React.Component
     TaskStore.attachListener(this, ["tasksById"]);
+    this.processProps(this.props);
   }
 
   componentWillUnmount() {
     TaskStore.removeListener(this);
+  }
+
+  componentDidMount() {
   }
 
   handleFinish(taskId, e) {
