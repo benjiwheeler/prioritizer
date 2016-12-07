@@ -212,6 +212,7 @@ export class TaskList extends React.Component {
          easing="cubic-bezier(0.7, 0.0, 0.4, 1.0)"
          staggerDurationBy="10"
          enterAnimation="fade"
+         leaveAnimation="fade"
          maintainContainerHeight={true}>
           { allTasksJsx }
         </FlipMove>
