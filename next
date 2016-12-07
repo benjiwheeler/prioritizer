@@ -1,13 +1,23 @@
 backend:
+1 remove list animation
+4 display children in react new
+8 wire up children in react new so creation works
+2 child gets picked iff parent picked
+4 time of day factored into choice logic
+4 rake task to regenerate dailies that not done within past hour
+2 make morning routine
+4 wire up children in react edit
+4 menu has all at top
+___
+33, approx 7 days
+
+
+
+
+
 4 next has explicit, separate cur task; updating list doesn't change it
 4 next page: shows next after done, by getting 2nd before any local or server update
 8 get next formatting looking how i want
-8 wire up children in react new
-4 wire up children in react edit
-8 daily done get brought back as undone somehow
-4 menu has all at top
-___
-40, approx 8 days
 
 request each
 
