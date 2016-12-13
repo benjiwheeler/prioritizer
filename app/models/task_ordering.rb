@@ -20,7 +20,7 @@ class TaskOrdering
   # truth it it's not JUST by ease, it also considers importance, timing and random factor.
   # but ease is heavily weighted.
   def TaskOrdering.tasks_ordered_by_ease!(user, tag_str = nil)
-    sorted_tasks = user.tasks
+    sorted_tasks = user.tasks.includes(:tags)
     if tag_str.present? && tag_str != "all" # "all" is the same as no tag!
       sorted_tasks = sorted_tasks.where(done: false).tagged_with([tag_str, "all"], :any => true) # "all" is always ok!
     end
@@ -105,14 +105,19 @@ class TaskOrdering
     end
     # build an ordered list of only valid and unfinished tasks
     # NOTE: is this really necessary?
-    n_ordered_tasks = cached_ordered_task_ids.reduce([]) { |memo, id|
-      thisTask = Task.find_by(id: id)
-      if thisTask.present? && thisTask.done == false
-        memo.push thisTask
-      else
-        memo
-      end
-    }
+    # n_ordered_tasks = cached_ordered_task_ids.reduce([]) { |memo, id|
+    #   thisTask = Task.find_by(id: id)
+    #   if thisTask.present? && thisTask.done == false
+    #     memo.push thisTask
+    #   else
+    #     memo
+    #   end
+    # }
+    # faster way, per http://stackoverflow.com/a/26868980/2308190
+    # note i'm no longer making sure these are done!
+    n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags).sort_by{|task| cached_ordered_task_ids.index(task.id)}
+    #index_by(&:id).values_at(*cached_ordered_task_ids)
+
     # get just the first n tasks
     if n.is_a? Numeric
       n_ordered_tasks = n_ordered_tasks.first(n)

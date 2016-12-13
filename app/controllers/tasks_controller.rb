@@ -101,7 +101,7 @@ class TasksController < ApplicationController
     if current_user?
       @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
       #@task = Task.new # for task form
-      Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
+      #Rails.logger.debug("current_user: #{current_user}; ordered_tasks: #{@ordered_tasks}")
     end
   end
 
@@ -116,7 +116,7 @@ class TasksController < ApplicationController
       # add entry for "all" tags
       @task_lists["all"] = TaskOrdering.n_ordered_tasks!(current_user, nil)
       #@task = Task.new # for task form
-      Rails.logger.debug("current_user: #{current_user}; task_lists: #{@task_lists}")
+      #Rails.logger.debug("current_user: #{current_user}; task_lists: #{@task_lists}")
     end
   end
 
