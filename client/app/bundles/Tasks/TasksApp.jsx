@@ -16,43 +16,72 @@ window.globalAppInfo = {
     return tagName;
   },
 
-  idleMinsUntilReload: 1,
-
-  idleMinsUntilReload: 1,
+  idleMinsUntilReload: 10.0,
 
   lastActionTime: null,
 
+  latestHeartbeatId: 0,
+
+  heartbeat: function(thisHeartbeatId) {
+    if (thisHeartbeatId == window.globalAppInfo.latestHeartbeatId) {
+      console.log("heartbeat: " + thisHeartbeatId);
+      if (!window.globalAppInfo.reloadIfIdleTooLong()) {
+        setTimeout(window.globalAppInfo.heartbeat.bind(window, thisHeartbeatId), 5000);
+      }
+    }
+  },
+
   refreshLastActionTime: function() {
     this.lastActionTime = new Date();
-  }
+  },
 
+  minsPassedSinceLastAction: function() {
+    if (window.globalAppInfo.lastActionTime === null) {
+      return 0.0;
+    }
+    let secsPassed = (new Date()) - window.globalAppInfo.lastActionTime;
+    return (secsPassed / 60000.0);
+  },
+
+  reloadIfIdleTooLong: function() {
+    let minsPassed = window.globalAppInfo.minsPassedSinceLastAction();
+    console.log("checking minsPassed: " + minsPassed);
+    if (minsPassed >  window.globalAppInfo.idleMinsUntilReload) {
+      window.location.reload(true);
+      return true;
+    } else {
+      return false;
+    }
+  }
 };
 
-function keepAlive() {
-  let secsPassed = (new Date()) - window.globalAppInfo.lastActionTime;
-  let minsPassed = secsPassed / 60000;
-  if (minsPassed >  1)
-    window.location.reload(true);
-  } else {
-    setTimeout(this.keepAlive.bind(this), 10000);
-  }
-  window.globalAppInfo.refreshLastActionTime()
-}
 
 // confirmed that this is called when i expect it to: on every route change
-browserHistory.listen( location =>  {
-  if (window.globalAppInfo.lastActionTime !== null) {
-    alert("last action had been: " + window.globalAppInfo.lastActionTime.getHours() + ":" + window.globalAppInfo.lastActionTime.getMinutes());
-  }
+browserHistory.listen( location => {
+  window.globalAppInfo.reloadIfIdleTooLong();
   window.globalAppInfo.refreshLastActionTime();
-  alert("last action now: " + window.globalAppInfo.lastActionTime.getHours() + ":" + window.globalAppInfo.lastActionTime.getMinutes());
-  let minsPassed = window.globalAppInfo.minsPassedSinceLastAction();
-  if (minsPassed > window.globalAppInfo.idleMinsUntilReload) {
-    window.location.reload(true);
-  } else {
-    setTimeout(ckeckKeepAlive, 10000);
-  }
 });
+
+window.onload = function() {
+  // confirmed it's called on mac chrome
+  window.globalAppInfo.refreshLastActionTime();
+  window.globalAppInfo.latestHeartbeatId++;
+  setTimeout(window.globalAppInfo.heartbeat.bind(window, window.globalAppInfo.latestHeartbeatId), 5000);
+};
+
+window.onfocus = function() {
+  console.log("focused!");
+  window.globalAppInfo.latestHeartbeatId++;
+  setTimeout(window.globalAppInfo.heartbeat.bind(window, window.globalAppInfo.latestHeartbeatId), 5000);
+  window.globalAppInfo.reloadIfIdleTooLong();
+  window.globalAppInfo.refreshLastActionTime();
+};
+
+window.onblur = function() {
+  console.log("blurred!");
+  // set latest heartbeat id to one that isn't being called back, to halt callbacks
+  window.globalAppInfo.latestHeartbeatId++;
+};
 
 const TasksApp = (props) => (
   React.createElement(TaskRoutes, props)
