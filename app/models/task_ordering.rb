@@ -20,9 +20,9 @@ class TaskOrdering
   # truth it it's not JUST by ease, it also considers importance, timing and random factor.
   # but ease is heavily weighted.
   def TaskOrdering.tasks_ordered_by_ease!(user, tag_str = nil)
-    sorted_tasks = user.tasks.includes(:tags)
+    sorted_tasks = user.tasks.where(done: false).includes(:tags)
     if tag_str.present? && tag_str != "all" # "all" is the same as no tag!
-      sorted_tasks = sorted_tasks.where(done: false).tagged_with([tag_str, "all"], :any => true) # "all" is always ok!
+      sorted_tasks = sorted_tasks.where(done: false).tagged_with([tag_str, "all"], :any => true).includes(:tags) # "all" is always ok!
     end
     # sort with best first, worst last
     sorted_tasks = sorted_tasks.sort do |taskA, taskB|
