@@ -13,6 +13,12 @@ ___
 
 touch punch for sliders
 
+deterministic ordering:
+* can base boosts on ballpark number of items to boost: total items log base 2 minus 3, min 2.
+then the odds for *each* of a boost, and amount of boost, are deterministic.
+thus deletion and addition don't cause chaotic reorderings.
+
+
 what's going on when takes forever to load initially?
 
 
