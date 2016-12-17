@@ -9,6 +9,7 @@ class TaskOrdering
   end
 
   def TaskOrdering.redis_user_tag_tasks_key(user, tag_str)
+    #tag_str = "all" if tag_str.blank?
     TaskOrdering.redis_tasks_key_prefix(user) + "::tag:" + tag_str.to_s + "::task_ids"
   end
 
@@ -24,6 +25,7 @@ class TaskOrdering
     if tag_str.present? && tag_str != "all" # "all" is the same as no tag!
       sorted_tasks = sorted_tasks.where(done: false).tagged_with([tag_str, "all"], :any => true).includes(:tags) # "all" is always ok!
     end
+
     # sort with best first, worst last
     sorted_tasks = sorted_tasks.sort do |taskA, taskB|
       taskB.get_overall_ease! * 4 + taskB.get_overall_imp_alone! * 2 + taskB.get_session_rand! \
@@ -67,9 +69,9 @@ class TaskOrdering
     #
     # get complete ordering with all factors considered
     #
-    unsorted_tasks = user.tasks
+    unsorted_tasks = user.tasks.where(done: false).includes(:tags)
     if tag_str.present? && tag_str != "all" # "all" is the same as no tag!
-      unsorted_tasks = unsorted_tasks.where(done: false).tagged_with([tag_str, "all"], :any => true) # "all" is always ok!
+      unsorted_tasks = unsorted_tasks.tagged_with([tag_str, "all"], :any => true) # "all" is always ok!
     end
     unsorted_tasks.each do |task|
       if task_bonuses.has_key?(task.id)
