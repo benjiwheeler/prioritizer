@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import TaskStore from '../store/TaskStore.js';
 import { TaskForm } from './TaskForm.jsx';
 import {submitNewTask} from '../TaskActions';
 import { ReactDOM } from 'react-dom';
@@ -9,32 +10,8 @@ import { browserHistory, withRouter } from 'react-router';
 class NewTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
-
-    let tags = [];
-    let tagName = window.globalAppInfo.tagNameOrAll(props.location.query.tagName);
-    // default tag to the most frequently used tag
-    if (tagName === undefined || tagName === null || tagName === "all") {
-      let tagsByFreq = TaskStore.getData(["tagsOrdered"]);
-      if (tagsByFreq !== undefined && tagsByFreq !== null &&
-        tagsByFreq.length > 0) {
-        tagName = "mugi";
-//        tagName = tagsByFreq[0].name;
-      }
-    } else { //  if we know the tag, use it instead
-      tags = [{name: tagName}];
-    }
     this.state = {
-      task: {
-        name: '',
-        vital: 3,
-        immediate: 3,
-        heavy: 3,
-        long: 3,
-        is_daily: false,
-        tags: tags
-      },
-      tagName: tagName,
-      nextPage: this.getNextPageFromPropsAndParams(props, props.location.query)
+      ...this.getInitialStateFromProps(props);
     };
         // "task[name]": '',
         // "task[id]": '',
@@ -65,12 +42,41 @@ class NewTask extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.setState({
-      tagName: window.globalAppInfo.tagNameOrAll(newProps.location.query.tagName),
-      nextPage: this.getNextPageFromPropsAndParams(newProps, newProps.location.query)
+      ...this.getInitialStateFromProps(props);
     });
   }
 
   componentDidMount() {
+  }
+
+  getInitialStateFromProps(props) {
+    let tags = [];
+    let tagName = window.globalAppInfo.tagNameOrAll(props.location.query.tagName);
+    // default tag to the most frequently used tag
+    if (tagName === undefined || tagName === null || tagName === "all") {
+      let tagsByFreq = TaskStore.getData(["tagsOrdered"]);
+      if (tagsByFreq !== undefined && tagsByFreq !== null &&
+        tagsByFreq.length > 0) {
+        tagName = "mugi";
+//        tagName = tagsByFreq[0].name;
+      }
+    } else { //  if we know the tag, use it instead
+      tags = [{name: tagName}];
+    }
+    return {
+      task: {
+        name: '',
+        vital: 3,
+        immediate: 3,
+        heavy: 3,
+        long: 3,
+        is_daily: false,
+        tags: tags
+      },
+      tagName: tagName,
+      nextPage: this.getNextPageFromPropsAndParams(props, props.location.query)
+    };
+
   }
 
   getNextPageFromPropsAndParams(props, params) {
