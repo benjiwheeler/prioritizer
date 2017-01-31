@@ -106,7 +106,7 @@ class User < ActiveRecord::Base
   end
 
   def my_tags
-    self.tasks.collect({|task| task.tags}).flatten.uniq
+    self.tasks.collect{|task| task.tags}.flatten.uniq
   end
 
   def my_tags_by_freq
