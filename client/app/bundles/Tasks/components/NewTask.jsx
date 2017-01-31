@@ -14,7 +14,12 @@ class NewTask extends React.Component {
     let tagName = window.globalAppInfo.tagNameOrAll(props.location.query.tagName);
     // default tag to the most frequently used tag
     if (tagName === undefined || tagName === null || tagName === "all") {
-      // do nothing; leave tags empty
+      let tagsByFreq = TaskStore.getData(["tagsOrdered"]);
+      if (tagsByFreq !== undefined && tagsByFreq !== null &&
+        tagsByFreq.length > 0) {
+        tagName = "mugi";
+//        tagName = tagsByFreq[0].name;
+      }
     } else { //  if we know the tag, use it instead
       tags = [{name: tagName}];
     }

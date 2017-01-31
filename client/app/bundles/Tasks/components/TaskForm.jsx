@@ -54,14 +54,6 @@ export class TaskForm extends React.Component {
       this.setState({
         tagName: newProps.tagName
       });
-    } else if (newProps.tagName === undefined || newProps.tagName === null
-      || newProps.tagName === "all") {
-      // no tag provided; set to default...
-      // (as long as there is some default!)
-      if (newProps.tagsOrdered !== undefined && newProps.tagsOrdered !== null &&
-        newProps.tagsOrdered.length > 0) {
-
-      }
     }
 
     if (newProps.onSubmit !== undefined || newProps.onSubmit !== null) {
@@ -74,6 +66,8 @@ export class TaskForm extends React.Component {
     this.nameInput.value = "";
   }
 
+  // we need the task to have an updated list of tags in its tag_list,
+  // because the task is the only object we submit
   mapReactTags() {
     var newTask = this.state.task;
     if (this.state.react_select_tag_list === undefined || this.state.react_select_tag_list === null) {
