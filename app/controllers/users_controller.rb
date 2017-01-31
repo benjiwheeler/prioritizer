@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   # GET /users.json
   def tags
     @user = User.find(params.require(:id))
-    @tags = @user.tags
+    @tags = @user.my_tags_by_freq
   end
 
   # GET /users/1

@@ -54,7 +54,16 @@ export class TaskForm extends React.Component {
       this.setState({
         tagName: newProps.tagName
       });
+    } else if (newProps.tagName === undefined || newProps.tagName === null
+      || newProps.tagName === "all") {
+      // no tag provided; set to default...
+      // (as long as there is some default!)
+      if (newProps.tagsOrdered !== undefined && newProps.tagsOrdered !== null &&
+        newProps.tagsOrdered.length > 0) {
+
+      }
     }
+
     if (newProps.onSubmit !== undefined || newProps.onSubmit !== null) {
       this.onSubmit = newProps.onSubmit;
     }

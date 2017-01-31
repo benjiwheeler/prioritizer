@@ -12,7 +12,10 @@ class NewTask extends React.Component {
 
     let tags = [];
     let tagName = window.globalAppInfo.tagNameOrAll(props.location.query.tagName);
-    if (tagName !== undefined && tagName !== null && tagName !== "all") {
+    // default tag to the most frequently used tag
+    if (tagName === undefined || tagName === null || tagName === "all") {
+      // do nothing; leave tags empty
+    } else { //  if we know the tag, use it instead
       tags = [{name: tagName}];
     }
     this.state = {
