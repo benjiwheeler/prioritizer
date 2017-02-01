@@ -42,7 +42,7 @@ class NewTask extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.setState({
-      ...this.getInitialStateFromProps(props)
+      ...this.getInitialStateFromProps(newProps)
     });
   }
 
@@ -76,7 +76,6 @@ class NewTask extends React.Component {
       tagName: tagName,
       nextPage: this.getNextPageFromPropsAndParams(props, props.location.query)
     };
-
   }
 
   getNextPageFromPropsAndParams(props, params) {
