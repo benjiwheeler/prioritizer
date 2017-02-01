@@ -132,7 +132,7 @@ class TasksController < ApplicationController
     if @tag_name.present?
       @tags_to_display = [@tag_name]
     elsif current_user?
-      @tags_to_display = current_user.most_likely_new_tags
+      @tags_to_display = current_user.most_likely_new_tags_arr
     end
   end
 
@@ -142,7 +142,7 @@ class TasksController < ApplicationController
     if @task.tag_list.present?
       @tags_to_display = @task.tag_list
     elsif current_user?
-      @tags_to_display = current_user.most_likely_new_tags
+      @tags_to_display = current_user.most_likely_new_tags_arr
     end
   end
 
