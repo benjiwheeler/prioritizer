@@ -105,17 +105,21 @@ class User < ActiveRecord::Base
     return user_a
   end
 
-  def my_tags_arr
+  def my_tags_records_arr
     self.tasks.collect{|task| task.tags}.flatten.uniq
   end
 
-  def my_tags_by_freq_record
+  def my_tags_names_arr
+    my_tags_records_arr.map{|tag| tag.name}
+  end
+
+  def my_tags_by_freq_records_arr
     # alphabetize these? currently ordered by frequency
-    ActsAsTaggableOn::Tag.where(name: my_tags).order(taggings_count: :desc)
+    ActsAsTaggableOn::Tag.where(name: my_tags_names_arr).order(taggings_count: :desc)
   end
 
   def most_likely_new_tags_arr
-    my_tags_by_freq_record.limit(1).collect{|tag_record| tag_record.name}
+    my_tags_by_freq_records_arr.limit(1).collect{|tag_record| tag_record.name}
   end
 
   def tag_list

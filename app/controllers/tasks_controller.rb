@@ -110,7 +110,7 @@ class TasksController < ApplicationController
   def lists
     @task_lists = {}
     if current_user?
-      current_user.tags.each do |tag|
+      current_user.my_tags_records_arr.each do |tag|
         @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
       end
       # add entry for "all" tags
