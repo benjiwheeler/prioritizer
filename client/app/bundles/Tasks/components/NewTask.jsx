@@ -11,7 +11,7 @@ class NewTask extends React.Component {
   constructor(props) { // list of objects
     super(props);
     this.state = {
-      ...this.getInitialStateFromProps(props);
+      ...this.getInitialStateFromProps(props)
     };
         // "task[name]": '',
         // "task[id]": '',
@@ -42,7 +42,7 @@ class NewTask extends React.Component {
 
   componentWillReceiveProps(newProps) {
     this.setState({
-      ...this.getInitialStateFromProps(props);
+      ...this.getInitialStateFromProps(props)
     });
   }
 
