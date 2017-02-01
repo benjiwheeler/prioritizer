@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
 
   def my_tags_by_freq_record
     # alphabetize these? currently ordered by frequency
-    Tag.where(name: my_tags).order(taggings_count: :desc)
+    ActsAsTaggableOn::Tag.where(name: my_tags).order(taggings_count: :desc)
   end
 
   def most_likely_new_tags_arr
