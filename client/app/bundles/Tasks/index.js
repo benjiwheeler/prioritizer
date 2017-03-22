@@ -20,6 +20,7 @@ require("imports?$=jquery!jquery-timepicker/jquery.timepicker");
 // require('letteringjs');
 require("imports?$=jquery!letteringjs/jquery.lettering.js");
 require("imports?$=jquery!../../../lib/color.js");
+require("imports?$=jquery!../../../lib/jquery.ui.touch-punch.min.js");
 
 // require('lettering');
 
