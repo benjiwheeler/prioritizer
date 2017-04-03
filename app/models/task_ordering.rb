@@ -115,7 +115,7 @@ class TaskOrdering
     cached_ordered_task_ids = $redis.lrange(TaskOrdering.redis_user_tag_tasks_key(user, tag_str), 0, -1)
     if cached_ordered_task_ids.blank?
       Rails.logger.warn("redis tag blank: #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
-      MetricsCollector::collect_metrics("generate_overall_ordered_tasks!(user #{user}, tag_str #{tag_str})") do
+      collect_metrics("generate_overall_ordered_tasks!(user #{user}, tag_str #{tag_str})") do
         cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
       end
     else
