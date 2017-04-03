@@ -32,9 +32,10 @@ var addTasks = function(data) {
       tasksById[task.id] = task;
     });
   }
-  dataByTags = Object.assign({}, TaskStore.state.tasksByTagOrdered, data.tags);
+  // union
+  var newDataByTags = Object.assign({}, TaskStore.state.tasksByTagOrdered, data.tags);
   TaskStore.setState({
-    tasksByTagOrdered: data.tags, // includes "all" tag
+    tasksByTagOrdered: newDataByTags, // includes "all" tag
     tasksById: tasksById
   });
 };
