@@ -111,10 +111,10 @@ class TasksController < ApplicationController
   def list
     @task_lists = {}
     if current_user?
-      #MetricsCollector::collect_metrics("list tasks for this user's #{@tag_name} tag") do
+      collect_metrics("list tasks for this user's #{@tag_name} tag") do
         # note that tag name can be nil; treat this as "all"
         @task_lists[@effective_tag_name] = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
-      #end
+      end
     end
     respond_to do |format|
       format.json { render :lists }
@@ -130,17 +130,17 @@ class TasksController < ApplicationController
       except_tag = params[:except_tag]
     end
     if current_user?
-      #collect_metrics("list tasks for each of this user's tags") do
+      collect_metrics("list tasks for each of this user's tags") do
         current_user.my_tags_records_arr.each do |tag|
           if tag != except_tag
             @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
           end
         end
-      #end
+      end
       # add entry for "all" tags
-      #MetricsCollector::collect_metrics("all of this user's tasks") do
+      collect_metrics("all of this user's tasks") do
         @task_lists["all"] = TaskOrdering.n_ordered_tasks!(current_user, nil)
-      #end
+      end
       #@task = Task.new # for task form
       #Rails.logger.debug("current_user: #{current_user}; task_lists: #{@task_lists}")
     end
