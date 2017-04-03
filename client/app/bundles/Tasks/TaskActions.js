@@ -41,10 +41,10 @@ export function fetchTags() {
 
 // get info on all list of tasks by tag
 export function fetchTaskLists(priority_tag_name) {
-  if (typeof(priority_tag_name)==='undefined')
+  if (typeof(priority_tag_name)==='undefined') {
     var rh = new RequestHelper();
-  return rh.get(window.globalAppInfo.host + "/tasks/lists.json")
-  .then(function(response) {
+    return rh.get(window.globalAppInfo.host + "/tasks/lists.json")
+    .then(function(response) {
       // structure like:
       // data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
       if (response.success) {
