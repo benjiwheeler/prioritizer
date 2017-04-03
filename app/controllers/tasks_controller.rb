@@ -1,5 +1,3 @@
-require "benchmark"
-
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
   before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :split, :new]
@@ -7,16 +5,6 @@ class TasksController < ApplicationController
   before_action :record_significant_action, only: [:done, :postpone, :worked, :split, :create, :update, :destroy]
   before_action :record_instance_of_work, only: [:done, :worked]
   around_action :collect_metrics
-
-  def collect_metrics
-    # time = Benchmark.measure do
-    #   yield  #requests
-    # end
-    start = Time.now
-    yield
-    duration = Time.now - start
-    Rails.logger.info "#{controller_name}##{action_name}: #{duration}s"
-  end
 
   def sort
     params[:task].each_with_index do |id, index|
@@ -123,11 +111,15 @@ class TasksController < ApplicationController
   def lists
     @task_lists = {}
     if current_user?
-      current_user.my_tags_records_arr.each do |tag|
-        @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+      collect_metrics("list tasks for each of this user's tags") do
+        current_user.my_tags_records_arr.each do |tag|
+          @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+        end
       end
       # add entry for "all" tags
-      @task_lists["all"] = TaskOrdering.n_ordered_tasks!(current_user, nil)
+      collect_metrics("all of this user's tasks") do
+        @task_lists["all"] = TaskOrdering.n_ordered_tasks!(current_user, nil)
+      end
       #@task = Task.new # for task form
       #Rails.logger.debug("current_user: #{current_user}; task_lists: #{@task_lists}")
     end

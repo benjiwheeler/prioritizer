@@ -1,3 +1,5 @@
+require "benchmark"
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -176,6 +178,24 @@ protected
     # should reenable this:sign_out(current_user)
     cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
     render :error => 'invalid token', :status => :unprocessable_entity
+  end
+
+  ############################################################
+  #                    Monitoring
+  ############################################################
+
+  def collect_metrics(metric_name_param = nil)
+    # time = Benchmark.measure do
+    #   yield  #requests
+    # end
+    start = Time.now
+    yield
+    duration = Time.now - start
+    metric_name = metric_name_param
+    if metric_name_param.blank?
+      metric_name = "#{controller_name}##{action_name}"
+    end
+    Rails.logger.info "#{metric_name}: #{duration}s"
   end
 
 
