@@ -23,6 +23,22 @@ var handleTasks = function(data) {
   });
 };
 
+// don't replace -- just take union of sets
+var addTasks = function(data) {
+  var tasksById = {};
+  for (let tagName in data.tags) {
+    let tasksArr = data.tags[tagName];
+    tasksArr.forEach((task) => {
+      tasksById[task.id] = task;
+    });
+  }
+  dataByTags = Object.assign({}, TaskStore.state.tasksByTagOrdered, data.tags);
+  TaskStore.setState({
+    tasksByTagOrdered: data.tags, // includes "all" tag
+    tasksById: tasksById
+  });
+};
+
 var handleTags = function(data) {
   TaskStore.setState({
     tagsOrdered: data.tags
@@ -65,7 +81,7 @@ export function fetchTaskLists(priority_tag_name) {
           // structure like:
           // data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
           if (response.success) {
-            handleTasks(response.data);
+            addTasks(response.data);
           }
         });
       }
