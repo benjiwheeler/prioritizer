@@ -47,6 +47,7 @@
     "lodash": "~3.7",
     "mousetrap": "~1.6",
     "node-sass": "^3.11.1",
+    "qs": "*",
     "react": "^0.14.8 || ^15.0.0",
     "react-addons-css-transition-group": "*",
     "react-bootstrap": "^0.30.6",

@@ -132,7 +132,7 @@ class TasksController < ApplicationController
     if current_user?
       collect_metrics("list tasks for each of this user's tags") do
         current_user.my_tags_records_arr.each do |tag|
-          if tag != except_tag
+          if tag.name != except_tag
             @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
           end
         end

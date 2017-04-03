@@ -1,5 +1,6 @@
 import ReactOnRails from 'react-on-rails';
 import axios from 'axios';
+import qs from 'qs';
 
 export default class RequestHelper {
   constructor() {
@@ -38,9 +39,9 @@ export default class RequestHelper {
     });
   }
 
-  get(url) {
+  get(url, props) {
     return this.sendRequest({
-      url: url,
+      url: url + (props !== undefined ? "?" + qs.stringify(props) : ""),
       timeout: 20000,
       method: 'get',
       responseType: 'json',
