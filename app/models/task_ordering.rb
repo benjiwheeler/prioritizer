@@ -113,7 +113,9 @@ class TaskOrdering
     cached_ordered_task_ids = $redis.lrange(TaskOrdering.redis_user_tag_tasks_key(user, tag_str), 0, -1)
     if cached_ordered_task_ids.blank?
       Rails.logger.warn("redis tag blank: #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
-      cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
+      collect_metrics("generate_overall_ordered_tasks!(user #{user}, tag_str #{tag_str})") do
+        cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
+      end
     else
       Rails.logger.warn("redis tag #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
     end
@@ -129,7 +131,9 @@ class TaskOrdering
     # }
     # faster way, per http://stackoverflow.com/a/26868980/2308190
     # note i'm no longer making sure these are done!
-    n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags).sort_by{|task| cached_ordered_task_ids.index(task.id)}
+    collect_metrics("Getting tasks from cached_ordered_task_ids for user #{user}, tag_str #{tag_str})") do
+      n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags).sort_by{|task| cached_ordered_task_ids.index(task.id)}
+    end
     #index_by(&:id).values_at(*cached_ordered_task_ids)
 
     # get just the first n tasks
