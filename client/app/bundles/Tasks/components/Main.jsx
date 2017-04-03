@@ -122,7 +122,7 @@ export class Alert extends React.Component {
 export class Main extends React.Component {
   componentWillMount() { // called by React.Component
     provideInitialState();
-    fetchTaskLists();
+    fetchTaskLists(tagName);
     fetchTags();
   }
 
@@ -135,4 +135,7 @@ export class Main extends React.Component {
     );
   }
 }
+Main.propTypes = {
+  tagName: React.PropTypes.string
+};
 

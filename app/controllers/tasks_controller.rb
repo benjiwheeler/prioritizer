@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
-  before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :split, :new]
+  before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :new, :list]
   before_action :set_task, only: [:done, :postpone, :worked, :split, :show, :edit, :update, :destroy]
   before_action :record_significant_action, only: [:done, :postpone, :worked, :split, :create, :update, :destroy]
   before_action :record_instance_of_work, only: [:done, :worked]
@@ -106,14 +106,35 @@ class TasksController < ApplicationController
     end
   end
 
-  # GET /task_lists
-  # GET /task_lists.json
+  # GET /list
+  # GET /list.json
+  def list
+    @task_lists = {}
+    if current_user?
+      collect_metrics("list tasks for this user's #{@tag_name} tag") do
+        # note that tag name can be nil; treat this as "all"
+        @task_lists[@effective_tag_name] = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
+      end
+    end
+    respond_to do |format|
+      format.json { render :lists }
+    end
+  end
+
+  # GET /lists
+  # GET /lists.json
   def lists
     @task_lists = {}
+    except_tag = nil
+    if params[:except_tag].present?
+      except_tag = params[:except_tag]
+    end
     if current_user?
       collect_metrics("list tasks for each of this user's tags") do
         current_user.my_tags_records_arr.each do |tag|
-          @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+          if tag != except_tag
+            @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+          end
         end
       end
       # add entry for "all" tags
@@ -204,10 +225,14 @@ private
   def set_tag
     @tag = nil
     @tag_name = nil
+    @effective_tag_name = nil
     if params[:tag].present?
       @tag = ActsAsTaggableOn::Tag.find_by(name: params[:tag])
       if @tag.present?
         @tag_name = @tag.name
+        @effective_tag_name = @tag_name
+      else
+        @effective_tag_name = "all"
       end
     end
   end

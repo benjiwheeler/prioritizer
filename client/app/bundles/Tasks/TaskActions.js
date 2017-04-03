@@ -40,16 +40,37 @@ export function fetchTags() {
 }
 
 // get info on all list of tasks by tag
-export function fetchTaskLists() {
-  var rh = new RequestHelper();
+export function fetchTaskLists(priority_tag_name) {
+  if (typeof(priority_tag_name)==='undefined')
+    var rh = new RequestHelper();
   return rh.get(window.globalAppInfo.host + "/tasks/lists.json")
   .then(function(response) {
-    // structure like:
-    // data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
-    if (response.success) {
-      handleTasks(response.data);
-    }
-  });
+      // structure like:
+      // data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
+      if (response.success) {
+        handleTasks(response.data);
+      }
+    });
+  } else {
+    var rh = new RequestHelper();
+    return rh.get(window.globalAppInfo.host + "/tasks/list.json", {tag: priority_tag_name})
+    .then(function(response) {
+      // structure like:
+      // data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
+      if (response.success) {
+        handleTasks(response.data);
+        var rh = new RequestHelper();
+        return rh.get(window.globalAppInfo.host + "/tasks/lists.json", {except_tag: priority_tag_name})
+        .then(function(response) {
+          // structure like:
+          // data.tags == {'home': [{id:47,name:"..."},{...}], 'work': [...]}
+          if (response.success) {
+            handleTasks(response.data);
+          }
+        });
+      }
+    });
+  }
 }
 
 var tasksWithTaskAdded = function(newTask) {
