@@ -1,4 +1,6 @@
 class TaskOrdering
+  include MetricsCollector
+
   def self.redis_tasks_key_prefix(user)
     user.redis_key + '::tasks'
   end
