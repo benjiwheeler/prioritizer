@@ -120,9 +120,14 @@ export class Alert extends React.Component {
 }
 
 export class Main extends React.Component {
+  constructor(props) { // list of objects
+    super(props);
+  }
+
   componentWillMount() { // called by React.Component
+    debugger;
     provideInitialState();
-    fetchTaskLists(this.props.tagName);
+    fetchTaskLists(this.props.location.query.tagName);
     fetchTags();
   }
 
