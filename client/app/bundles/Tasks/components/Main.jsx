@@ -125,7 +125,6 @@ export class Main extends React.Component {
   }
 
   componentWillMount() { // called by React.Component
-    debugger;
     provideInitialState();
     fetchTaskLists(this.props.location.query.tagName);
     fetchTags();
