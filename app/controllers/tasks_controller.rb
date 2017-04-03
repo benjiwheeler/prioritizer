@@ -1,9 +1,22 @@
+require "benchmark"
+
 class TasksController < ApplicationController
   before_filter :user_must_be_logged_in!
   before_action :set_tag, only: [:index, :split, :show, :next, :done, :postpone, :create, :update, :worked, :split, :new]
   before_action :set_task, only: [:done, :postpone, :worked, :split, :show, :edit, :update, :destroy]
   before_action :record_significant_action, only: [:done, :postpone, :worked, :split, :create, :update, :destroy]
   before_action :record_instance_of_work, only: [:done, :worked]
+  around_action :collect_metrics
+
+  def collect_metrics
+    # time = Benchmark.measure do
+    #   yield  #requests
+    # end
+    start = Time.now
+    yield
+    duration = Time.now - start
+    Rails.logger.info "#{controller_name}##{action_name}: #{duration}s"
+  end
 
   def sort
     params[:task].each_with_index do |id, index|
