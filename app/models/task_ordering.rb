@@ -132,8 +132,10 @@ class TaskOrdering
     #     memo
     #   end
     # }
+
     # faster way, per http://stackoverflow.com/a/26868980/2308190
     # note i'm no longer making sure these are done!
+    # The problem with this was that it loses the ordering! argh
     collect_metrics("Getting tasks from cached_ordered_task_ids for user #{user}, tag_str #{tag_str})") do
       n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags).sort_by{|task| cached_ordered_task_ids.index(task.id)}
     end
@@ -144,6 +146,7 @@ class TaskOrdering
       n_ordered_tasks = n_ordered_tasks.first(n)
     end
     Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
+    Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
     Rails.logger.warn("n_ordered_tasks: #{n_ordered_tasks}")
     return n_ordered_tasks
   end
