@@ -144,6 +144,7 @@ class TaskOrdering
       n_ordered_tasks = n_ordered_tasks.first(n)
     end
     Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
+    Rails.logger.warn("n_ordered_tasks: #{n_ordered_tasks}")
     return n_ordered_tasks
   end
 
