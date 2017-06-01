@@ -1,3 +1,18 @@
+try to debug task ordering:
+
+user = User.find(5)
+
+tag_str = "work"
+
+cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
+
+n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags).sort_by{|task| cached_ordered_task_ids.index(task.id)}
+
+n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
+
+
+
+
 backend:
 1 remove list animation
 4 display children in react new
