@@ -68,22 +68,24 @@ gem 'wrong'
 gem 'newrelic_rpm'
 #######################
 # development
-group :development, :production do
+group :development do
   # inspecting
   gem "binding_of_caller"
   gem "better_errors"
   gem "rubocop"
-  # debugging
-  gem 'pry', group: [:development, :test]
-  gem 'pry-rails', group: [:development, :test]
-  gem 'pry-byebug', group: [:development, :test] # instead of pry-debugger or pry-nav
-  gem 'pry-stack_explorer', group: [:development, :test]
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
   # profiling
   gem 'ruby-prof'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+end
+group :development, :production do
+  # debugging
+  gem 'pry', group: [:development, :test]
+  gem 'pry-rails', group: [:development, :test]
+  gem 'pry-byebug', group: [:development, :test] # instead of pry-debugger or pry-nav
+  gem 'pry-stack_explorer', group: [:development, :test]
 end
 #######################
 # testing
