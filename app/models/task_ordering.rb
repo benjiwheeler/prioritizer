@@ -117,6 +117,7 @@ class TaskOrdering
     if cached_ordered_task_ids.blank?
       Rails.logger.warn("redis tag blank: #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
       collect_metrics("generate_overall_ordered_tasks!(user #{user}, tag_str #{tag_str})") do
+        # NOTE: do this in console. It's doing 4x the required queries!?
         cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
       end
     else

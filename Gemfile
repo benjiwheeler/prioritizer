@@ -68,7 +68,7 @@ gem 'wrong'
 gem 'newrelic_rpm'
 #######################
 # development
-group :development do
+group :development, :production do
   # inspecting
   gem "binding_of_caller"
   gem "better_errors"
