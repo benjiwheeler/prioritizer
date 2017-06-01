@@ -138,7 +138,10 @@ class TaskOrdering
     # note i'm no longer making sure these are done!
     # The problem with this was that it loses the ordering! argh
     collect_metrics("Getting tasks from cached_ordered_task_ids for user #{user}, tag_str #{tag_str})") do
-      n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags).sort_by{|task| cached_ordered_task_ids.index(task.id)}
+      n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
+      Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks}")
+      n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id)}
+      Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
     end
     #index_by(&:id).values_at(*cached_ordered_task_ids)
 
