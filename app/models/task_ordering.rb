@@ -141,15 +141,23 @@ class TaskOrdering
     test_arr = [100, 300, 500, 700, 900]
     test_arr = [500, 100].sort_by{|num| test_arr.index(num)}
     Rails.logger.warn("1st test_arr: #{test_arr}")
+    if cached_ordered_task_ids.present?
+      Rails.logger.warn("class of members of cached_ordered_task_ids is #{cached_ordered_task_ids.first.class}")
+    end
 
-
+    # complete and total fucking nightmare...
+    # all due to some weird string vs int inconsistency in console vs. heroku
     n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
     Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
     Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
     Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
+    # this to_s is the key... which is absurd, because in the console, the type of each
+    # item of cached_ordered_task_ids is definitely a fixnum, NOT a string!!!
     n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id.to_s)}
     test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
     Rails.logger.warn("2nd test_arr: #{test_arr}")
+    test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
+    Rails.logger.warn("3rd test_arr: #{test_arr}")
     Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
 #  end
     #index_by(&:id).values_at(*cached_ordered_task_ids)
