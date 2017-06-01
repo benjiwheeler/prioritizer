@@ -147,7 +147,7 @@ class TaskOrdering
     Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
     Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
     Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
-    n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id.to_i)}
+    n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id.to_s)}
     test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
     Rails.logger.warn("2nd test_arr: #{test_arr}")
     Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
