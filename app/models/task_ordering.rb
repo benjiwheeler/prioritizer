@@ -137,15 +137,16 @@ class TaskOrdering
     # faster way, per http://stackoverflow.com/a/26868980/2308190
     # note i'm no longer making sure these are done!
     # The problem with this was that it loses the ordering! argh
-    collect_metrics("Getting tasks from cached_ordered_task_ids for user #{user}, tag_str #{tag_str})") do
-      n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
-      Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
-      Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index(590)}; index of 542: #{cached_ordered_task_ids.index(542)}; ")
-      n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id)}
-      test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
-      Rails.logger.warn("test_arr: #{test_arr}")
-      Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
-    end
+   # collect_metrics("Getting tasks from cached_ordered_task_ids for user #{user}, tag_str #{tag_str})") do
+    n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
+    Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
+    Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
+    Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
+    n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id)}
+    test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
+    Rails.logger.warn("test_arr: #{test_arr}")
+    Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
+#  end
     #index_by(&:id).values_at(*cached_ordered_task_ids)
 
     # get just the first n tasks
