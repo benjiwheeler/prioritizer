@@ -120,10 +120,12 @@ class TaskOrdering
         # NOTE: do this in console. It's doing 4x the required queries!?
         cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
       end
+      Rails.logger.warn("got cached_ordered_task_ids from activerecord")
     else
       # crucial to convert to int, because redis ONLY stores strings
       cached_ordered_task_ids = cached_ordered_task_ids.map{|task_id_str| task_id_str.to_i}
       Rails.logger.warn("redis tag #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
+      Rails.logger.warn("got cached_ordered_task_ids from redis. item class is #{cached_ordered_task_ids.sample.class}")
     end
     # now we have cached_ordered_task_ids, list of ids with type int, ordered by priority
 
@@ -153,15 +155,15 @@ class TaskOrdering
     # all due to some weird string vs int inconsistency in console vs. heroku
     n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
     Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
-    Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
+    Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids.to_a}")
     Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
     # this to_s is the key... which is absurd, because in the console, the type of each
     # item of cached_ordered_task_ids is definitely a fixnum, NOT a string!!!
     n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id)}
-    test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
-    Rails.logger.warn("2nd test_arr: #{test_arr}")
-    test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
-    Rails.logger.warn("3rd test_arr: #{test_arr}")
+    # test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
+    # Rails.logger.warn("2nd test_arr: #{test_arr}")
+    # test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
+    # Rails.logger.warn("3rd test_arr: #{test_arr}")
     Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
 #  end
     #index_by(&:id).values_at(*cached_ordered_task_ids)
