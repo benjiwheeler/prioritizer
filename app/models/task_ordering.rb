@@ -121,8 +121,12 @@ class TaskOrdering
         cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
       end
     else
+      # crucial to convert to int, because redis ONLY stores strings
+      cached_ordered_task_ids = cached_ordered_task_ids.map{|task_id_str| task_id_str.to_i}
       Rails.logger.warn("redis tag #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
     end
+    # now we have cached_ordered_task_ids, list of ids with type int, ordered by priority
+
     # build an ordered list of only valid and unfinished tasks
     # NOTE: is this really necessary?
     # n_ordered_tasks = cached_ordered_task_ids.reduce([]) { |memo, id|
@@ -153,7 +157,7 @@ class TaskOrdering
     Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
     # this to_s is the key... which is absurd, because in the console, the type of each
     # item of cached_ordered_task_ids is definitely a fixnum, NOT a string!!!
-    n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id.to_s)}
+    n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id)}
     test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
     Rails.logger.warn("2nd test_arr: #{test_arr}")
     test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
