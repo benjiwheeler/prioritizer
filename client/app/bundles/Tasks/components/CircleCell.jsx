@@ -116,11 +116,11 @@ export class CircleCell extends React.Component {
     if (this.state.rawColor !== undefined && this.state.rawColor !== null) {
       backgroundColorVars = {backgroundColor: this.state.rawColor};
     }
-    console.log("rendering cirlce with rawColor " + rawColor + ", colorClassName " + colorClassName);
+    console.log("rendering cirlce with rawColor " + this.state.rawColor + ", colorClassName " + this.state.colorClassName);
     return (
-      <div onClick={this.toggleClick.bind(this)} class={{this.state.colorClassName}} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
-        <div className="circle" style={Object.assign({}, styleVars, backgroundColorVars)}></div>
-      </div>
+      //<div onClick={this.toggleClick.bind(this)} class={{this.state.colorClassName}} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+      //  <div className="circle" style={Object.assign({}, styleVars, backgroundColorVars)}></div>
+      //</div>
     );
   }
 }
