@@ -20,7 +20,8 @@ export class CircleCell extends React.Component {
     this.largestCssSize = 20;
     this.scaleFactor = (this.largestCssSize - this.smallestCssSize) / 10.0;
     this.state = {
-      color: props.color,
+      rawColor: props.color,
+      colorClassNmae: props.colorClassName,
       ...this.calcSize(props.size)
     };
   }
@@ -110,9 +111,14 @@ export class CircleCell extends React.Component {
   }
 
   render() {
+    var styleVars = {width: this.state.cssSize + 'em', height: this.state.cssSize + 'em', marginLeft: this.state.cssSpacerSize + 'em', marginTop: (this.state.cssSpacerSize + 0.5) + 'em'};
+    if (this.rawColor !== undefined && this.rawColor !== null) {
+      styleVars.update({backgroundColor: this.state.color});
+    }
+    console.log("rendering cirlce with rawColor " + rawColor + ", colorClassName " + colorClassName);
     return (
-      <div onClick={this.toggleClick.bind(this)} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
-        <div className="circle" style={{backgroundColor: this.state.color, width: this.state.cssSize + 'em', height: this.state.cssSize + 'em', marginLeft: this.state.cssSpacerSize + 'em', marginTop: (this.state.cssSpacerSize + 0.5) + 'em'}}></div>
+      <div onClick={this.toggleClick.bind(this)} class={{colorClassName}} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        <div className="circle" style={{styleVars}}}}></div>
       </div>
     );
   }

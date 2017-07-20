@@ -64,16 +64,16 @@ export class TaskListable extends React.Component {
           </div>
         </div>
         <div className="taskTableCellSmall">
-          <CircleCell size={Number(this.state.task.vital)} onChange={this.handleCircleChange.bind(this, "vital")} color="#09bc36" />
+          <CircleCell size={Number(this.state.task.vital)} onChange={this.handleCircleChange.bind(this, "vital")} colorClassName="gold-color" />
         </div>
         <div className="taskTableCellSmall">
-          <CircleCell size={Number(this.state.task.immediate)} onChange={this.handleCircleChange.bind(this, "immediate")} color="#f9d507" />
+          <CircleCell size={Number(this.state.task.immediate)} onChange={this.handleCircleChange.bind(this, "immediate")} rawColor="#09bc36" />
         </div>
         <div className="taskTableCellSmall">
-          <CircleCell size={Number(this.state.task.heavy)} onChange={this.handleCircleChange.bind(this, "heavy")} color="#ed1409" />
+          <CircleCell size={Number(this.state.task.heavy)} onChange={this.handleCircleChange.bind(this, "heavy")} rawColor="#ed1409" />
         </div>
         <div className="taskTableCellSmall">
-          <CircleCell size={Number(this.state.task.long)} onChange={this.handleCircleChange.bind(this, "long")} color="#1061e5" />
+          <CircleCell size={Number(this.state.task.long)} onChange={this.handleCircleChange.bind(this, "long")} rawColor="#1061e5" />
         </div>
         <div className="taskTableCellSmall">
           <Link to={{pathname: `/tasks/${this.state.task.id}`, query: {tagName: this.props.tagName}}}
