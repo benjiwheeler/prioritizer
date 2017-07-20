@@ -20,7 +20,7 @@ export class CircleCell extends React.Component {
     this.largestCssSize = 20;
     this.scaleFactor = (this.largestCssSize - this.smallestCssSize) / 10.0;
     this.state = {
-      rawColor: props.color,
+      rawColor: props.rawColor,
       colorClassNmae: props.colorClassName,
       ...this.calcSize(props.size)
     };
@@ -111,16 +111,17 @@ export class CircleCell extends React.Component {
   }
 
   render() {
-    var styleVars = {width: this.state.cssSize + 'em', height: this.state.cssSize + 'em', marginLeft: this.state.cssSpacerSize + 'em', marginTop: (this.state.cssSpacerSize + 0.5) + 'em'};
-    var backgroundColorVars = {}
-    if (this.state.rawColor !== undefined && this.state.rawColor !== null) {
-      backgroundColorVars = {backgroundColor: this.state.rawColor};
-    }
-    console.log("rendering cirlce with rawColor " + this.state.rawColor + ", colorClassName " + this.state.colorClassName);
+    // var styleVars = {width: this.state.cssSize + 'em', height: this.state.cssSize + 'em', marginLeft: this.state.cssSpacerSize + 'em', marginTop: (this.state.cssSpacerSize + 0.5) + 'em'};
+    // var backgroundColorVars = {}
+    // if (this.state.rawColor !== undefined && this.state.rawColor !== null) {
+    //   backgroundColorVars = {backgroundColor: this.state.rawColor};
+    // }
+    // console.log("rendering cirlce with rawColor " + this.state.rawColor + ", colorClassName " + this.state.colorClassName);
+// {Object.assign({}, styleVars, backgroundColorVars)}
     return (
-      //<div onClick={this.toggleClick.bind(this)} class={{this.state.colorClassName}} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
-      //  <div className="circle" style={Object.assign({}, styleVars, backgroundColorVars)}></div>
-      //</div>
+      <div onClick={this.toggleClick.bind(this)} class={{this.state.colorClassName}} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
+        <div className="circle" style={{backgroundColor: this.state.rawColor, width: this.state.cssSize + 'em', height: this.state.cssSize + 'em', marginLeft: this.state.cssSpacerSize + 'em', marginTop: (this.state.cssSpacerSize + 0.5) + 'em'}}></div>
+      </div>
     );
   }
 }

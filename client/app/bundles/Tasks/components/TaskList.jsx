@@ -64,7 +64,7 @@ export class TaskListable extends React.Component {
           </div>
         </div>
         <div className="taskTableCellSmall">
-          <CircleCell size={Number(this.state.task.vital)} onChange={this.handleCircleChange.bind(this, "vital")} colorClassName="gold-color" />
+          <CircleCell size={Number(this.state.task.vital)} onChange={this.handleCircleChange.bind(this, "vital")} rawColor="#f9d507" colorClassName="gold-color" />
         </div>
         <div className="taskTableCellSmall">
           <CircleCell size={Number(this.state.task.immediate)} onChange={this.handleCircleChange.bind(this, "immediate")} rawColor="#09bc36" />
