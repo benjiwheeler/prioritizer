@@ -21,7 +21,7 @@ export class CircleCell extends React.Component {
     this.scaleFactor = (this.largestCssSize - this.smallestCssSize) / 10.0;
     this.state = {
       rawColor: props.rawColor,
-      colorClassNmae: props.colorClassName,
+      colorClassName: props.colorClassName,
       ...this.calcSize(props.size)
     };
   }
