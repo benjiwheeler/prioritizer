@@ -111,12 +111,12 @@ export class CircleCell extends React.Component {
   }
 
   render() {
-    // var styleVars = {width: this.state.cssSize + 'em', height: this.state.cssSize + 'em', marginLeft: this.state.cssSpacerSize + 'em', marginTop: (this.state.cssSpacerSize + 0.5) + 'em'};
-    // var backgroundColorVars = {}
-    // if (this.state.rawColor !== undefined && this.state.rawColor !== null) {
-    //   backgroundColorVars = {backgroundColor: this.state.rawColor};
-    // }
-    // console.log("rendering cirlce with rawColor " + this.state.rawColor + ", colorClassName " + this.state.colorClassName);
+    var styleVars = {width: this.state.cssSize + 'em', height: this.state.cssSize + 'em', marginLeft: this.state.cssSpacerSize + 'em', marginTop: (this.state.cssSpacerSize + 0.5) + 'em'};
+    var backgroundColorVars = {}
+    if (this.state.rawColor !== undefined && this.state.rawColor !== null) {
+      backgroundColorVars = {backgroundColor: this.state.rawColor};
+    }
+    console.log("rendering cirlce with rawColor " + this.state.rawColor + ", colorClassName " + this.state.colorClassName);
 // {Object.assign({}, styleVars, backgroundColorVars)}
     return (
       <div onClick={this.toggleClick.bind(this)} className={this.state.colorClassName} style={{paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.7rem', paddingBottom: '.5rem', verticalAlign: 'top'}}>
