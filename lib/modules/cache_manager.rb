@@ -21,8 +21,9 @@ module CacheManager
       new_list = yield
       Rails.logger.info "now new_list is #{new_list}"
       new_list.each do |item|
-      Rails.logger.warn("redis adding item #{item} to key #{key}")
-      $redis.rpush(key, item);
+        Rails.logger.warn("redis adding item #{item} to key #{key}")
+        $redis.rpush(key, item);
+      end
       return new_list
     end
   end
