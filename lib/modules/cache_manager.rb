@@ -13,7 +13,7 @@ module CacheManager
     $redis.del(*keys) unless keys.empty?
   end
 
-  def from_cache_or_generate_list(key)
+  def self.from_cache_or_generate_list(key)
     cached_list_strs = $redis.lrange(key, 0, -1)
     if cached_list_strs.present?
       return cached_list_strs
@@ -28,7 +28,7 @@ module CacheManager
     end
   end
 
-  def from_cache_or_generate_int_list(key)
+  def self.from_cache_or_generate_int_list(key)
     fetched_list_strs = from_cache_or_generate_list(key)
     fetched_list_strs.map{|str| str.to_i}
   end

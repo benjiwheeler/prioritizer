@@ -108,7 +108,7 @@ class User < ActiveRecord::Base
   end
 
   def my_tags_ids_arr
-    from_cache_or_generate_list("#{self.redis_key}::tags") do
+    CacheManager.from_cache_or_generate_int_list("#{self.redis_key}::tags") do
       my_task_ids = self.tasks.collect{|task| task.id}.uniq
       temp_sql = "SELECT DISTINCT tags.id FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id IN (#{my_task_ids.join(', ')})"
       my_tag_ids = ActiveRecord::Base.connection.exec_query(temp_sql).rows.flatten
