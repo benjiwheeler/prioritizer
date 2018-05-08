@@ -208,6 +208,8 @@ export class TaskList extends React.Component {
           </thead>
         </table>
 
+{/*
+
         // FlipMove seems to be slowing things down?
         // <FlipMove
         //  easing="cubic-bezier(0.7, 0.0, 0.4, 1.0)"
@@ -215,8 +217,14 @@ export class TaskList extends React.Component {
         //  enterAnimation="fade"
         //  leaveAnimation="fade"
         //  maintainContainerHeight={true}>
+        */}
+
           { allTasksJsx }
+{/*
+
         // </FlipMove>
+        */}
+
 
       </div>
     );
