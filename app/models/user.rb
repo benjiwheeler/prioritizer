@@ -107,6 +107,10 @@ class User < ActiveRecord::Base
     return user_a
   end
 
+  def expire_my_cached_tags!
+    CacheManager.expire_keys!("#{self.redis_key}::tags")
+  end
+
   def my_tags_ids_arr
     CacheManager.from_cache_or_generate_int_list("#{self.redis_key}::tags") do
       my_task_ids = self.tasks.collect{|task| task.id}.uniq

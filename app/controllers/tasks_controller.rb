@@ -180,6 +180,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       if @task.save
+        current_user.expire_my_cached_tags!
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was successfully created.' }
         format.json { render :show, status: :created, location: @task }
       else
@@ -194,6 +195,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
+        current_user.expire_my_cached_tags!
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was successfully updated.' }
         format.json { render :show, status: :ok, location: @task }
       else

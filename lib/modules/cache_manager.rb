@@ -13,12 +13,13 @@ module CacheManager
     $redis.del(*keys) unless keys.empty?
   end
 
-  def self.from_cache_or_generate_list(key)
+  # explicitly mentioning the block because it may be passed to us explicitly
+  def self.from_cache_or_generate_list(key, &block)
     cached_list_strs = $redis.lrange(key, 0, -1)
     if cached_list_strs.present?
       return cached_list_strs
     else
-      new_list = yield
+      new_list = block.call
       Rails.logger.info "now new_list is #{new_list}"
       new_list.each do |item|
         Rails.logger.warn("redis adding item #{item} to key #{key}")
@@ -28,8 +29,9 @@ module CacheManager
     end
   end
 
-  def self.from_cache_or_generate_int_list(key)
-    fetched_list_strs = from_cache_or_generate_list(key)
+  # note we need to explicitly pass the block to another function
+  def self.from_cache_or_generate_int_list(key, &block)
+    fetched_list_strs = from_cache_or_generate_list(key, block)
     fetched_list_strs.map{|str| str.to_i}
   end
 
