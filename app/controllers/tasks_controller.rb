@@ -37,7 +37,7 @@ class TasksController < ApplicationController
     @task.attempts << Attempt.new(completed: true)
     respond_to do |format|
       if @task.save
-        TaskOrdering.expire_redis_tasks_keys!(current_user)
+        CacheManager.expire_keys!("#{TaskOrdering.redis_tasks_key_prefix(current_user)}*")
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was marked done.' }
         format.json do
           @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
@@ -58,7 +58,7 @@ class TasksController < ApplicationController
     @task.weeks_imp = 1.0 if @task.weeks_imp > 1.0
     respond_to do |format|
       if @task.save
-        TaskOrdering.expire_redis_tasks_keys!(current_user)
+        CacheManager.expire_keys!("#{TaskOrdering.redis_tasks_key_prefix(current_user)}*")
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was postponed.' }
         format.json do
           @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)
@@ -78,7 +78,7 @@ class TasksController < ApplicationController
     @task.weeks_imp = 0.1 + 0.9 * @task.weeks_imp
     respond_to do |format|
       if @task.save
-        TaskOrdering.expire_redis_tasks_keys!(current_user)
+        CacheManager.expire_keys!("#{TaskOrdering.redis_tasks_key_prefix(current_user)}*")
         format.html { redirect_to next_task_path(tag: @tag_name), notice: 'Task was worked on.' }
         format.json do
           @ordered_tasks = TaskOrdering.n_ordered_tasks!(current_user, @tag_name)

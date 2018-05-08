@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  extend CacheManager
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
 #  devise :database_authenticatable, :registerable,
@@ -105,8 +107,17 @@ class User < ActiveRecord::Base
     return user_a
   end
 
+  def my_tags_ids_arr
+    from_cache_or_generate_list("#{self.redis_key}::tags") do
+      my_task_ids = self.tasks.collect{|task| task.id}.uniq
+      temp_sql = "SELECT DISTINCT tags.id FROM tags INNER JOIN taggings ON tags.id = taggings.tag_id WHERE taggings.taggable_id IN (#{my_task_ids.join(', ')})"
+      my_tag_ids = ActiveRecord::Base.connection.exec_query(temp_sql).rows.flatten
+    end
+  end
+
   def my_tags_records_arr
-    self.tasks.collect{|task| task.tags}.flatten.uniq
+    #self.tasks.collect{|task| task.tags}.flatten.uniq
+    ActsAsTaggableOn::Tag.where(id: my_tags_ids_arr)
   end
 
   def my_tags_names_arr
@@ -115,7 +126,7 @@ class User < ActiveRecord::Base
 
   def my_tags_by_freq_records_arr
     # alphabetize these? currently ordered by frequency
-    ActsAsTaggableOn::Tag.where(name: my_tags_names_arr).order(taggings_count: :desc)
+    ActsAsTaggableOn::Tag.where(id: my_tags_ids_arr).order(taggings_count: :desc)
   end
 
   def most_likely_new_tags_arr

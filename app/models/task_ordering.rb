@@ -1,5 +1,6 @@
 class TaskOrdering
   extend MetricsCollector
+  extend CacheManager
 
   def self.redis_tasks_key_prefix(user)
     user.redis_key + '::tasks'

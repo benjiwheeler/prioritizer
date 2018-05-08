@@ -3,6 +3,8 @@ require 'date'
 # a task with various settings input by user, and ability to produce a
 # score for itself
 class Task < ActiveRecord::Base
+  extend CacheManager
+
   belongs_to :user
   has_many :attempts, dependent: :destroy
   belongs_to :parent,  \
@@ -116,7 +118,7 @@ class Task < ActiveRecord::Base
     # if we have changed attributes that influence importance, clear importance cache
     if (Task.attributes_influencing_order & changed).present?
       # invalidate user's cached task importance listing
-      TaskOrdering.expire_redis_tasks_keys!(user)
+      CacheManager.expire_keys!("#{TaskOrdering.redis_tasks_key_prefix(user)}*")
       Rails.logger.warn "Before saving task, User #{user_to_s} tasks cache expired"
     else
       Rails.logger.warn "Before saving task, User #{user_to_s} tasks cache not expired"
