@@ -1,3 +1,8 @@
+wait, why the fuck are the logs so minimal all of a sudden!???
+
+
+
+
 try to debug task ordering:
 
 user = User.find(5)
