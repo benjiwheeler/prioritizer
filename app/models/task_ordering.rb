@@ -178,7 +178,8 @@ class TaskOrdering
     end
     Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
     Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
-    Rails.logger.warn("n_ordered_tasks: #{n_ordered_tasks}")
+    #Rails.logger.warn("n_ordered_tasks: #{n_ordered_tasks}")
+    Rails.logger.warn("n_ordered_tasks: count #{n_ordered_tasks.count}")
     return n_ordered_tasks
   end
 
