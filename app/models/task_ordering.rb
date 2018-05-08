@@ -45,7 +45,8 @@ class TaskOrdering
 
     # sort with best first, worst last
     sorted_tasks = TaskOrdering.order_by_ease(unsorted_tasks)
-    Rails.logger.warn("after ease sorting, order is: #{sorted_tasks.to_json}")
+    #Rails.logger.warn("after ease sorting, order is: #{sorted_tasks.to_json}")
+    Rails.logger.warn("after ease sorting, order is: count #{sorted_tasks.count}")
     sorted_tasks
   end
 
@@ -155,7 +156,8 @@ class TaskOrdering
     # complete and total fucking nightmare...
     # all due to some weird string vs int inconsistency in console vs. heroku
     n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
-    Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
+    #Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
+    Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: count is #{n_ordered_tasks.count}")
     Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids.to_a}")
     Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
     # this to_s is the key... which is absurd, because in the console, the type of each
@@ -165,7 +167,8 @@ class TaskOrdering
     # Rails.logger.warn("2nd test_arr: #{test_arr}")
     # test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
     # Rails.logger.warn("3rd test_arr: #{test_arr}")
-    Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
+    #Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
+    Rails.logger.warn("n_ordered_tasks, after sorting: count is #{n_ordered_tasks.count}")
 #  end
     #index_by(&:id).values_at(*cached_ordered_task_ids)
 
