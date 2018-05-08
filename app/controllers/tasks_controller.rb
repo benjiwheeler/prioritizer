@@ -133,12 +133,14 @@ class TasksController < ApplicationController
       collect_metrics("list tasks for each of this user's tags") do
         current_user.my_tags_records_arr.each do |tag|
           if tag.name != except_tag
-            @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+            collect_metrics("tasks#lists: duration of TaskOrdering.n_ordered_tasks!(current_user: #{current_user}, tag.name: #{tag.name})") do
+              @task_lists[tag.name] = TaskOrdering.n_ordered_tasks!(current_user, tag.name)
+            end
           end
         end
       end
       # add entry for "all" tags
-      collect_metrics("all of this user's tasks") do
+      collect_metrics("tasks#lists: duration of TaskOrdering.n_ordered_tasks!(current_user: #{current_user}, nil)") do
         @task_lists["all"] = TaskOrdering.n_ordered_tasks!(current_user, nil)
       end
       #@task = Task.new # for task form

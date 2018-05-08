@@ -100,7 +100,8 @@ class TaskOrdering
       <=> \
       taskA.get_overall_imp_alone! + taskA.get_session_rand! + taskA.session_bonus_with_default
     end
-    Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
+    #Rails.logger.warn("after sorting, order is: #{sorted_tasks.to_json}")
+    Rails.logger.warn("after sorting, order is: count: #{sorted_tasks.count}")
     # first, clear the key
     $redis.del(TaskOrdering.redis_user_tag_tasks_key(user, tag_str));
     sorted_tasks.each do |task|
@@ -113,74 +114,81 @@ class TaskOrdering
   end
 
   def self.n_ordered_tasks!(user, tag_str = nil, n = :all)
-    n_ordered_tasks = []
-    # get the entire ordered list from Redis
-    cached_ordered_task_ids = $redis.lrange(TaskOrdering.redis_user_tag_tasks_key(user, tag_str), 0, -1)
-    if cached_ordered_task_ids.blank?
-      Rails.logger.warn("redis tag blank: #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
-      collect_metrics("generate_overall_ordered_tasks!(user #{user}, tag_str #{tag_str})") do
-        # NOTE: do this in console. It's doing 4x the required queries!?
-        cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
+    collect_metrics("n_ordered_tasks!(user: #{user}, tag_str: #{tag_str}, n: #{n}") do
+      n_ordered_tasks = []
+      # get the entire ordered list from Redis
+      cached_ordered_task_ids = $redis.lrange(TaskOrdering.redis_user_tag_tasks_key(user, tag_str), 0, -1)
+      if cached_ordered_task_ids.blank?
+        Rails.logger.warn("redis tag blank: #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)}")
+        collect_metrics("generate_overall_ordered_tasks!(user #{user}, tag_str #{tag_str})") do
+          # NOTE: do this in console. It's doing 4x the required queries!?
+          cached_ordered_task_ids = TaskOrdering.generate_overall_ordered_tasks!(user, tag_str)
+        end
+        Rails.logger.warn("got cached_ordered_task_ids from activerecord")
+      else
+        # crucial to convert to int, because redis ONLY stores strings
+        cached_ordered_task_ids = cached_ordered_task_ids.map{|task_id_str| task_id_str.to_i}
+        Rails.logger.warn("redis tag #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
+        Rails.logger.warn("got cached_ordered_task_ids from redis. item class is #{cached_ordered_task_ids.sample.class}")
       end
-      Rails.logger.warn("got cached_ordered_task_ids from activerecord")
-    else
-      # crucial to convert to int, because redis ONLY stores strings
-      cached_ordered_task_ids = cached_ordered_task_ids.map{|task_id_str| task_id_str.to_i}
-      Rails.logger.warn("redis tag #{TaskOrdering.redis_user_tag_tasks_key(user, tag_str)} not blank; has #{cached_ordered_task_ids.count} items")
-      Rails.logger.warn("got cached_ordered_task_ids from redis. item class is #{cached_ordered_task_ids.sample.class}")
+      # now we have cached_ordered_task_ids, list of ids with type int, ordered by priority
+
+      # build an ordered list of only valid and unfinished tasks
+      # NOTE: is this really necessary?
+      # n_ordered_tasks = cached_ordered_task_ids.reduce([]) { |memo, id|
+      #   thisTask = Task.find_by(id: id)
+      #   if thisTask.present? && thisTask.done == false
+      #     memo.push thisTask
+      #   else
+      #     memo
+      #   end
+      # }
+
+      # faster way, per http://stackoverflow.com/a/26868980/2308190
+      # note i'm no longer making sure these are done!
+      # The problem with this was that it loses the ordering! argh
+     # collect_metrics("Getting tasks from cached_ordered_task_ids for user #{user}, tag_str #{tag_str})") do
+      test_arr = [100, 300, 500, 700, 900]
+      test_arr = [500, 100].sort_by{|num| test_arr.index(num)}
+      Rails.logger.warn("1st test_arr: #{test_arr}")
+      if cached_ordered_task_ids.present?
+        Rails.logger.warn("class of members of cached_ordered_task_ids is #{cached_ordered_task_ids.first.class}")
+      end
+
+      # complete and total fucking nightmare...
+      # all due to some weird string vs int inconsistency in console vs. heroku
+      collect_metrics("Task.where(id: cached_ordered_task_ids).includes(:tags)") do
+        n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
+      end
+      #Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
+      Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: count is #{n_ordered_tasks.count}")
+      Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids.to_a}")
+      # forget why i was hardcoding this next line!
+      #Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
+      # this to_s is the key... which is absurd, because in the console, the type of each
+      # item of cached_ordered_task_ids is definitely a fixnum, NOT a string!!!
+      collect_metrics("n_ordered_tasks.sort_by(order in cached_ordered_task_ids)") do
+        n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id)}
+      end
+      # test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
+      # Rails.logger.warn("2nd test_arr: #{test_arr}")
+      # test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
+      # Rails.logger.warn("3rd test_arr: #{test_arr}")
+      #Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
+      Rails.logger.warn("n_ordered_tasks, after sorting: count is #{n_ordered_tasks.count}")
+  #  end
+      #index_by(&:id).values_at(*cached_ordered_task_ids)
+
+      # get just the first n tasks
+      if n.is_a? Numeric
+        n_ordered_tasks = n_ordered_tasks.first(n)
+      end
+      Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
+      Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
+      #Rails.logger.warn("n_ordered_tasks: #{n_ordered_tasks}")
+      Rails.logger.warn("n_ordered_tasks: count #{n_ordered_tasks.count}")
+      return n_ordered_tasks
     end
-    # now we have cached_ordered_task_ids, list of ids with type int, ordered by priority
-
-    # build an ordered list of only valid and unfinished tasks
-    # NOTE: is this really necessary?
-    # n_ordered_tasks = cached_ordered_task_ids.reduce([]) { |memo, id|
-    #   thisTask = Task.find_by(id: id)
-    #   if thisTask.present? && thisTask.done == false
-    #     memo.push thisTask
-    #   else
-    #     memo
-    #   end
-    # }
-
-    # faster way, per http://stackoverflow.com/a/26868980/2308190
-    # note i'm no longer making sure these are done!
-    # The problem with this was that it loses the ordering! argh
-   # collect_metrics("Getting tasks from cached_ordered_task_ids for user #{user}, tag_str #{tag_str})") do
-    test_arr = [100, 300, 500, 700, 900]
-    test_arr = [500, 100].sort_by{|num| test_arr.index(num)}
-    Rails.logger.warn("1st test_arr: #{test_arr}")
-    if cached_ordered_task_ids.present?
-      Rails.logger.warn("class of members of cached_ordered_task_ids is #{cached_ordered_task_ids.first.class}")
-    end
-
-    # complete and total fucking nightmare...
-    # all due to some weird string vs int inconsistency in console vs. heroku
-    n_ordered_tasks = Task.where(id: cached_ordered_task_ids).includes(:tags)
-    #Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: #{n_ordered_tasks.to_a}")
-    Rails.logger.warn("n_ordered_tasks, right after running initial query, before sorting: count is #{n_ordered_tasks.count}")
-    Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids.to_a}")
-    Rails.logger.warn("index of 590: #{cached_ordered_task_ids.index('590')}; index of 542: #{cached_ordered_task_ids.index('542')}; ")
-    # this to_s is the key... which is absurd, because in the console, the type of each
-    # item of cached_ordered_task_ids is definitely a fixnum, NOT a string!!!
-    n_ordered_tasks = n_ordered_tasks.sort_by{|task| cached_ordered_task_ids.index(task.id)}
-    # test_arr = ['542', '590'].sort_by{|num| cached_ordered_task_ids.index(num)}
-    # Rails.logger.warn("2nd test_arr: #{test_arr}")
-    # test_arr = [542, 590].sort_by{|num| cached_ordered_task_ids.index(num)}
-    # Rails.logger.warn("3rd test_arr: #{test_arr}")
-    #Rails.logger.warn("n_ordered_tasks, after sorting: #{n_ordered_tasks}")
-    Rails.logger.warn("n_ordered_tasks, after sorting: count is #{n_ordered_tasks.count}")
-#  end
-    #index_by(&:id).values_at(*cached_ordered_task_ids)
-
-    # get just the first n tasks
-    if n.is_a? Numeric
-      n_ordered_tasks = n_ordered_tasks.first(n)
-    end
-    Rails.logger.warn("returning array of #{n_ordered_tasks.count} elements")
-    Rails.logger.warn("cached_ordered_task_ids: #{cached_ordered_task_ids}")
-    #Rails.logger.warn("n_ordered_tasks: #{n_ordered_tasks}")
-    Rails.logger.warn("n_ordered_tasks: count #{n_ordered_tasks.count}")
-    return n_ordered_tasks
   end
 
   def self.first_ordered_task!(user, tag_str = nil)
