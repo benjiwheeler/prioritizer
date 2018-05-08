@@ -31,7 +31,7 @@ module CacheManager
 
   # note we need to explicitly pass the block to another function
   def self.from_cache_or_generate_int_list(key, &block)
-    fetched_list_strs = from_cache_or_generate_list(key, block)
+    fetched_list_strs = from_cache_or_generate_list(key, &block)
     fetched_list_strs.map{|str| str.to_i}
   end
 
