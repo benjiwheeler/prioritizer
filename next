@@ -28,10 +28,10 @@ backend:
 2 make morning routine
 4 wire up children in react edit
 4 menu has all at top
+2 clicking worked on it while in task focus kicks you to begin, not to nothing
 ___
-33, approx 7 days
+35, approx 9 days
 
-touch punch for sliders
 
 deterministic ordering:
 * can base boosts on ballpark number of items to boost: total items log base 2 minus 3, min 2.
