@@ -191,7 +191,7 @@ export class TaskList extends React.Component {
       <div>
         <NavBar tagName={this.state.tagName} to='/tasks' showBack={false}/>
         <TaskListMasterControls tagName={this.state.tagName} />
-        <table className="table" style={{marginTop: '6rem'}}>
+        <table className="table showWithFade" style={{marginTop: '6rem'}}>
           <thead>
             <tr>
               <th className="list-header-text" style={{width: '5%', minWidth: '20px', float: 'left', position: 'relative', minHeight: '1px', paddingLeft: '.1rem', paddingRight: '.1rem', paddingTop: '.3rem', paddingBottom: '.1rem', verticalAlign: 'top'}}>Task</th>

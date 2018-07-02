@@ -43,6 +43,8 @@ what's going on when takes forever to load initially?
 
 
 
+
+
 4 next has explicit, separate cur task; updating list doesn't change it
 4 next page: shows next after done, by getting 2nd before any local or server update
 8 get next formatting looking how i want
@@ -68,11 +70,17 @@ how handle specific due date vs implied?
 
 daily tasks:
  * ability to mark as "daily" when creating/editing
+ * yes weekends / no weekends / only weekends
  * can set hour it happens, not more fine
  * daily "finished" isn't done... so don't mark it done, just add an attempt.
  * daily "postponed" is until later that day, not longer!
  * static tasks; penalize if was "done" within current calendar day, so doesn't get picked again.
  * boost overall, or if near its target time.
+
+other pacing options:
+ * "weekly, monthly" - calc how many you've done recently, using decay; extra boost to last 24 hours, to avoid repeating task too soon; compare to target, given creation date; that affects effective soonness in the calc.
+    * eg, clean office
+ *
 
 actually use vital, important, etc.
 

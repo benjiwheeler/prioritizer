@@ -507,6 +507,26 @@ Task List
 }
 
 /* *********************************
+List fade animation
+********************************* */
+
+/*
+never figured out how to add and remove this on data change!
+
+.showWithFade.hideWithFade{
+    opacity: 0;
+}
+
+.showWithFade {
+    -webkit-transition: opacity 3s ease-in-out;
+    -moz-transition: opacity 3s ease-in-out;
+    -ms-transition: opacity 3s ease-in-out;
+    -o-transition: opacity 3s ease-in-out;
+     opacity: 1;
+}
+*/
+
+/* *********************************
 List removal animation
 ********************************* */
 
